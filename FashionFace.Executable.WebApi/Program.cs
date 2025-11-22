@@ -15,18 +15,31 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(
     args
 );
 
-var serviceCollection =
-    builder.Services;
-
 var builderConfiguration =
     builder.Configuration;
+
+Log.Logger =
+    new LoggerConfiguration()
+        .ReadFrom
+        .Configuration(
+            builderConfiguration
+        )
+        .Enrich
+        .FromLogContext()
+        .CreateLogger();
+
+var serviceCollection =
+    builder.Services;
 
 var nanoBananaSection = builderConfiguration.GetSection(
     "NanoBanana"
@@ -40,6 +53,14 @@ var jwtSection = builderConfiguration.GetSection(
 );
 serviceCollection.Configure<JwtSettings>(
     jwtSection
+);
+
+serviceCollection.AddLogging(
+    loggingBuilder =>
+    {
+        loggingBuilder.ClearProviders();
+        loggingBuilder.AddSerilog();
+    }
 );
 
 serviceCollection.SetupDependencies();

@@ -46,7 +46,7 @@
       context: .
       dockerfile: FashionFace.Executable.Console.Migration/Dockerfile
     environment:
-      - Database__ConnectionString=Host=${Postgres_Host};Port=${Postgres_Port};Database=${Postgres_Db};Username=${Postgres_User};Password=${Postgres_Password};Include Error Detail=true;
+      - Database__ConnectionString=Host=postgres;Port=${Postgres_Port};Database=${Postgres_Db};Username=${Postgres_User};Password=${Postgres_Password};Include Error Detail=true;
     volumes:
       - "${Files_Dir}:/app/files:rw"
       - "${Postgres_Migration_Log_Dir}:/app/logs:rw"
