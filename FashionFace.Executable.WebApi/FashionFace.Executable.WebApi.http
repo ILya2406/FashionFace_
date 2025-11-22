@@ -1,0 +1,6 @@
+@FashionFace.WebApi_HostAddress = http://localhost:8080
+
+GET {{FashionFace.WebApi_HostAddress}}
+Accept: application/json
+
+###

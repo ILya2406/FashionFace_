@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj"/>
+    </ItemGroup>
+
+</Project>

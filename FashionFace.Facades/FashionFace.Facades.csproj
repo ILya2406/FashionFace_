@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />
+        <ProjectReference Include="..\FashionFace.Dependencies.Identity\FashionFace.Dependencies.Identity.csproj"/>
+        <ProjectReference Include="..\FashionFace.Facades.Domains\FashionFace.Facades.Domains.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj"/>
+        <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.10"/>
+    </ItemGroup>
+
+</Project>

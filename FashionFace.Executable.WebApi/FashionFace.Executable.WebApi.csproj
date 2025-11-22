@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <DocumentationFile>./FashionFace.Executable.WebApi.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers\FashionFace.Controllers.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj"/>
+    </ItemGroup>
+
+</Project>

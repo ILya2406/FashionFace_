@@ -1,0 +1,127 @@
+﻿services:
+  web_api:
+    image: fashionface.webapi
+    container_name: web_api
+    hostname: web_api
+    build:
+      context: .
+      dockerfile: FashionFace.Executable.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=$Environment
+      - Database__ConnectionString=Host=${Postgres_Host};Port=${Postgres_Port};Database=${Postgres_Db};Username=${Postgres_User};Password=${Postgres_Password};Include Error Detail=true;
+      - NanoBanana__ApiKey=$NanoBanana_ApiKey
+      - Jwt__Issuer=$Jwt_Issuer
+      - Jwt__Audience=$Jwt_Audience
+      - Jwt__Secret=$Jwt_Secret
+      - Jwt__AccessTokenExpiryMinutes=$Jwt_AccessTokenExpiryMinutes
+      - Jwt__RefreshTokenExpiryDays=$Jwt_RefreshTokenExpiryDays
+      - RabbitMq__Host=$RabbitMq_Host
+      - RabbitMq__Port=$RabbitMq_Port
+      - RabbitMq__UserName=$RabbitMq_UserName
+      - RabbitMq__Password=$RabbitMq_Password
+    ports:
+      - "8080:8080"
+    volumes:
+      - "${Files_Dir}:/app/files:rw"
+      - "${Web_Api_Log_Dir}:/app/logs:rw"
+    depends_on:
+      postgres_migration:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      redis_stack:
+        condition: service_started
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: unless-stopped
+
+
+  postgres_migration:
+    image: postgres_migration
+    container_name: postgres_migration
+    build:
+      context: .
+      dockerfile: FashionFace.Executable.Console.Migration/Dockerfile
+    environment:
+      - Database__ConnectionString=Host=${Postgres_Host};Port=${Postgres_Port};Database=${Postgres_Db};Username=${Postgres_User};Password=${Postgres_Password};Include Error Detail=true;
+    volumes:
+      - "${Files_Dir}:/app/files:rw"
+      - "${Postgres_Migration_Log_Dir}:/app/logs:rw"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: no
+
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_DB=$Postgres_Db
+      - POSTGRES_USER=$Postgres_User
+      - POSTGRES_PASSWORD=$Postgres_Password
+      - TZ=UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $Postgres_User -d $Postgres_Db" ]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: unless-stopped
+
+
+  rabbitmq:
+    image: rabbitmq:4.2.1
+    container_name: rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RabbitMq_UserName
+      - RABBITMQ_DEFAULT_PASS=$RabbitMq_Password
+      - TZ=UTC
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_volume:/etc/rabbitmq/
+      - "${Rabbitmq_Log_Dir}:/var/log/rabbitmq:rw"
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: unless-stopped
+
+
+  redis_stack:
+    image: redis/redis-stack:7.4.0-v8
+    container_name: redis_stack
+    environment:
+      - TZ=UTC
+    ports:
+      - 6380:6379
+    expose:
+      - 6379
+    volumes:
+      - redis_volume:/data
+      - "${Redis_Stack_Log_Dir}:/app/logs:rw"
+    command: redis-server --logfile /app/logs/redis.log
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: unless-stopped
+
+
+volumes:
+  postgres_volume:
+  rabbitmq_volume:
+  redis_volume:

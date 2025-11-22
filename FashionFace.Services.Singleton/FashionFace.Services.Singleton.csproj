@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Common.Constants\FashionFace.Common.Constants.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj"/>
+    </ItemGroup>
+
+</Project>
