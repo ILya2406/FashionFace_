@@ -1,4 +1,33 @@
 ﻿services:
+
+
+  nginx:
+    image: nginx
+    ports:
+      - "81:80"
+      - "444:443"
+    volumes:
+      - "${Nginx_Config_Dir}:/etc/nginx/conf.d"
+    depends_on:
+      - web_api
+    networks:
+      - app-network
+#      - dehydrated
+#
+#  dehydrated:
+#    image: linuxserver/dehydrated
+#    container_name: dehydrated
+#    environment:
+#      - DEHYDRATED_CHALLENGE=http-01
+#      - DEHYDRATED_DOMAIN=fashion-face.ai
+#      - DEHYDRATED_EMAIL=your-email@example.com
+#    volumes:
+#      - "${Dehydrated_Config_Dir}:/config"
+#      - ./nginx/www:/www # pointed from nginx.cert at location /.well-known/acme-challenge/
+#    command: ["--cron", "--hook", "/config/hook.sh"]
+#    restart: unless-stopped
+
+
   web_api:
     image: fashionface.webapi
     container_name: web_api
@@ -21,6 +50,8 @@
       - RabbitMq__Password=$RabbitMq_Password
     ports:
       - "8080:8080"
+    expose:
+      - 8080
     volumes:
       - "${Files_Dir}:/app/files:rw"
       - "${Web_Api_Log_Dir}:/app/logs:rw"
@@ -37,6 +68,8 @@
       options:
         max-size: $Docker_Log_Size
     restart: unless-stopped
+    networks:
+      - app-network
 
 
   postgres_migration:
@@ -57,6 +90,8 @@
       options:
         max-size: $Docker_Log_Size
     restart: no
+    networks:
+      - app-network
 
   postgres:
     image: postgres:18
@@ -69,6 +104,8 @@
       - TZ=UTC
     ports:
       - "5432:5432"
+    expose:
+      - 5432
     volumes:
       - postgres_volume:/var/lib/postgresql/
     healthcheck:
@@ -80,6 +117,8 @@
       options:
         max-size: $Docker_Log_Size
     restart: unless-stopped
+    networks:
+      - app-network
 
 
   rabbitmq:
@@ -93,6 +132,9 @@
     ports:
       - "5672:5672"
       - "15672:15672"
+    expose:
+      - 5672
+      - 15672
     volumes:
       - rabbitmq_volume:/etc/rabbitmq/
       - "${Rabbitmq_Log_Dir}:/var/log/rabbitmq:rw"
@@ -100,6 +142,8 @@
       options:
         max-size: $Docker_Log_Size
     restart: unless-stopped
+    networks:
+      - app-network
 
 
   redis_stack:
@@ -108,7 +152,7 @@
     environment:
       - TZ=UTC
     ports:
-      - 6380:6379
+      - 6379:6379
     expose:
       - 6379
     volumes:
@@ -119,6 +163,13 @@
       options:
         max-size: $Docker_Log_Size
     restart: unless-stopped
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
 
 
 volumes:
