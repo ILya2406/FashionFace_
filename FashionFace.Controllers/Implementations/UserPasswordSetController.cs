@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 
 using FashionFace.Controllers.Implementations.Base;
-using FashionFace.Controllers.Models;
+using FashionFace.Controllers.Requests.Models;
+using FashionFace.Controllers.Responses.Models;
 using FashionFace.Facades.Args;
 using FashionFace.Facades.Interfaces;
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
-using FashionFace.Common.Extensions.Implementations;
+using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Services.ConfigurationSettings.Interfaces;
 using FashionFace.Facades.Args;
 using FashionFace.Facades.Domains.Args;

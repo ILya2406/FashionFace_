@@ -29,7 +29,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
-        <ProjectReference Include="..\FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj" />
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />
         <ProjectReference Include="..\FashionFace.Controllers\FashionFace.Controllers.csproj"/>
         <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj"/>

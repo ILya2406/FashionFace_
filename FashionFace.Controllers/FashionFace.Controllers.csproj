@@ -13,6 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Controllers.Requests\FashionFace.Controllers.Requests.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Responses\FashionFace.Controllers.Responses.csproj" />
         <ProjectReference Include="..\FashionFace.Facades\FashionFace.Facades.csproj"/>
     </ItemGroup>
 

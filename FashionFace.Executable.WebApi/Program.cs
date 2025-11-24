@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using FashionFace.Common.Extensions.Implementations;
+using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Services.ConfigurationSettings.Models;
 using FashionFace.Repositories.Context;
 using FashionFace.Repositories.Context.Models;
@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -161,8 +162,7 @@ serviceCollection.AddSwaggerGen(
     }
 );
 
-builder
-    .Services
+serviceCollection
     .AddAuthentication(
         options =>
         {
@@ -197,6 +197,39 @@ builder
         }
     );
 
+var corsSection =
+    builderConfiguration
+        .GetSection(
+            "Cors"
+        );
+
+serviceCollection.Configure<CorsSettings>(
+    corsSection
+);
+
+var corsSettings =
+    corsSection.Get<CorsSettings>();
+
+serviceCollection
+    .AddCors(
+        corsOptions =>
+        {
+            corsOptions.AddDefaultPolicy(
+                policy =>
+                {
+                    policy
+                        .WithOrigins(
+                            corsSettings.OriginList
+                        )
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            );
+        }
+    );
+
+
 var app =
     builder.Build();
 
@@ -209,6 +242,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

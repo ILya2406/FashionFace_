@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="4.3.0"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
+        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+        <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FashionFace.Controllers.Requests\FashionFace.Controllers.Requests.csproj" />
+      <ProjectReference Include="..\FashionFace.Controllers.Responses\FashionFace.Controllers.Responses.csproj" />
+      <ProjectReference Include="..\FashionFace.Dependencies.HttpClient\FashionFace.Dependencies.HttpClient.csproj" />
+      <ProjectReference Include="..\FashionFace.Dependencies.Serialization\FashionFace.Dependencies.Serialization.csproj" />
+      <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj" />
+    </ItemGroup>
+
+</Project>
