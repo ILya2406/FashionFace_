@@ -2,7 +2,7 @@
 
 using FashionFace.Services.Singleton.Models;
 
-namespace FashionFace.Executable.Blazor.App.Models;
+namespace FashionFace.Executable.Blazor.WebAssembly.Models;
 
 public sealed record ApiResultContainer<T>
 {

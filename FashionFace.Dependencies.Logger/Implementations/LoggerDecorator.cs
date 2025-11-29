@@ -1,4 +1,6 @@
-﻿using FashionFace.Dependencies.Logger.Interfaces;
+﻿using System;
+
+using FashionFace.Dependencies.Logger.Interfaces;
 
 using Microsoft.Extensions.Logging;
 

@@ -22,7 +22,7 @@ public sealed class LoginController(
         [FromBody] LoginRequest request
     )
     {
-        var loginArgs =
+        var facadeArgs =
             new LoginArgs(
                 request.Username,
                 request.Password
@@ -32,7 +32,7 @@ public sealed class LoginController(
             await
                 facade
                     .Execute(
-                        loginArgs
+                        facadeArgs
                     );
 
         var response =

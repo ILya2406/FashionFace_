@@ -1,4 +1,7 @@
-﻿using FashionFace.Repositories.Context.Models;
+﻿using System;
+using System.Threading.Tasks;
+
+using FashionFace.Repositories.Context.Models;
 
 using Microsoft.AspNetCore.Identity;
 

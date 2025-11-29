@@ -25,7 +25,7 @@ public sealed class UserCreateController(
         var userId =
             GetUserId();
 
-        var userCreateArgs =
+        var facadeArgs =
             new UserCreateArgs(
                 userId,
                 request.Email,
@@ -37,7 +37,7 @@ public sealed class UserCreateController(
             await
                 facade
                     .Execute(
-                        userCreateArgs
+                        facadeArgs
                     );
 
         var response =

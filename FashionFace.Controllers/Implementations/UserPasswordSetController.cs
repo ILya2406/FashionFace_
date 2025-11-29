@@ -25,7 +25,7 @@ public sealed class UserPasswordSetController(
         var userId =
             GetUserId();
 
-        var userPasswordSetArgs =
+        var facadeArgs =
             new UserPasswordSetArgs(
                 userId,
                 request.OldPassword,
@@ -35,7 +35,7 @@ public sealed class UserPasswordSetController(
         await
             facade
                 .Execute(
-                    userPasswordSetArgs
+                    facadeArgs
                 );
 
         return new();

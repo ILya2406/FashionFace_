@@ -1,4 +1,6 @@
-﻿using FashionFace.Dependencies.HttpClient.Interfaces;
+﻿using System.Net.Http;
+
+using FashionFace.Dependencies.HttpClient.Interfaces;
 
 namespace FashionFace.Dependencies.HttpClient.Implementations;
 

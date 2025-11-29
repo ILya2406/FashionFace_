@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 
 using FashionFace.Common.Extensions.Dependencies.Implementations;
+using FashionFace.Dependencies.Crypt.Implementations;
 using FashionFace.Services.ConfigurationSettings.Models;
 using FashionFace.Repositories.Context;
 using FashionFace.Repositories.Context.Models;
@@ -65,6 +66,7 @@ serviceCollection.AddLogging(
 );
 
 serviceCollection.SetupDependencies();
+serviceCollection.AddScoped<IPasswordHasher<ApplicationUser>, BcryptPasswordHasher<ApplicationUser>>();
 
 var filters =
     new[]
@@ -239,7 +241,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 

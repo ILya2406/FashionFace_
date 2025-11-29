@@ -1,17 +1,13 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
 
 using FashionFace.Controllers.Requests.Models;
 using FashionFace.Controllers.Responses.Models;
 using FashionFace.Dependencies.Serialization.Interfaces;
-using FashionFace.Executable.Blazor.App.Models;
+using FashionFace.Executable.Blazor.WebAssembly.Models;
 using FashionFace.Services.Singleton.Models;
 
-using Microsoft.Extensions.Logging;
-
-namespace FashionFace.Executable.Blazor.App.Services;
+namespace FashionFace.Executable.Blazor.WebAssembly.Services;
 
 public sealed class AuthorizationService(
     ILogger<AuthorizationService> logger,
@@ -35,6 +31,8 @@ public sealed class AuthorizationService(
                 Encoding.UTF8,
                 "application/json"
             );
+
+        httpClient.Timeout = TimeSpan.FromSeconds(2);
 
         var response =
             await

@@ -11,6 +11,7 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <DocumentationFile>./FashionFace.Executable.WebApi.xml</DocumentationFile>
     </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15"/>
@@ -30,6 +31,7 @@
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
         <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj" />
+        <ProjectReference Include="..\FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj" />
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />
         <ProjectReference Include="..\FashionFace.Controllers\FashionFace.Controllers.csproj"/>
         <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj"/>

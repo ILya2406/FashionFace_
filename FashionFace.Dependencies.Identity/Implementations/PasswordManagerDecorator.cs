@@ -1,4 +1,6 @@
-﻿using FashionFace.Dependencies.Identity.Interfaces;
+﻿using System.Threading.Tasks;
+
+using FashionFace.Dependencies.Identity.Interfaces;
 using FashionFace.Repositories.Context.Models;
 
 using Microsoft.AspNetCore.Identity;

@@ -1,12 +1,11 @@
 using System.Net.Http;
 
-using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Dependencies.HttpClient.Implementations;
 using FashionFace.Dependencies.HttpClient.Interfaces;
 using FashionFace.Executable.Blazor.App.Components;
-using FashionFace.Executable.Blazor.App.Services;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,12 +38,8 @@ Log.Logger =
 var serviceCollection =
     builder.Services;
 
-serviceCollection.SetupDependencies();
-
-serviceCollection.AddScoped<AuthorizationService>();
-
 var apiBaseUrl =
-    builderConfiguration["ApiSettings:BaseUrl"];
+    builderConfiguration["Api:BaseUrl"];
 
 serviceCollection.AddSingleton<IDangerousHttpClientBuilder, DangerousHttpClientBuilder>();
 
@@ -88,7 +83,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

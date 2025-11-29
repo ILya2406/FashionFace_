@@ -22,7 +22,7 @@ public sealed class RefreshController(
         [FromBody] RefreshRequest request
     )
     {
-        var loginArgs =
+        var facadeArgs =
             new RefreshArgs(
                 request.RefreshToken
             );
@@ -31,7 +31,7 @@ public sealed class RefreshController(
             await
                 facade
                     .Execute(
-                        loginArgs
+                        facadeArgs
                     );
 
         var response =

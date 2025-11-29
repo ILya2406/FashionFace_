@@ -1,10 +1,12 @@
 ﻿@page "/"
-@using FashionFace.Controllers.Requests.Models
-@using FashionFace.Executable.Blazor.App.Components.Layout
-@using FashionFace.Executable.Blazor.App.Services
-@inject AuthorizationService AuthorizationService
-@inject NavigationManager Navigation
 @layout PublicLayout
+
+@using FashionFace.Controllers.Requests.Models
+@using FashionFace.Executable.Blazor.WebAssembly.Services
+@using FashionFace.Executable.Blazor.WebAssembly.Models
+
+@inject AuthorizationService AuthorizationService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Login - FashionFace</PageTitle>
 
@@ -14,47 +16,44 @@
         <h3>Welcome Back</h3>
         <p class="text-muted">Sign in to your FashionFace account</p>
 
-        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" FormName="login-form">
+        <EditForm Model="@LoginModel" OnValidSubmit="@HandleLogin" FormName="login-form">
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
 
-            @if (!string.IsNullOrEmpty(errorMessage))
+            @if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 <div class="alert alert-danger">
-                    <strong>Login failed:</strong> @errorMessage
+                    <strong>Login failed:</strong> @ErrorMessage
                 </div>
             }
 
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <InputText @bind-Value="username"
+                <InputText @bind-Value="LoginModel.Username"
+                           @bind-Value:event="oninput"
                            class="form-control"
                            id="username"
                            placeholder="Enter username"
                            autocomplete="username" />
-                <ValidationMessage For="@(() => username)" />
+                <ValidationMessage For="@(() => LoginModel.Username)" />
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <InputText @bind-Value="password"
+                <InputText @bind-Value="LoginModel.Password"
+                           @bind-Value:event="oninput"
                            type="password"
                            class="form-control"
                            id="password"
                            placeholder="Enter password"
                            autocomplete="current-password" />
-                <ValidationMessage For="@(() => password)" />
-            </div>
-
-            <div class="mb-3 form-check">
-                <InputCheckbox @bind-Value="rememberMe" class="form-check-input" id="remember" />
-                <label class="form-check-label" for="remember">Remember me</label>
+                <ValidationMessage For="@(() => LoginModel.Password)" />
             </div>
 
             <button type="submit"
                     class="btn btn-primary w-100"
-                    disabled="@isLoading">
-                @if (isLoading)
+                    disabled="@IsLoading">
+                @if (IsLoading)
                 {
                     <span class="spinner-border spinner-border-sm me-2" role="status"></span>
                 }
@@ -65,29 +64,19 @@
 </div>
 
 @code {
-    public class LoginModel
-    {
-        public string Username { get; set; } = string.Empty;
-
-        public string Password { get; set; } = string.Empty;
-    }
-
-    private LoginModel loginModel = new();
-    private string username = "";
-    private string password = "";
-    private bool rememberMe = false;
-    private bool isLoading = false;
-    private string? errorMessage;
+    private LoginModel LoginModel  { get; set; } = new();
+    private bool IsLoading  { get; set; }
+    private string? ErrorMessage  { get; set; }= string.Empty;
 
     private async Task HandleLogin()
     {
-        isLoading = true;
-        errorMessage = null;
+        IsLoading = true;
+        ErrorMessage = null;
 
         var loginRequest =
             new LoginRequest(
-                username,
-                password
+                LoginModel.Username,
+                LoginModel.Password
             );
 
         var response =
@@ -103,17 +92,17 @@
             // await JsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", response.Token);
 
             // Redirect to dashboard or main app
-            Navigation.NavigateTo("/dashboard"); // or "/" if you want home after login
+            NavigationManager.NavigateTo("/dashboard"); // or "/" if you want home after login
         }
         else
         {
-            errorMessage =
+            ErrorMessage =
                 response
                     .Error!
                     .Error
                     .Code;
         }
 
-        isLoading = false;
+        IsLoading = false;
     }
 }

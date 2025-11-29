@@ -67,6 +67,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Res
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Common.Models", "FashionFace.Common.Models\FashionFace.Common.Models.csproj", "{FE479732-B74E-45AB-AC36-E594C09FB1F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Executable.Blazor.WebAssembly", "FashionFace.Executable.Blazor.WebAssembly\FashionFace.Executable.Blazor.WebAssembly.csproj", "{4A186E67-2A3E-4C59-9D4D-0930D48E45BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.Crypt", "FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj", "{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.SkiaSharp", "FashionFace.Dependencies.SkiaSharp\FashionFace.Dependencies.SkiaSharp.csproj", "{597D89D6-3314-4C26-B828-5E03339E0A6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +175,18 @@ Global
 		{FE479732-B74E-45AB-AC36-E594C09FB1F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE479732-B74E-45AB-AC36-E594C09FB1F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE479732-B74E-45AB-AC36-E594C09FB1F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACE0776C-AE27-4DA0-BE79-83CDC1DA5748} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
@@ -195,5 +213,8 @@ Global
 		{F3218D63-FAE0-41A8-B435-4FAFAD846267} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
 		{84E25208-3601-40F1-8C85-F1A3309A6379} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
 		{FE479732-B74E-45AB-AC36-E594C09FB1F2} = {6DF37BFF-42BE-418B-8556-4354A79CECB8}
+		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
+		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1} = {E43C653E-C18F-4866-9F1E-638925A315E4}
+		{597D89D6-3314-4C26-B828-5E03339E0A6C} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 	EndGlobalSection
 EndGlobal

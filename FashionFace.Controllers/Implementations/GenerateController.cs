@@ -22,7 +22,7 @@ public sealed class GenerateController(
         [FromBody] GenerateRequest request
     )
     {
-        var generateArgs =
+        var facadeArgs =
             new GenerateArgs(
                 request.Prompt
             );
@@ -31,7 +31,7 @@ public sealed class GenerateController(
             await
                 facade
                     .Execute(
-                        generateArgs
+                        facadeArgs
                     );
 
         var response =
