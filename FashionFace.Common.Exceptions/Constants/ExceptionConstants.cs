@@ -6,6 +6,6 @@ public static class ExceptionConstants
     public const string InvalidRefreshToken = nameof(InvalidRefreshToken);
     public const string EmailAlreadyExists = nameof(EmailAlreadyExists);
     public const string UsernameAlreadyExists = nameof(UsernameAlreadyExists);
-    public const string IdentityErrors = nameof(IdentityErrors);
+    public const string IdentityErrorList = nameof(IdentityErrorList);
     public const string InvalidOldPassword = nameof(InvalidOldPassword);
 }

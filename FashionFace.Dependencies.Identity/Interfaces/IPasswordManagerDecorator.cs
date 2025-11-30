@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.IdentityEntities;
 
 using Microsoft.AspNetCore.Identity;
 

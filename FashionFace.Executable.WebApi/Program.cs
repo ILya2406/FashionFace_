@@ -4,11 +4,10 @@ using System.Reflection;
 using System.Text;
 
 using FashionFace.Common.Extensions.Dependencies.Implementations;
-using FashionFace.Dependencies.Crypt.Implementations;
 using FashionFace.Services.ConfigurationSettings.Models;
 using FashionFace.Repositories.Context;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Executable.WebApi.Configurations;
+using FashionFace.Repositories.Context.Models.IdentityEntities;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

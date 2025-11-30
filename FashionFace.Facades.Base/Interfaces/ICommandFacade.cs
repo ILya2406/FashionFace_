@@ -1,4 +1,6 @@
-﻿namespace FashionFace.Facades.Base.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace FashionFace.Facades.Base.Interfaces;
 
 public interface ICommandFacade<in TArgs>
 {

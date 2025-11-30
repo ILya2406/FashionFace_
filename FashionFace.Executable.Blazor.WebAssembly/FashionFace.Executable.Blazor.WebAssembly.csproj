@@ -23,8 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FashionFace.Controllers.Requests\FashionFace.Controllers.Requests.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Responses\FashionFace.Controllers.Responses.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Anonymous.Requests\FashionFace.Controllers.Anonymous.Requests.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Anonymous.Responses\FashionFace.Controllers.Anonymous.Responses.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Users.Requests\FashionFace.Controllers.Users.Requests.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Users.Responses\FashionFace.Controllers.Users.Responses.csproj" />
         <ProjectReference Include="..\FashionFace.Dependencies.HttpClient\FashionFace.Dependencies.HttpClient.csproj" />
         <ProjectReference Include="..\FashionFace.Dependencies.Serialization\FashionFace.Dependencies.Serialization.csproj" />
         <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj" />

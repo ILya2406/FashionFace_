@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FashionFace.Controllers.Admins.Requests\FashionFace.Controllers.Admins.Requests.csproj" />
+      <ProjectReference Include="..\FashionFace.Controllers.Admins.Responses\FashionFace.Controllers.Admins.Responses.csproj" />
+      <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj" />
+      <ProjectReference Include="..\FashionFace.Facades.Admins\FashionFace.Facades.Admins.csproj" />
+    </ItemGroup>
+
+</Project>

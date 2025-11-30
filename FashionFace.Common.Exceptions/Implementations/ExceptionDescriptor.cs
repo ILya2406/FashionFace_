@@ -1,5 +1,11 @@
-﻿using FashionFace.Common.Exceptions.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using FashionFace.Common.Exceptions.Constants;
+using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Common.Exceptions.Model;
+
+using Microsoft.AspNetCore.Identity;
 
 namespace FashionFace.Common.Exceptions.Implementations;
 
@@ -39,4 +45,31 @@ public sealed class ExceptionDescriptor : IExceptionDescriptor
                 { "Type", $"{typeof(TEntity)}" },
             }
         );
+
+    public BusinessLogicException IdentityErrorList(
+        IEnumerable<IdentityError> identityErrorList
+    )
+    {
+        var identityErrorCodeList =
+            identityErrorList
+                .Select(
+                    error => $"{error.Code}"
+                )
+                .ToList();
+
+        var data =
+            new Dictionary<string, object>
+            {
+                { "error", identityErrorCodeList },
+            };
+
+        var businessLogicException =
+            new BusinessLogicException(
+                ExceptionConstants.IdentityErrorList,
+                data
+            );
+
+        return
+            businessLogicException;
+    }
 }

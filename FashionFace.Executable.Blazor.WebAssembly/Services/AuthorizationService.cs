@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 
-using FashionFace.Controllers.Requests.Models;
-using FashionFace.Controllers.Responses.Models;
+using FashionFace.Controllers.Anonymous.Requests.Models;
+using FashionFace.Controllers.Anonymous.Responses.Models;
 using FashionFace.Dependencies.Serialization.Interfaces;
 using FashionFace.Executable.Blazor.WebAssembly.Models;
 using FashionFace.Services.Singleton.Models;

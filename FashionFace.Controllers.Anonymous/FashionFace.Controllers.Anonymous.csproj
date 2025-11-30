@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Implementations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FashionFace.Controllers.Anonymous.Requests\FashionFace.Controllers.Anonymous.Requests.csproj" />
+      <ProjectReference Include="..\FashionFace.Controllers.Anonymous.Responses\FashionFace.Controllers.Anonymous.Responses.csproj" />
+      <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj" />
+      <ProjectReference Include="..\FashionFace.Facades.Anonymous\FashionFace.Facades.Anonymous.csproj" />
+    </ItemGroup>
+
+</Project>

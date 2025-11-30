@@ -1,4 +1,6 @@
-﻿namespace FashionFace.Facades.Domains.Models;
+﻿using System;
+
+namespace FashionFace.Facades.Domains.Models;
 
 public sealed record AuthenticationModel(
     string AccessToken,

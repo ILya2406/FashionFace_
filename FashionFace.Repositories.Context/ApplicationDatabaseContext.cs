@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.IdentityEntities;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

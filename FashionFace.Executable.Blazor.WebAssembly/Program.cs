@@ -1,6 +1,3 @@
-using FashionFace.Common.Extensions.Dependencies.Implementations;
-using FashionFace.Dependencies.HttpClient.Implementations;
-using FashionFace.Dependencies.HttpClient.Interfaces;
 using FashionFace.Dependencies.Serialization.Implementations;
 using FashionFace.Dependencies.Serialization.Interfaces;
 

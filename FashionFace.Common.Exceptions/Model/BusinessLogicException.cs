@@ -1,11 +1,14 @@
-﻿namespace FashionFace.Common.Exceptions.Model;
+﻿using System;
+using System.Collections.Generic;
+
+namespace FashionFace.Common.Exceptions.Model;
 
 [Serializable]
 public sealed class BusinessLogicException : Exception
 {
     public BusinessLogicException(
         string code,
-        IDictionary<string, object?>? data = null
+        IDictionary<string, object>? data = null
     )
     {
         Code =
@@ -13,12 +16,12 @@ public sealed class BusinessLogicException : Exception
 
         var dataDictionary =
             data
-            ?? new Dictionary<string, object?>();
+            ?? new Dictionary<string, object>();
 
         Data =
             dataDictionary;
     }
 
     public string Code { get; init; }
-    public IDictionary<string, object?> Data { get; init; }
+    public IDictionary<string, object> Data { get; init; }
 }

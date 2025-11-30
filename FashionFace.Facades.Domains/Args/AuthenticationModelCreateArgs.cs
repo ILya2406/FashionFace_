@@ -1,4 +1,6 @@
-﻿namespace FashionFace.Facades.Domains.Args;
+﻿using System;
+
+namespace FashionFace.Facades.Domains.Args;
 
 public sealed record AuthenticationModelCreateArgs(
     Guid UserId,

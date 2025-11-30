@@ -8,9 +8,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Executable.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Services.Singleton", "FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj", "{5AFC131A-03C4-4B38-8436-3A40E1A28A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers", "FashionFace.Controllers\FashionFace.Controllers.csproj", "{2017725A-8FAD-44CB-A0B9-67D8E1FE3F1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Users", "FashionFace.Controllers.Users\FashionFace.Controllers.Users.csproj", "{2017725A-8FAD-44CB-A0B9-67D8E1FE3F1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades", "FashionFace.Facades\FashionFace.Facades.csproj", "{B7C34DC2-6767-4E57-B2E3-CBB584FA9231}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Users", "FashionFace.Facades.Users\FashionFace.Facades.Users.csproj", "{B7C34DC2-6767-4E57-B2E3-CBB584FA9231}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Common.Extensions.Dependencies", "FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj", "{C62142D7-7095-4164-BF15-7B69787221E1}"
 EndProject
@@ -61,9 +61,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Executable.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Executable.Blazor.App", "FashionFace.Executable.Blazor.App\FashionFace.Executable.Blazor.App.csproj", "{4BE51DBB-3502-4C0F-9B0A-C2257AF5AE8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Requests", "FashionFace.Controllers.Requests\FashionFace.Controllers.Requests.csproj", "{F3218D63-FAE0-41A8-B435-4FAFAD846267}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Users.Requests", "FashionFace.Controllers.Users.Requests\FashionFace.Controllers.Users.Requests.csproj", "{F3218D63-FAE0-41A8-B435-4FAFAD846267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Responses", "FashionFace.Controllers.Responses\FashionFace.Controllers.Responses.csproj", "{84E25208-3601-40F1-8C85-F1A3309A6379}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Users.Responses", "FashionFace.Controllers.Users.Responses\FashionFace.Controllers.Users.Responses.csproj", "{84E25208-3601-40F1-8C85-F1A3309A6379}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Common.Models", "FashionFace.Common.Models\FashionFace.Common.Models.csproj", "{FE479732-B74E-45AB-AC36-E594C09FB1F2}"
 EndProject
@@ -72,6 +72,24 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.Crypt", "FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj", "{2D1042CC-1A30-4E76-9F20-48A9284C1CE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.SkiaSharp", "FashionFace.Dependencies.SkiaSharp\FashionFace.Dependencies.SkiaSharp.csproj", "{597D89D6-3314-4C26-B828-5E03339E0A6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Base", "FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj", "{12791E43-7356-45BD-A5A0-407EB9465EE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Admins", "FashionFace.Controllers.Admins\FashionFace.Controllers.Admins.csproj", "{A261ED67-8C22-41E5-9119-D29CBDA18257}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Anonymous", "FashionFace.Controllers.Anonymous\FashionFace.Controllers.Anonymous.csproj", "{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Admins.Requests", "FashionFace.Controllers.Admins.Requests\FashionFace.Controllers.Admins.Requests.csproj", "{44B34586-9916-4912-86D2-C7D1DBFB592D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Admins.Responses", "FashionFace.Controllers.Admins.Responses\FashionFace.Controllers.Admins.Responses.csproj", "{6E0BA92D-7328-46F8-A93E-3447CE66A21F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Anonymous.Responses", "FashionFace.Controllers.Anonymous.Responses\FashionFace.Controllers.Anonymous.Responses.csproj", "{7F6BECCF-51CE-4E5C-AE66-7386B549BE54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Anonymous.Requests", "FashionFace.Controllers.Anonymous.Requests\FashionFace.Controllers.Anonymous.Requests.csproj", "{B1657572-8144-4C70-83C8-A54D04768A75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Admins", "FashionFace.Facades.Admins\FashionFace.Facades.Admins.csproj", "{106D06FC-E62B-438D-A339-3671054FAC0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Anonymous", "FashionFace.Facades.Anonymous\FashionFace.Facades.Anonymous.csproj", "{80849109-EE8D-44B6-9F28-F3803A252F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,6 +205,42 @@ Global
 		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{597D89D6-3314-4C26-B828-5E03339E0A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12791E43-7356-45BD-A5A0-407EB9465EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12791E43-7356-45BD-A5A0-407EB9465EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12791E43-7356-45BD-A5A0-407EB9465EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12791E43-7356-45BD-A5A0-407EB9465EE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A261ED67-8C22-41E5-9119-D29CBDA18257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A261ED67-8C22-41E5-9119-D29CBDA18257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A261ED67-8C22-41E5-9119-D29CBDA18257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A261ED67-8C22-41E5-9119-D29CBDA18257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44B34586-9916-4912-86D2-C7D1DBFB592D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B34586-9916-4912-86D2-C7D1DBFB592D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B34586-9916-4912-86D2-C7D1DBFB592D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B34586-9916-4912-86D2-C7D1DBFB592D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0BA92D-7328-46F8-A93E-3447CE66A21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0BA92D-7328-46F8-A93E-3447CE66A21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0BA92D-7328-46F8-A93E-3447CE66A21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0BA92D-7328-46F8-A93E-3447CE66A21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6BECCF-51CE-4E5C-AE66-7386B549BE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6BECCF-51CE-4E5C-AE66-7386B549BE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6BECCF-51CE-4E5C-AE66-7386B549BE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6BECCF-51CE-4E5C-AE66-7386B549BE54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1657572-8144-4C70-83C8-A54D04768A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1657572-8144-4C70-83C8-A54D04768A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1657572-8144-4C70-83C8-A54D04768A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1657572-8144-4C70-83C8-A54D04768A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{106D06FC-E62B-438D-A339-3671054FAC0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{106D06FC-E62B-438D-A339-3671054FAC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{106D06FC-E62B-438D-A339-3671054FAC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{106D06FC-E62B-438D-A339-3671054FAC0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACE0776C-AE27-4DA0-BE79-83CDC1DA5748} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
@@ -216,5 +270,14 @@ Global
 		{4A186E67-2A3E-4C59-9D4D-0930D48E45BB} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
 		{2D1042CC-1A30-4E76-9F20-48A9284C1CE1} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 		{597D89D6-3314-4C26-B828-5E03339E0A6C} = {E43C653E-C18F-4866-9F1E-638925A315E4}
+		{12791E43-7356-45BD-A5A0-407EB9465EE2} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{A261ED67-8C22-41E5-9119-D29CBDA18257} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{96D5401F-FA6A-4BC7-AF2D-FC2CDC0C94C6} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{44B34586-9916-4912-86D2-C7D1DBFB592D} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{6E0BA92D-7328-46F8-A93E-3447CE66A21F} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{7F6BECCF-51CE-4E5C-AE66-7386B549BE54} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{B1657572-8144-4C70-83C8-A54D04768A75} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{106D06FC-E62B-438D-A339-3671054FAC0B} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
+		{80849109-EE8D-44B6-9F28-F3803A252F4A} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
 	EndGlobalSection
 EndGlobal
