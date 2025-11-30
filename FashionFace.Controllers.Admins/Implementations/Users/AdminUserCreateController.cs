@@ -2,6 +2,7 @@
 
 using FashionFace.Controllers.Admins.Requests.Models.Users;
 using FashionFace.Controllers.Admins.Responses.Models.Users;
+using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Base.Implementations.Base;
 using FashionFace.Facades.Admins.Args;
 using FashionFace.Facades.Admins.Interfaces;
@@ -10,10 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FashionFace.Controllers.Admins.Implementations.Users;
 
+[AdminControllerGroup(
+    "Users"
+)]
 [Route(
     "api/v1/admin/user/create"
 )]
-public sealed class UserCreateController(
+public sealed class AdminUserCreateController(
     IUserCreateFacade facade
 ) : BaseAuthorizeController
 {

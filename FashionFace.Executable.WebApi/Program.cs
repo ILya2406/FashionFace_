@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -12,6 +13,7 @@ using FashionFace.Repositories.Context.Models.IdentityEntities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Serilog;
+
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(
     args
@@ -162,6 +166,49 @@ serviceCollection.AddSwaggerGen(
                 },
             }
         );
+
+        options.TagActionsBy(
+            api =>
+            {
+                var groupAttr =
+                    api
+                        .ActionDescriptor
+                        .EndpointMetadata
+                        .OfType<ApiExplorerSettingsAttribute>()
+                        .FirstOrDefault()
+                        ?.GroupName;
+
+                return [groupAttr ?? "Default",];
+            }
+        );
+
+        options.DocInclusionPredicate((_, apiDesc) =>
+        {
+            var isSuccess =
+                !apiDesc
+                    .TryGetMethodInfo(
+                        out var methodInfo
+                    );
+
+            if (isSuccess)
+            {
+                return false;
+            }
+
+            var groupName =
+                apiDesc
+                    .ActionDescriptor
+                    .EndpointMetadata
+                    .OfType<ApiExplorerSettingsAttribute>()
+                    .FirstOrDefault()
+                    ?.GroupName;
+
+            var isNotEmptyGroupName =
+                groupName.IsNotEmpty();
+
+            return
+                isNotEmptyGroupName;
+        });
     }
 );
 

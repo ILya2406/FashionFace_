@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using FashionFace.Controllers.Admins.Requests.Models.Users;
+using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Base.Implementations.Base;
 using FashionFace.Facades.Admins.Args;
 using FashionFace.Facades.Admins.Interfaces;
@@ -9,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FashionFace.Controllers.Admins.Implementations.Users;
 
+[AdminControllerGroup(
+    "Users"
+)]
 [Route(
     "api/v1/admin/user/password/set"
 )]

@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using FashionFace.Controllers.Anonymous.Requests.Models;
-using FashionFace.Controllers.Anonymous.Responses.Models;
+using FashionFace.Controllers.Anonymous.Requests.Models.Authentication;
+using FashionFace.Controllers.Anonymous.Responses.Models.Authentication;
+using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Base.Implementations.Base;
 using FashionFace.Facades.Anonymous.Args;
 using FashionFace.Facades.Anonymous.Interfaces;
@@ -10,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FashionFace.Controllers.Anonymous.Implementations.Authentication;
 
+[AuthenticationControllerGroup]
 [Route(
-    "api/v1/refresh"
+    "api/v1/authentication/refresh"
 )]
 public sealed class RefreshController(
     IRefreshFacade facade

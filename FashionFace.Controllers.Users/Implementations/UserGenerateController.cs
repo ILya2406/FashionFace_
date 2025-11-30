@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Base.Implementations.Base;
 using FashionFace.Controllers.Users.Requests.Models;
 using FashionFace.Controllers.Users.Responses.Models;
@@ -10,10 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FashionFace.Controllers.Users.Implementations;
 
+[UserControllerGroup("Generate")]
 [Route(
-    "api/v1/generate"
+    "api/v1/user/generate"
 )]
-public sealed class GenerateController(
+public sealed class UserGenerateController(
     IGenerateFacade facade
 ) : BaseAuthorizeController
 {

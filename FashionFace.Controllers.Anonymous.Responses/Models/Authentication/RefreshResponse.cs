@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FashionFace.Controllers.Anonymous.Responses.Models;
+namespace FashionFace.Controllers.Anonymous.Responses.Models.Authentication;
 
 public sealed record RefreshResponse(
     string AccessToken,

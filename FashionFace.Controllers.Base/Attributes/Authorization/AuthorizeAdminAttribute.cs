@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace FashionFace.Controllers.Users.Attributes;
+namespace FashionFace.Controllers.Base.Attributes.Authorization;
 
 public sealed class AuthorizeAdminAttribute : AuthorizeAttribute
 {

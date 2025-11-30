@@ -1,4 +1,4 @@
-﻿namespace FashionFace.Controllers.Anonymous.Requests.Models;
+﻿namespace FashionFace.Controllers.Anonymous.Requests.Models.Authentication;
 
 public sealed record RegisterRequest(
     string Email,
