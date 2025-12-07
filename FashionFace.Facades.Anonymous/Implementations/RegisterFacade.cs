@@ -20,7 +20,7 @@ public sealed class RegisterFacade(
     IRoleManagerDecorator roleManagerDecorator,
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
-    ITransactionManager  transactionManager
+    ITransactionManager transactionManager
 ) : IRegisterFacade
 {
     public async Task Execute(
@@ -91,7 +91,7 @@ public sealed class RegisterFacade(
             {
                 Id = Guid.NewGuid(),
                 ApplicationUserId = applicationUser.Id,
-                CreatedAt =  DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
                 AgeCategoryType = AgeCategoryType.Minor,
                 Name = string.Empty,
                 Description = string.Empty,

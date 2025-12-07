@@ -10,22 +10,42 @@ public sealed class CityConfiguration : EntityBaseConfiguration<City>
 {
     public override void Configure(EntityTypeBuilder<City> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.Country)
-            .HasColumnName("Country")
-            .HasColumnType("varchar(128)")
+            .Property(
+                entity => entity.Country
+            )
+            .HasColumnName(
+                "Country"
+            )
+            .HasColumnType(
+                "varchar(128)"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.Name)
-            .HasColumnName("Name")
-            .HasColumnType("varchar(128)")
+            .Property(
+                entity => entity.Name
+            )
+            .HasColumnName(
+                "Name"
+            )
+            .HasColumnType(
+                "varchar(128)"
+            )
             .IsRequired();
 
         builder
-            .HasIndex(entity => new { entity.Country, entity.Name, })
+            .HasIndex(
+                entity => new
+                {
+                    entity.Country,
+                    entity.Name,
+                }
+            )
             .IsUnique();
     }
 }

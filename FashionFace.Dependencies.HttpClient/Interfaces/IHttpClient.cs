@@ -1,6 +1,3 @@
 ﻿namespace FashionFace.Dependencies.HttpClient.Interfaces;
 
-public interface IHttpClient
-{
-    
-}
+public interface IHttpClient { }

@@ -10,12 +10,20 @@ public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 {
     public override void Configure(EntityTypeBuilder<Place> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.Street)
-            .HasColumnName("Street")
-            .HasColumnType("varchar(128)")
+            .Property(
+                entity => entity.Street
+            )
+            .HasColumnName(
+                "Street"
+            )
+            .HasColumnType(
+                "varchar(128)"
+            )
             .IsRequired();
     }
 }

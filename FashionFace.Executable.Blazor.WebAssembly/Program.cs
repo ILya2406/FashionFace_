@@ -1,11 +1,10 @@
 using FashionFace.Dependencies.Serialization.Implementations;
 using FashionFace.Dependencies.Serialization.Interfaces;
+using FashionFace.Executable.Blazor.WebAssembly;
+using FashionFace.Executable.Blazor.WebAssembly.Services;
 
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
-using FashionFace.Executable.Blazor.WebAssembly;
-using FashionFace.Executable.Blazor.WebAssembly.Services;
 
 using Serilog;
 
@@ -43,7 +42,14 @@ var serviceCollection =
 var apiBaseUrl =
     builderConfiguration["Api:BaseUrl"];
 
-serviceCollection.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseUrl), });
+serviceCollection.AddScoped(
+    sp => new HttpClient
+    {
+        BaseAddress = new(
+            apiBaseUrl
+        ),
+    }
+);
 
 /*serviceCollection.AddSingleton<IDangerousHttpClientBuilder, DangerousHttpClientBuilder>();
 

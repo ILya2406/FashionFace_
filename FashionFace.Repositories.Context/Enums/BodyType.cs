@@ -2,6 +2,7 @@
 
 public enum BodyType
 {
+    Undefined,
     Slim,
     Average,
     Athletic,

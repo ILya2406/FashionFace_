@@ -15,7 +15,9 @@ public sealed class PasswordGenerator : IPasswordGenerator
     )
     {
         var stringBuilder =
-            new StringBuilder(length);
+            new StringBuilder(
+                length
+            );
 
         var alphabetLength =
             Alphabet.Length;

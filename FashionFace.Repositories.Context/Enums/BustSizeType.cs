@@ -2,6 +2,7 @@
 
 public enum BustSizeType
 {
+    Undefined,
     ExtraSmall,
     Small,
     Medium,

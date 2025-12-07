@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FashionFace.Common.Constants\FashionFace.Common.Constants.csproj" />
-      <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj" />
-      <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj" />
-      <ProjectReference Include="..\FashionFace.Dependencies.Identity\FashionFace.Dependencies.Identity.csproj" />
-      <ProjectReference Include="..\FashionFace.Facades.Domains\FashionFace.Facades.Domains.csproj" />
-      <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj" />
-      <ProjectReference Include="..\FashionFace.Repositories.Transactions\FashionFace.Repositories.Transactions.csproj" />
-      <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj" />
+        <ProjectReference Include="..\FashionFace.Common.Constants\FashionFace.Common.Constants.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
+        <ProjectReference Include="..\FashionFace.Dependencies.Identity\FashionFace.Dependencies.Identity.csproj"/>
+        <ProjectReference Include="..\FashionFace.Facades.Domains\FashionFace.Facades.Domains.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Transactions\FashionFace.Repositories.Transactions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj"/>
     </ItemGroup>
 
 </Project>

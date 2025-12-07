@@ -2,6 +2,7 @@
 
 public enum JawType
 {
+    Undefined,
     Square,
     Round,
     Pointed,

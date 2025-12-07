@@ -2,6 +2,7 @@
 
 public enum SexType
 {
+    Undefined,
     Male,
     Female,
 }

@@ -8,10 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Users.Requests\FashionFace.Controllers.Users.Requests.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Users.Responses\FashionFace.Controllers.Users.Responses.csproj" />
-        <ProjectReference Include="..\FashionFace.Facades.Users\FashionFace.Facades.Users.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Users.Requests\FashionFace.Controllers.Users.Requests.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Users.Responses\FashionFace.Controllers.Users.Responses.csproj"/>
+        <ProjectReference Include="..\FashionFace.Facades.Users\FashionFace.Facades.Users.csproj"/>
     </ItemGroup>
 
 </Project>

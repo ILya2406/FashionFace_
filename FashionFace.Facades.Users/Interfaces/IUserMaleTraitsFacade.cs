@@ -4,9 +4,9 @@ using FashionFace.Facades.Users.Models;
 
 namespace FashionFace.Facades.Users.Interfaces;
 
-public interface IGenerateFacade :
+public interface IUserMaleTraitsFacade :
     IQueryFacade
     <
-        GenerateArgs,
-        GenerateResult
+        UserMaleTraitsArgs,
+        UserMaleTraitsResult
     >;

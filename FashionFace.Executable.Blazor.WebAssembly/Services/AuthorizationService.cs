@@ -32,7 +32,9 @@ public sealed class AuthorizationService(
                 "application/json"
             );
 
-        httpClient.Timeout = TimeSpan.FromSeconds(2);
+        httpClient.Timeout = TimeSpan.FromSeconds(
+            2
+        );
 
         var response =
             await
@@ -51,7 +53,9 @@ public sealed class AuthorizationService(
                         .ReadFromJsonAsync<LoginResponse>();
 
             return
-                ApiResultContainer<LoginResponse>.Successful(result);
+                ApiResultContainer<LoginResponse>.Successful(
+                    result
+                );
         }
 
         var contentJsonString =
@@ -69,6 +73,8 @@ public sealed class AuthorizationService(
                     .ReadFromJsonAsync<ErrorsContainerModel>();
 
         return
-            ApiResultContainer<LoginResponse>.Failed(error);
+            ApiResultContainer<LoginResponse>.Failed(
+                error
+            );
     }
 }

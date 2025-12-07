@@ -17,25 +17,25 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
         <PackageReference Include="Serilog" Version="4.3.0"/>
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
-        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
-        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
-        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
-        <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
-        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1"/>
+        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0"/>
+        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
+        <PackageReference Include="Serilog.Expressions" Version="5.0.0"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
-        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Admins\FashionFace.Controllers.Admins.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Anonymous\FashionFace.Controllers.Anonymous.csproj" />
-        <ProjectReference Include="..\FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj" />
-        <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />
-        <ProjectReference Include="..\FashionFace.Controllers.Users\FashionFace.Controllers.Users.csproj" />
+        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Admins\FashionFace.Controllers.Admins.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Anonymous\FashionFace.Controllers.Anonymous.csproj"/>
+        <ProjectReference Include="..\FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj"/>
+        <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Users\FashionFace.Controllers.Users.csproj"/>
         <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj"/>
     </ItemGroup>
 

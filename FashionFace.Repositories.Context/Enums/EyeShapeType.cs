@@ -2,6 +2,7 @@
 
 public enum EyeShapeType
 {
+    Undefined,
     Round,
     Almond,
     Monolid,

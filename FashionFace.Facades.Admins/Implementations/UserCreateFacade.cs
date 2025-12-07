@@ -21,7 +21,7 @@ public sealed class UserCreateFacade(
     IRoleManagerDecorator roleManagerDecorator,
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
-    ITransactionManager  transactionManager
+    ITransactionManager transactionManager
 ) : IUserCreateFacade
 {
     public async Task<UserCreateResult> Execute(UserCreateArgs args)

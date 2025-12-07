@@ -11,21 +11,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FashionFace.Controllers.Users.Implementations;
 
-[UserControllerGroup("Generate")]
+[UserControllerGroup(
+    "Generate"
+)]
 [Route(
     "api/v1/user/generate"
 )]
 public sealed class UserGenerateController(
-    IGenerateFacade facade
+    IUserGenerateFacade facade
 ) : BaseUserController
 {
+    [ApiExplorerSettings(
+        IgnoreApi = true
+    )]
     [HttpPost]
-    public async Task<GenerateResponse> Invoke(
-        [FromBody] GenerateRequest request
+    public async Task<UserGenerateResponse> Invoke(
+        [FromBody] UserGenerateRequest request
     )
     {
         var facadeArgs =
-            new GenerateArgs(
+            new UserGenerateArgs(
                 request.Prompt
             );
 
@@ -37,7 +42,7 @@ public sealed class UserGenerateController(
                     );
 
         var response =
-            new GenerateResponse(
+            new UserGenerateResponse(
                 result.TaskId
             );
 

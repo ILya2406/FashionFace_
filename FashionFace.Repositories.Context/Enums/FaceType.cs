@@ -2,6 +2,7 @@
 
 public enum FaceType
 {
+    Undefined,
     Oval,
     Round,
     Square,

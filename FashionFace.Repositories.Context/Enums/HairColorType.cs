@@ -2,6 +2,7 @@
 
 public enum HairColorType
 {
+    Undefined,
     Black,
     DarkBrown,
     Brown,

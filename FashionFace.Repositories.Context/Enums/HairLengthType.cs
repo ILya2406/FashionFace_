@@ -2,6 +2,7 @@
 
 public enum HairLengthType
 {
+    Undefined,
     Bald,
     VeryShort,
     Short,

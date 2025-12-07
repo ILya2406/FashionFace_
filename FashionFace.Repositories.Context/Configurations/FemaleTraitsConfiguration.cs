@@ -10,25 +10,47 @@ public sealed class FemaleTraitsConfiguration : EntityBaseConfiguration<FemaleTr
 {
     public override void Configure(EntityTypeBuilder<FemaleTraits> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.AppearanceTraitsId)
-            .HasColumnName("AppearanceTraitsId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.AppearanceTraitsId
+            )
+            .HasColumnName(
+                "AppearanceTraitsId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.BustSizeType)
-            .HasColumnName("BustSizeType")
+            .Property(
+                entity => entity.BustSizeType
+            )
+            .HasColumnName(
+                "BustSizeType"
+            )
             .HasConversion<string>()
-            .HasColumnType("varchar(32)")
+            .HasColumnType(
+                "varchar(32)"
+            )
             .IsRequired();
 
         builder
-            .HasOne(entity => entity.AppearanceTraits)
-            .WithOne(entity => entity.FemaleTraits)
-            .HasForeignKey<FemaleTraits>(entity => entity.AppearanceTraitsId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.AppearanceTraits
+            )
+            .WithOne(
+                entity => entity.FemaleTraits
+            )
+            .HasForeignKey<FemaleTraits>(
+                entity => entity.AppearanceTraitsId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
     }
 }

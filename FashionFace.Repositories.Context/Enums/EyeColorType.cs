@@ -2,6 +2,7 @@
 
 public enum EyeColorType
 {
+    Undefined,
     Brown,
     DarkBrown,
     LightBrown,

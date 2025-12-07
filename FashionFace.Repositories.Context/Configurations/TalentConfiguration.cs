@@ -10,31 +10,59 @@ public sealed class TalentConfiguration : EntityBaseConfiguration<Talent>
 {
     public override void Configure(EntityTypeBuilder<Talent> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.ProfileId)
-            .HasColumnName("ProfileId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.ProfileId
+            )
+            .HasColumnName(
+                "ProfileId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.Description)
-            .HasColumnName("Description")
-            .HasColumnType("varchar(1024)")
+            .Property(
+                entity => entity.Description
+            )
+            .HasColumnName(
+                "Description"
+            )
+            .HasColumnType(
+                "varchar(1024)"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.Type)
-            .HasColumnName("Type")
+            .Property(
+                entity => entity.Type
+            )
+            .HasColumnName(
+                "Type"
+            )
             .HasConversion<string>()
-            .HasColumnType("varchar(32)")
+            .HasColumnType(
+                "varchar(32)"
+            )
             .IsRequired();
 
         builder
-            .HasOne(entity => entity.Profile)
-            .WithMany(entity => entity.TalentCollection)
-            .HasForeignKey(entity => entity.ProfileId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.Profile
+            )
+            .WithMany(
+                entity => entity.TalentCollection
+            )
+            .HasForeignKey(
+                entity => entity.ProfileId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
     }
 }

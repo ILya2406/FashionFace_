@@ -12,20 +12,20 @@
       - web_api
     networks:
       - app-network
-#      - dehydrated
-#
-#  dehydrated:
-#    image: linuxserver/dehydrated
-#    container_name: dehydrated
-#    environment:
-#      - DEHYDRATED_CHALLENGE=http-01
-#      - DEHYDRATED_DOMAIN=fashion-face.ai
-#      - DEHYDRATED_EMAIL=your-email@example.com
-#    volumes:
-#      - "${Dehydrated_Config_Dir}:/config"
-#      - ./nginx/www:/www # pointed from nginx.cert at location /.well-known/acme-challenge/
-#    command: ["--cron", "--hook", "/config/hook.sh"]
-#    restart: unless-stopped
+  #      - dehydrated
+  #
+  #  dehydrated:
+  #    image: linuxserver/dehydrated
+  #    container_name: dehydrated
+  #    environment:
+  #      - DEHYDRATED_CHALLENGE=http-01
+  #      - DEHYDRATED_DOMAIN=fashion-face.ai
+  #      - DEHYDRATED_EMAIL=your-email@example.com
+  #    volumes:
+  #      - "${Dehydrated_Config_Dir}:/config"
+  #      - ./nginx/www:/www # pointed from nginx.cert at location /.well-known/acme-challenge/
+  #    command: ["--cron", "--hook", "/config/hook.sh"]
+  #    restart: unless-stopped
 
 
   web_api:

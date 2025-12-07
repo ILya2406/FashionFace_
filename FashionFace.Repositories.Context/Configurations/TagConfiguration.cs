@@ -10,12 +10,20 @@ public sealed class TagConfiguration : EntityBaseConfiguration<Tag>
 {
     public override void Configure(EntityTypeBuilder<Tag> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.Name)
-            .HasColumnName("Name")
-            .HasColumnType("varchar(32)")
+            .Property(
+                entity => entity.Name
+            )
+            .HasColumnName(
+                "Name"
+            )
+            .HasColumnType(
+                "varchar(32)"
+            )
             .IsRequired();
     }
 }

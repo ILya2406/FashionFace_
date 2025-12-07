@@ -1,4 +1,4 @@
-﻿using FashionFace.Repositories.Context.Models;
+﻿using FashionFace.Repositories.Context.Models.Base;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,14 +10,24 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.ToTable(typeof(TEntity).Name);
+        builder.ToTable(
+            typeof(TEntity).Name
+        );
 
-        builder.HasKey(entity => entity.Id);
+        builder.HasKey(
+            entity => entity.Id
+        );
 
         builder
-            .Property(entity => entity.Id)
-            .HasColumnName("Id")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.Id
+            )
+            .HasColumnName(
+                "Id"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .ValueGeneratedOnAdd();
     }
 }

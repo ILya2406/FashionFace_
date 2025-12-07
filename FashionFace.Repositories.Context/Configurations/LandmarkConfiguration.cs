@@ -10,24 +10,46 @@ public sealed class LandmarkConfiguration : EntityBaseConfiguration<Landmark>
 {
     public override void Configure(EntityTypeBuilder<Landmark> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.PlaceId)
-            .HasColumnName("PlaceId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.PlaceId
+            )
+            .HasColumnName(
+                "PlaceId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.Name)
-            .HasColumnName("Name")
-            .HasColumnType("varchar(128)")
+            .Property(
+                entity => entity.Name
+            )
+            .HasColumnName(
+                "Name"
+            )
+            .HasColumnType(
+                "varchar(128)"
+            )
             .IsRequired();
 
         builder
-            .HasOne(entity => entity.Place)
-            .WithOne(entity => entity.Landmark)
-            .HasForeignKey<Landmark>(entity => entity.PlaceId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.Place
+            )
+            .WithOne(
+                entity => entity.Landmark
+            )
+            .HasForeignKey<Landmark>(
+                entity => entity.PlaceId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
     }
 }

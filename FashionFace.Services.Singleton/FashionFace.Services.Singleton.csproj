@@ -10,9 +10,9 @@
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Constants\FashionFace.Common.Constants.csproj"/>
         <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj"/>
-        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj" />
-        <ProjectReference Include="..\FashionFace.Dependencies.Logger\FashionFace.Dependencies.Logger.csproj" />
-        <ProjectReference Include="..\FashionFace.Dependencies.SkiaSharp\FashionFace.Dependencies.SkiaSharp.csproj" />
+        <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
+        <ProjectReference Include="..\FashionFace.Dependencies.Logger\FashionFace.Dependencies.Logger.csproj"/>
+        <ProjectReference Include="..\FashionFace.Dependencies.SkiaSharp\FashionFace.Dependencies.SkiaSharp.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -2,8 +2,4 @@
 
 namespace FashionFace.Dependencies.HttpClient.Implementations;
 
-public sealed class ApplicationHttpClient(
-) : IHttpClient
-{
-
-}
+public sealed class ApplicationHttpClient : IHttpClient { }

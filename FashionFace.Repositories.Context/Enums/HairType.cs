@@ -2,6 +2,7 @@
 
 public enum HairType
 {
+    Undefined,
     Straight,
     Wavy,
     Curly,

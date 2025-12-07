@@ -2,7 +2,7 @@
 
 using FashionFace.Repositories.Context.Interfaces;
 
-namespace FashionFace.Repositories.Context.Models;
+namespace FashionFace.Repositories.Context.Models.Base;
 
 public class EntityBase : IWithIdentifier
 {

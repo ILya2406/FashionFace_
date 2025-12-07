@@ -10,24 +10,46 @@ public sealed class BuildingConfiguration : EntityBaseConfiguration<Building>
 {
     public override void Configure(EntityTypeBuilder<Building> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.PlaceId)
-            .HasColumnName("PlaceId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.PlaceId
+            )
+            .HasColumnName(
+                "PlaceId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.Name)
-            .HasColumnName("Name")
-            .HasColumnType("varchar(128)")
+            .Property(
+                entity => entity.Name
+            )
+            .HasColumnName(
+                "Name"
+            )
+            .HasColumnType(
+                "varchar(128)"
+            )
             .IsRequired();
 
         builder
-            .HasOne(entity => entity.Place)
-            .WithOne(entity => entity.Building)
-            .HasForeignKey<Building>(entity => entity.PlaceId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.Place
+            )
+            .WithOne(
+                entity => entity.Building
+            )
+            .HasForeignKey<Building>(
+                entity => entity.PlaceId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
     }
 }

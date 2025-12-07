@@ -2,18 +2,7 @@
 
 public class LoginModel
 {
-    private string username = string.Empty;
-    private string password = string.Empty;
+    public string Username { get; set; } = string.Empty;
 
-    public string Username
-    {
-        get => username;
-        set => username = value;
-    }
-
-    public string Password
-    {
-        get => password;
-        set => password = value;
-    }
+    public string Password { get; set; } = string.Empty;
 }

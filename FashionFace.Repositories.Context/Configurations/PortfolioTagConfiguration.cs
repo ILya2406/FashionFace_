@@ -1,5 +1,4 @@
-﻿
-using FashionFace.Repositories.Context.Configurations.Base;
+﻿using FashionFace.Repositories.Context.Configurations.Base;
 using FashionFace.Repositories.Context.Models;
 
 using Microsoft.EntityFrameworkCore;
@@ -11,36 +10,72 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
 {
     public override void Configure(EntityTypeBuilder<PortfolioTag> builder)
     {
-        base.Configure(builder);
+        base.Configure(
+            builder
+        );
 
         builder
-            .Property(entity => entity.PortfolioId)
-            .HasColumnName("PortfolioMediaId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.PortfolioId
+            )
+            .HasColumnName(
+                "PortfolioMediaId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.TagId)
-            .HasColumnName("TagId")
-            .HasColumnType("uuid")
+            .Property(
+                entity => entity.TagId
+            )
+            .HasColumnName(
+                "TagId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
             .IsRequired();
 
         builder
-            .Property(entity => entity.PositionIndex)
-            .HasColumnName("PositionIndex")
-            .HasColumnType("integer")
+            .Property(
+                entity => entity.PositionIndex
+            )
+            .HasColumnName(
+                "PositionIndex"
+            )
+            .HasColumnType(
+                "integer"
+            )
             .IsRequired();
 
         builder
-            .HasOne(entity => entity.Portfolio)
-            .WithMany(entity => entity.PortfolioTagCollection)
-            .HasForeignKey(entity => entity.PortfolioId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.Portfolio
+            )
+            .WithMany(
+                entity => entity.PortfolioTagCollection
+            )
+            .HasForeignKey(
+                entity => entity.PortfolioId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
 
         builder
-            .HasOne(entity => entity.Tag)
-            .WithMany(entity => entity.PortfolioTagCollection)
-            .HasForeignKey(entity => entity.TagId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(
+                entity => entity.Tag
+            )
+            .WithMany(
+                entity => entity.PortfolioTagCollection
+            )
+            .HasForeignKey(
+                entity => entity.TagId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
     }
 }

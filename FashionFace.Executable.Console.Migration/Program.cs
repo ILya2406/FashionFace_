@@ -12,10 +12,13 @@ var configuration =
 #if !DEBUG
     .AddJsonFile("appsettings.json", optional: false)
 #else
-    .AddJsonFile("appsettings.Development.json", optional: false)
+        .AddJsonFile(
+            "appsettings.Development.json",
+            false
+        )
 #endif
-    .AddEnvironmentVariables()
-    .Build();
+        .AddEnvironmentVariables()
+        .Build();
 
 Log.Logger =
     new LoggerConfiguration()
@@ -30,7 +33,9 @@ Log.Logger =
 var serviceCollection =
     new ServiceCollection();
 
-serviceCollection.AddSingleton<IConfiguration>(configuration);
+serviceCollection.AddSingleton<IConfiguration>(
+    configuration
+);
 
 serviceCollection.AddLogging(
     loggingBuilder =>
@@ -41,10 +46,15 @@ serviceCollection.AddLogging(
 );
 
 var connectionString =
-    Environment.GetEnvironmentVariable("Database__ConnectionString")
+    Environment.GetEnvironmentVariable(
+        "Database__ConnectionString"
+    )
     ?? configuration["Database:ConnectionString"];
 
-Log.Information("Connection string used: {Conn}", connectionString);
+Log.Information(
+    "Connection string used: {Conn}",
+    connectionString
+);
 
 serviceCollection
     .AddDbContext<ApplicationDatabaseContext>(
@@ -67,22 +77,33 @@ var serviceProvider =
 var logger =
     serviceProvider.GetRequiredService<ILogger<Program>>();
 
-logger.LogInformation(configuration["Database:ConnectionString"]);
+logger.LogInformation(
+    configuration["Database:ConnectionString"]
+);
 
 using var scope = serviceProvider.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
 
 try
 {
-    logger.LogInformation("Migration started...");
+    logger.LogInformation(
+        "Migration started..."
+    );
     db.Database.Migrate();
-    logger.LogInformation("Migration finished.");
-
+    logger.LogInformation(
+        "Migration finished."
+    );
 }
 catch (Exception exception)
 {
-    logger.LogInformation("Failed to migrate");
-    logger.LogInformation(exception.Message);
+    logger.LogInformation(
+        "Failed to migrate"
+    );
+    logger.LogInformation(
+        exception.Message
+    );
 
-    Environment.Exit(1); // notification for docker-compose.yml webapi service.
+    Environment.Exit(
+        1
+    ); // notification for docker-compose.yml webapi service.
 }

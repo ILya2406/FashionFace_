@@ -38,5 +38,4 @@ public sealed class PasswordManagerDecorator(
         user,
         password
     );
-
 }

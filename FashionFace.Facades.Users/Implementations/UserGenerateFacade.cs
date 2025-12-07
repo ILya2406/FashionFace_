@@ -1,21 +1,21 @@
 ﻿using System.Threading.Tasks;
 
-using FashionFace.Services.ConfigurationSettings.Interfaces;
 using FashionFace.Facades.Users.Args;
 using FashionFace.Facades.Users.Interfaces;
 using FashionFace.Facades.Users.Models;
+using FashionFace.Services.ConfigurationSettings.Interfaces;
 using FashionFace.Services.Singleton.Args;
 using FashionFace.Services.Singleton.Interfaces;
 
 namespace FashionFace.Facades.Users.Implementations;
 
-public sealed class GenerateFacade(
+public sealed class UserGenerateFacade(
     INanoBananaService nanoBananaService,
     INanoBananaSettingsFactory nanoBananaSettingsFactory
-) : IGenerateFacade
+) : IUserGenerateFacade
 {
     public async Task<GenerateResult> Execute(
-        GenerateArgs args
+        UserGenerateArgs args
     )
     {
         var nanoBananaSettings =

@@ -1,5 +1,5 @@
 ﻿namespace FashionFace.Facades.Users.Args;
 
-public sealed record GenerateArgs(
+public sealed record UserGenerateArgs(
     string Prompt
 );

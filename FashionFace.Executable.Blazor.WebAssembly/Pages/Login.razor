@@ -1,25 +1,27 @@
 ﻿@page "/"
-@layout PublicLayout
 @using FashionFace.Controllers.Anonymous.Requests.Models.Authentication
-@using FashionFace.Executable.Blazor.WebAssembly.Services
 @using FashionFace.Executable.Blazor.WebAssembly.Models
+@using FashionFace.Executable.Blazor.WebAssembly.Services
+@layout PublicLayout
 
 @inject AuthorizationService AuthorizationService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Login - FashionFace</PageTitle>
 
-<link href="css/login.css" rel="stylesheet" />
+<link href="css/login.css" rel="stylesheet"/>
 <div class="login-container">
     <div class="login-card">
         <h3>Welcome Back</h3>
         <p class="text-muted">Sign in to your FashionFace account</p>
 
         <EditForm Model="@LoginModel" OnValidSubmit="@HandleLogin" FormName="login-form">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" />
+            <DataAnnotationsValidator/>
+            <ValidationSummary class="text-danger"/>
 
-            @if (!string.IsNullOrEmpty(ErrorMessage))
+            @if (!string.IsNullOrEmpty(
+                    ErrorMessage
+                ))
             {
                 <div class="alert alert-danger">
                     <strong>Login failed:</strong> @ErrorMessage
@@ -33,8 +35,8 @@
                            class="form-control"
                            id="username"
                            placeholder="Enter username"
-                           autocomplete="username" />
-                <ValidationMessage For="@(() => LoginModel.Username)" />
+                           autocomplete="username"/>
+                <ValidationMessage For="@(() => LoginModel.Username)"/>
             </div>
 
             <div class="mb-3">
@@ -45,8 +47,8 @@
                            class="form-control"
                            id="password"
                            placeholder="Enter password"
-                           autocomplete="current-password" />
-                <ValidationMessage For="@(() => LoginModel.Password)" />
+                           autocomplete="current-password"/>
+                <ValidationMessage For="@(() => LoginModel.Password)"/>
             </div>
 
             <button type="submit"
@@ -63,9 +65,9 @@
 </div>
 
 @code {
-    private LoginModel LoginModel  { get; set; } = new();
-    private bool IsLoading  { get; set; }
-    private string? ErrorMessage  { get; set; }= string.Empty;
+    private LoginModel LoginModel { get; } = new();
+    private bool IsLoading { get; set; }
+    private string? ErrorMessage { get; set; } = string.Empty;
 
     private async Task HandleLogin()
     {
@@ -91,7 +93,9 @@
             // await JsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", response.Token);
 
             // Redirect to dashboard or main app
-            NavigationManager.NavigateTo("/dashboard"); // or "/" if you want home after login
+            NavigationManager.NavigateTo(
+                "/dashboard"
+            ); // or "/" if you want home after login
         }
         else
         {
@@ -104,4 +108,5 @@
 
         IsLoading = false;
     }
+
 }

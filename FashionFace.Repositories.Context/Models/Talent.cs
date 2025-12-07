@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using FashionFace.Repositories.Context.Enums;
+using FashionFace.Repositories.Context.Models.Base;
 
 namespace FashionFace.Repositories.Context.Models;
 

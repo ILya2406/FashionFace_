@@ -2,6 +2,7 @@
 
 public enum NoseType
 {
+    Undefined,
     Straight,
     Aquiline,
     Button,

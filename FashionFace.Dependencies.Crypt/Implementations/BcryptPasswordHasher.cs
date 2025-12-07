@@ -12,7 +12,7 @@ public sealed class BcryptPasswordHasher<TUser> :
     ) =>
         BCrypt.Net.BCrypt.HashPassword(
             password,
-            workFactor: 12
+            12
         )!;
 
     public PasswordVerificationResult VerifyHashedPassword(

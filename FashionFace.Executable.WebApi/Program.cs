@@ -5,10 +5,10 @@ using System.Reflection;
 using System.Text;
 
 using FashionFace.Common.Extensions.Dependencies.Implementations;
-using FashionFace.Services.ConfigurationSettings.Models;
-using FashionFace.Repositories.Context;
 using FashionFace.Executable.WebApi.Configurations;
+using FashionFace.Repositories.Context;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
+using FashionFace.Services.ConfigurationSettings.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -182,33 +182,38 @@ serviceCollection.AddSwaggerGen(
             }
         );
 
-        options.DocInclusionPredicate((_, apiDesc) =>
-        {
-            var isSuccess =
-                !apiDesc
-                    .TryGetMethodInfo(
-                        out var methodInfo
-                    );
-
-            if (isSuccess)
-            {
-                return false;
-            }
-
-            var groupName =
+        options.DocInclusionPredicate(
+            (
+                _,
                 apiDesc
-                    .ActionDescriptor
-                    .EndpointMetadata
-                    .OfType<ApiExplorerSettingsAttribute>()
-                    .FirstOrDefault()
-                    ?.GroupName;
+            ) =>
+            {
+                var isSuccess =
+                    !apiDesc
+                        .TryGetMethodInfo(
+                            out var _
+                        );
 
-            var isNotEmptyGroupName =
-                groupName.IsNotEmpty();
+                if (isSuccess)
+                {
+                    return false;
+                }
 
-            return
-                isNotEmptyGroupName;
-        });
+                var groupName =
+                    apiDesc
+                        .ActionDescriptor
+                        .EndpointMetadata
+                        .OfType<ApiExplorerSettingsAttribute>()
+                        .FirstOrDefault()
+                        ?.GroupName;
+
+                var isNotEmptyGroupName =
+                    groupName.IsNotEmpty();
+
+                return
+                    isNotEmptyGroupName;
+            }
+        );
     }
 );
 
@@ -264,8 +269,8 @@ var corsSettings =
 foreach (var item in corsSettings.OriginList)
 {
     Log.Information(
-            $"cors: {item}"
-        );
+        $"cors: {item}"
+    );
 }
 
 

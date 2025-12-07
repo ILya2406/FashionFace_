@@ -91,6 +91,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Admins"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Anonymous", "FashionFace.Facades.Anonymous\FashionFace.Facades.Anonymous.csproj", "{80849109-EE8D-44B6-9F28-F3803A252F4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Base.Responses", "FashionFace.Controllers.Base.Responses\FashionFace.Controllers.Base.Responses.csproj", "{C19DE686-8D24-46C5-ADE9-F38EFC500E86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.AutoMapper", "FashionFace.Dependencies.AutoMapper\FashionFace.Dependencies.AutoMapper.csproj", "{415A926E-4D3B-4A29-A023-86E63453B591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +245,14 @@ Global
 		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80849109-EE8D-44B6-9F28-F3803A252F4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19DE686-8D24-46C5-ADE9-F38EFC500E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19DE686-8D24-46C5-ADE9-F38EFC500E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19DE686-8D24-46C5-ADE9-F38EFC500E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19DE686-8D24-46C5-ADE9-F38EFC500E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{415A926E-4D3B-4A29-A023-86E63453B591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415A926E-4D3B-4A29-A023-86E63453B591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415A926E-4D3B-4A29-A023-86E63453B591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415A926E-4D3B-4A29-A023-86E63453B591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACE0776C-AE27-4DA0-BE79-83CDC1DA5748} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
@@ -279,5 +291,7 @@ Global
 		{B1657572-8144-4C70-83C8-A54D04768A75} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
 		{106D06FC-E62B-438D-A339-3671054FAC0B} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
 		{80849109-EE8D-44B6-9F28-F3803A252F4A} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
+		{C19DE686-8D24-46C5-ADE9-F38EFC500E86} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{415A926E-4D3B-4A29-A023-86E63453B591} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 	EndGlobalSection
 EndGlobal

@@ -5,10 +5,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-using FashionFace.Services.ConfigurationSettings.Interfaces;
 using FashionFace.Facades.Domains.Args;
 using FashionFace.Facades.Domains.Interfaces;
 using FashionFace.Facades.Domains.Models;
+using FashionFace.Services.ConfigurationSettings.Interfaces;
 
 using Microsoft.IdentityModel.Tokens;
 

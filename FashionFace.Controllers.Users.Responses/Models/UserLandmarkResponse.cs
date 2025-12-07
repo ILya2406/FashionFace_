@@ -1,5 +1,5 @@
 ﻿namespace FashionFace.Controllers.Users.Responses.Models;
 
-public sealed record GenerateResponse(
-    string TaskId
+public sealed record UserLandmarkResponse(
+    string Name
 );

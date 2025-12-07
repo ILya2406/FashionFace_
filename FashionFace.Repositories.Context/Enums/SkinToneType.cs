@@ -2,6 +2,7 @@
 
 public enum SkinToneType
 {
+    Undefined,
     VeryFair,
     Fair,
     Light,

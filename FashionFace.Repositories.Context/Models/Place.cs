@@ -1,4 +1,6 @@
-﻿namespace FashionFace.Repositories.Context.Models;
+﻿using FashionFace.Repositories.Context.Models.Base;
+
+namespace FashionFace.Repositories.Context.Models;
 
 public sealed class Place : EntityBase
 {

@@ -1,5 +1,5 @@
 ﻿namespace FashionFace.Controllers.Users.Requests.Models;
 
-public sealed record GenerateRequest(
+public sealed record UserGenerateRequest(
     string Prompt
 );
