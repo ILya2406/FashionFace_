@@ -33,6 +33,7 @@
         <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
         <ProjectReference Include="..\FashionFace.Controllers.Admins\FashionFace.Controllers.Admins.csproj"/>
         <ProjectReference Include="..\FashionFace.Controllers.Anonymous\FashionFace.Controllers.Anonymous.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Authorized\FashionFace.Controllers.Authorized.csproj" />
         <ProjectReference Include="..\FashionFace.Dependencies.Crypt\FashionFace.Dependencies.Crypt.csproj"/>
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>
         <ProjectReference Include="..\FashionFace.Controllers.Users\FashionFace.Controllers.Users.csproj"/>

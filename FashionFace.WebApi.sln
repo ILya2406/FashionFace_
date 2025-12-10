@@ -97,6 +97,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Common.Extensions", "FashionFace.Common.Extensions\FashionFace.Common.Extensions.csproj", "{67409F91-A702-41EB-B928-B51B78229E26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Authorized", "FashionFace.Controllers.Authorized\FashionFace.Controllers.Authorized.csproj", "{5F44400F-FF57-47ED-B725-D1B1EEE4A849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Authorized.Responses", "FashionFace.Controllers.Authorized.Responses\FashionFace.Controllers.Authorized.Responses.csproj", "{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Controllers.Authorized.Requests", "FashionFace.Controllers.Authorized.Requests\FashionFace.Controllers.Authorized.Requests.csproj", "{38F41D31-4095-48F2-92AA-F015C51D39AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Authorized", "FashionFace.Facades.Authorized\FashionFace.Facades.Authorized.csproj", "{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -259,6 +267,22 @@ Global
 		{67409F91-A702-41EB-B928-B51B78229E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67409F91-A702-41EB-B928-B51B78229E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67409F91-A702-41EB-B928-B51B78229E26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F44400F-FF57-47ED-B725-D1B1EEE4A849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F44400F-FF57-47ED-B725-D1B1EEE4A849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F44400F-FF57-47ED-B725-D1B1EEE4A849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F44400F-FF57-47ED-B725-D1B1EEE4A849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F41D31-4095-48F2-92AA-F015C51D39AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F41D31-4095-48F2-92AA-F015C51D39AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F41D31-4095-48F2-92AA-F015C51D39AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F41D31-4095-48F2-92AA-F015C51D39AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACE0776C-AE27-4DA0-BE79-83CDC1DA5748} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
@@ -300,5 +324,9 @@ Global
 		{C19DE686-8D24-46C5-ADE9-F38EFC500E86} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
 		{415A926E-4D3B-4A29-A023-86E63453B591} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 		{67409F91-A702-41EB-B928-B51B78229E26} = {6DF37BFF-42BE-418B-8556-4354A79CECB8}
+		{5F44400F-FF57-47ED-B725-D1B1EEE4A849} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{6EE15BBF-E47F-4FE7-AE4B-64F4A1F15B96} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{38F41D31-4095-48F2-92AA-F015C51D39AE} = {904096B1-1D27-4C05-92F9-56126A5F91B2}
+		{571E499D-0E2B-4A3D-8A24-1CA9979FFB5F} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
 	EndGlobalSection
 EndGlobal
