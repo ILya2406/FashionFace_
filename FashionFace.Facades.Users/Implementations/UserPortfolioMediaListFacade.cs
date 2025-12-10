@@ -79,6 +79,7 @@ public sealed class UserPortfolioMediaListFacade(
             var userMediaListItemResult =
                 new UserMediaListItemResult(
                     portfolioMedia.Id,
+                    portfolioMedia.PositionIndex,
                     portfolioMedia.Description,
                     optimizedFileUri,
                     tagIdList

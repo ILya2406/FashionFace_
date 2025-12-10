@@ -66,6 +66,7 @@ public sealed class UserTalentListController(
                     entity =>
                         new UserTalentListItemResponse(
                             entity.Id,
+                            entity.PositionIndex,
                             entity.Description,
                             entity.Type
                         )

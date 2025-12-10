@@ -16,6 +16,18 @@ public sealed class TalentLocationConfiguration : EntityBaseConfiguration<Talent
 
         builder
             .Property(
+                entity => entity.IsDeleted
+            )
+            .HasColumnName(
+                "IsDeleted"
+            )
+            .HasColumnType(
+                "boolean"
+            )
+            .IsRequired();
+
+        builder
+            .Property(
                 entity => entity.TalentId
             )
             .HasColumnName(

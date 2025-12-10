@@ -66,6 +66,7 @@ public sealed class UserPortfolioMediaListController(
                     entity =>
                         new UserMediaListItemResponse(
                             entity.Id,
+                            entity.PositionIndex,
                             entity.Description,
                             entity.Url,
                             entity.TagIdList

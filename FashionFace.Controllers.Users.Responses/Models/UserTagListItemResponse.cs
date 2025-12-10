@@ -4,6 +4,6 @@ namespace FashionFace.Controllers.Users.Responses.Models;
 
 public sealed record UserTagListItemResponse(
     Guid Id,
-    int PositionIndex,
+    double PositionIndex,
     string Name
 );

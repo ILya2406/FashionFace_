@@ -16,6 +16,18 @@ public sealed class TalentConfiguration : EntityBaseConfiguration<Talent>
 
         builder
             .Property(
+                entity => entity.IsDeleted
+            )
+            .HasColumnName(
+                "IsDeleted"
+            )
+            .HasColumnType(
+                "boolean"
+            )
+            .IsRequired();
+
+        builder
+            .Property(
                 entity => entity.Description
             )
             .HasColumnName(

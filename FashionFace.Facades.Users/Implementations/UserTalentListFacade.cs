@@ -25,35 +25,37 @@ public sealed class UserTalentListFacade(
             profileId
             ) = args;
 
-        var talentCollection =
-            genericReadRepository.GetCollection<Talent>();
+        var profileTalentCollection =
+            genericReadRepository.GetCollection<ProfileTalent>();
 
-        var talentList =
+        var profileTalentList =
             await
-                talentCollection
+                profileTalentCollection
+                    .Include(
+                        entity => entity.Talent
+                    )
                     .Where(
                         entity =>
-                            entity
-                                .ProfileTalent!
-                                .ProfileId == profileId
+                            entity.ProfileId == profileId
                     )
                     .ToListAsync();
 
         var talentListItemResultList =
-            talentList
+            profileTalentList
                 .Select(
                     entity =>
                         new UserTalentListItemResult(
-                            entity.Id,
-                            entity.Description,
-                            entity.TalentType
+                            entity.Talent!.Id,
+                            entity.PositionIndex,
+                            entity.Talent.Description,
+                            entity.Talent.TalentType
                         )
                 )
                 .ToList();
 
         var result =
             new ListResult<UserTalentListItemResult>(
-                talentList.Count,
+                profileTalentList.Count,
                 talentListItemResultList
             );
 

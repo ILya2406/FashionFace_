@@ -16,6 +16,18 @@ public sealed class PortfolioMediaConfiguration : EntityBaseConfiguration<Portfo
 
         builder
             .Property(
+                entity => entity.IsDeleted
+            )
+            .HasColumnName(
+                "IsDeleted"
+            )
+            .HasColumnType(
+                "boolean"
+            )
+            .IsRequired();
+
+        builder
+            .Property(
                 entity => entity.PortfolioId
             )
             .HasColumnName(

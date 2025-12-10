@@ -20,6 +20,7 @@ public sealed class Profile : EntityBase, IWithIsDeleted
 
     public AppearanceTraits? AppearanceTraits { get; set; }
     public ICollection<ProfileTalent> ProfileTalentCollection { get; set; }
+    public ICollection<MediaFile> MediaFileCollection { get; set; }
 
     public ApplicationUser? ApplicationUser { get; set; }
 }
