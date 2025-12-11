@@ -8,6 +8,7 @@
       - "444:443"
     volumes:
       - "${Nginx_Config_Dir}:/etc/nginx/conf.d"
+      - files:/var/www/files:ro
     depends_on:
       - web_api
     networks:
@@ -55,6 +56,7 @@
     volumes:
       - "${Files_Dir}:/app/files:rw"
       - "${Web_Api_Log_Dir}:/app/logs:rw"
+      - files:/app/files/media:ro
     depends_on:
       postgres_migration:
         condition: service_completed_successfully
