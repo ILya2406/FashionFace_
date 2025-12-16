@@ -23,7 +23,7 @@ public sealed class UserMediaCreateController(
 {
     [HttpPost]
     public async Task<UserMediaCreateResponse> Invoke(
-        [FromBody] UserMediaCreateRequest request
+        [FromForm] UserMediaCreateRequest request
     )
     {
         var userId =
