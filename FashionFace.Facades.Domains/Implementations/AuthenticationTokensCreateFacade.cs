@@ -5,17 +5,24 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+using FashionFace.Common.Exceptions.Interfaces;
+using FashionFace.Dependencies.Identity.Interfaces;
 using FashionFace.Facades.Domains.Args;
 using FashionFace.Facades.Domains.Interfaces;
 using FashionFace.Facades.Domains.Models;
+using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Services.ConfigurationSettings.Interfaces;
 
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FashionFace.Facades.Domains.Implementations;
 
 public sealed class AuthenticationModelCreateFacade(
-    IJwtSettingsFactory jwtSettingsFactory
+    IJwtSettingsFactory jwtSettingsFactory,
+    IRoleManagerDecorator roleManagerDecorator,
+    IUserManagerDecorator userManagerDecorator,
+    IExceptionDescriptor exceptionDescriptor
 ) : IAuthenticationModelCreateFacade
 {
     public async Task<AuthenticationModel> Execute(
@@ -38,6 +45,26 @@ public sealed class AuthenticationModelCreateFacade(
                 bytes
             );
 
+        var applicationUser =
+            await
+                userManagerDecorator
+                    .FindByEmailAsync(
+                        args.Email
+                    );
+
+        if (applicationUser is null)
+        {
+            throw exceptionDescriptor.NotFound<ApplicationUser>();
+        }
+
+
+        var role =
+            await
+                roleManagerDecorator
+                    .GetRoleAsync(
+                        applicationUser
+                    );
+
         var claims =
             new List<Claim>
             {
@@ -48,6 +75,10 @@ public sealed class AuthenticationModelCreateFacade(
                 new(
                     ClaimTypes.Email,
                     args.Email
+                ),
+                new(
+                    ClaimTypes.Role,
+                    role
                 ),
             };
 

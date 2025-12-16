@@ -1,9 +1,9 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
 
 ENV TZ=UTC
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["FashionFace.Executable.Console.Migration/FashionFace.Executable.Console.Migration.csproj", "FashionFace.Executable.Console.Migration/"]
 RUN dotnet restore "FashionFace.Executable.Console.Migration/FashionFace.Executable.Console.Migration.csproj"

@@ -1,5 +1,6 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.Locations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

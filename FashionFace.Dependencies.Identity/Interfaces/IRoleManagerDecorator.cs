@@ -12,4 +12,8 @@ public interface IRoleManagerDecorator
         ApplicationUser user,
         string role
     );
+
+    Task<string> GetRoleAsync(
+        ApplicationUser user
+    );
 }

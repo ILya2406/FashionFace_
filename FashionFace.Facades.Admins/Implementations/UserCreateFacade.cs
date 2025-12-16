@@ -8,7 +8,9 @@ using FashionFace.Facades.Admins.Interfaces;
 using FashionFace.Facades.Admins.Models;
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.AppearanceTraits;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
+using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
 

@@ -178,3 +178,4 @@ volumes:
   postgres_volume:
   rabbitmq_volume:
   redis_volume:
+  files:

@@ -6,6 +6,7 @@ using FashionFace.Facades.Users.Args.Talents;
 using FashionFace.Facades.Users.Interfaces.Talents;
 using FashionFace.Facades.Users.Models.Talents;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Read.Interfaces;
 
 using Microsoft.EntityFrameworkCore;

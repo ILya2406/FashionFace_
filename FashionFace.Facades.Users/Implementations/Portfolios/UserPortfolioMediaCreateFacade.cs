@@ -6,6 +6,7 @@ using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Portfolios;
 using FashionFace.Facades.Users.Interfaces.Portfolios;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 

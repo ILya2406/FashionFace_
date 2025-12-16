@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using FashionFace.Dependencies.Identity.Interfaces;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
@@ -19,4 +20,22 @@ public sealed class RoleManagerDecorator(
             user,
             role
         );
+
+    public async Task<string> GetRoleAsync(
+        ApplicationUser user
+    )
+    {
+        var rolesList =
+            await
+                userManager
+                    .GetRolesAsync(
+                        user
+                    );
+
+        var role =
+            rolesList.First();
+
+        return
+            role;
+    }
 }

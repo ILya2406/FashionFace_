@@ -1,14 +1,15 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.Locations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations;
 
-public sealed class TalentLocationConfiguration : EntityBaseConfiguration<TalentLocation>
+public sealed class LocationConfiguration : EntityBaseConfiguration<Location>
 {
-    public override void Configure(EntityTypeBuilder<TalentLocation> builder)
+    public override void Configure(EntityTypeBuilder<Location> builder)
     {
         base.Configure(
             builder
@@ -80,7 +81,7 @@ public sealed class TalentLocationConfiguration : EntityBaseConfiguration<Talent
                 entity => entity.City
             )
             .WithMany(
-                entity => entity.TalentLocationCollection
+                entity => entity.LocationCollection
             )
             .HasForeignKey(
                 entity => entity.CityId
@@ -94,9 +95,9 @@ public sealed class TalentLocationConfiguration : EntityBaseConfiguration<Talent
                 entity => entity.Place
             )
             .WithOne(
-                entity => entity.TalentLocation
+                entity => entity.Location
             )
-            .HasForeignKey<TalentLocation>(
+            .HasForeignKey<Location>(
                 entity => entity.PlaceId
             )
             .OnDelete(
@@ -108,7 +109,7 @@ public sealed class TalentLocationConfiguration : EntityBaseConfiguration<Talent
                 entity => entity.Talent
             )
             .WithMany(
-                entity => entity.TalentLocationCollection
+                entity => entity.LocationCollection
             )
             .HasForeignKey(
                 entity => entity.TalentId

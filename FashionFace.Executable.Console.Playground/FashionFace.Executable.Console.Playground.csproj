@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj" />
         <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj"/>
     </ItemGroup>
 

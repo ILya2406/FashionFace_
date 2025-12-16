@@ -25,7 +25,7 @@ public sealed class UserAppearanceTraitsFacade(
             ) = args;
 
         var appearanceTraitsCollection =
-            genericReadRepository.GetCollection<Repositories.Context.Models.AppearanceTraits>();
+            genericReadRepository.GetCollection<Repositories.Context.Models.AppearanceTraits.AppearanceTraits>();
 
         var appearanceTraits =
             await
@@ -37,7 +37,7 @@ public sealed class UserAppearanceTraitsFacade(
 
         if (appearanceTraits is null)
         {
-            throw exceptionDescriptor.NotFound<Repositories.Context.Models.AppearanceTraits>();
+            throw exceptionDescriptor.NotFound<Repositories.Context.Models.AppearanceTraits.AppearanceTraits>();
         }
 
         var result =

@@ -5,6 +5,7 @@ using FashionFace.Facades.Users.Args.AppearanceTraits;
 using FashionFace.Facades.Users.Interfaces.AppearanceTraits;
 using FashionFace.Facades.Users.Models.AppearanceTraits;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.AppearanceTraits;
 using FashionFace.Repositories.Read.Interfaces;
 
 using Microsoft.EntityFrameworkCore;

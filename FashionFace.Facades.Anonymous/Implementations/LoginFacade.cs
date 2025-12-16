@@ -70,7 +70,7 @@ public sealed class LoginFacade(
         var authenticationModelCreateArgs =
             new AuthenticationModelCreateArgs(
                 user.Id,
-                username
+                user.Email
             );
 
         var authenticationModel =

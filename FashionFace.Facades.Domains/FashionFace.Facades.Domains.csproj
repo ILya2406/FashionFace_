@@ -8,7 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj" />
         <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
+        <ProjectReference Include="..\FashionFace.Dependencies.Identity\FashionFace.Dependencies.Identity.csproj" />
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>
         <ProjectReference Include="..\FashionFace.Facades.Base\FashionFace.Facades.Base.csproj"/>
     </ItemGroup>

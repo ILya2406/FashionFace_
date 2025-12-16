@@ -5,6 +5,7 @@ using FashionFace.Facades.Users.Args.AppearanceTraits;
 using FashionFace.Facades.Users.Interfaces.AppearanceTraits;
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models;
+using FashionFace.Repositories.Context.Models.AppearanceTraits;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 
@@ -28,7 +29,7 @@ public sealed class UserMaleTraitsUpdateFacade(
             ) = args;
 
         var appearanceTraitsCollection =
-            genericReadRepository.GetCollection<Repositories.Context.Models.AppearanceTraits>();
+            genericReadRepository.GetCollection<Repositories.Context.Models.AppearanceTraits.AppearanceTraits>();
 
         var appearanceTraits =
             await
@@ -43,7 +44,7 @@ public sealed class UserMaleTraitsUpdateFacade(
 
         if (appearanceTraits is null)
         {
-            throw exceptionDescriptor.NotFound<Repositories.Context.Models.AppearanceTraits>();
+            throw exceptionDescriptor.NotFound<Repositories.Context.Models.AppearanceTraits.AppearanceTraits>();
         }
 
         if (appearanceTraits.SexType == SexType.Female)
