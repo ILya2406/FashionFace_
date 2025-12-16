@@ -26,21 +26,21 @@ public sealed class UserLocationUpdateFacade(
     {
         var (
             userId,
-            LocationId,
+            locationId,
             locationType,
             cityId,
             place
             ) = args;
 
-        var LocationCollection =
+        var locationCollection =
             genericReadRepository.GetCollection<Location>();
 
-        var Location =
+        var location =
             await
-                LocationCollection
+                locationCollection
                     .FirstOrDefaultAsync(
                         entity =>
-                            entity.Id == LocationId
+                            entity.Id == locationId
                             && entity
                                 .Talent!
                                 .ProfileTalent!
@@ -48,16 +48,16 @@ public sealed class UserLocationUpdateFacade(
                                 .ApplicationUserId == userId
                     );
 
-        if (Location is null)
+        if (location is null)
         {
             throw exceptionDescriptor.NotFound<Location>();
         }
 
-        Location.CityId =
+        location.CityId =
             cityId;
 
         var oldPlaceId =
-            Location.PlaceId;
+            location.PlaceId;
 
         if (locationType == LocationType.Place)
         {
@@ -81,7 +81,7 @@ public sealed class UserLocationUpdateFacade(
                     Name = place?.LandmarkName ??  string.Empty,
                 };
 
-            Location.Place =
+            location.Place =
                 new()
                 {
                     Id = Guid.NewGuid(),
@@ -97,7 +97,7 @@ public sealed class UserLocationUpdateFacade(
         await
             updateRepository
                 .UpdateAsync(
-                    Location
+                    location
                 );
 
 

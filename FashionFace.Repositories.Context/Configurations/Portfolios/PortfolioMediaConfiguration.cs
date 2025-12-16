@@ -39,18 +39,6 @@ public sealed class PortfolioMediaConfiguration : EntityBaseConfiguration<Portfo
             .IsRequired();
 
         builder
-            .Property(
-                entity => entity.PositionIndex
-            )
-            .HasColumnName(
-                "PositionIndex"
-            )
-            .HasColumnType(
-                "double precision"
-            )
-            .IsRequired();
-
-        builder
             .HasOne(
                 entity => entity.Portfolio
             )

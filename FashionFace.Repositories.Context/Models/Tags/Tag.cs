@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using FashionFace.Repositories.Context.Models.Base;
+using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Portfolios;
 
@@ -12,4 +13,5 @@ public sealed class Tag : EntityBase
 
     public ICollection<MediaAggregateTag> PortfolioMediaTagCollection { get; set; }
     public ICollection<PortfolioTag> PortfolioTagCollection { get; set; }
+    public ICollection<FilterTag> FilterTagCollection { get; set; }
 }

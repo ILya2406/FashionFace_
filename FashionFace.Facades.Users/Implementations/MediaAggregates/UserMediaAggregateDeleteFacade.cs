@@ -3,7 +3,6 @@
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.MediaAggregates;
 using FashionFace.Facades.Users.Interfaces.MediaAggregates;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;

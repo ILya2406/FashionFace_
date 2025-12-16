@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Talents;
 using FashionFace.Facades.Users.Interfaces.Talents;
 using FashionFace.Facades.Users.Models.Talents;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Context.Models.Talents;
@@ -67,10 +67,12 @@ public sealed class UserTalentCreateFacade(
                     .FirstOrDefaultAsync();
 
         var lastPositionIndex =
-            lastProfileTalent?.PositionIndex ?? 0;
+            lastProfileTalent?.PositionIndex
+            ?? PositionIndexConstants.DefaultPositionIndex;
 
         var positionIndex =
-            lastPositionIndex + 1000;
+            lastPositionIndex
+            + PositionIndexConstants.PositionIndexShift;
 
         var talentId =
             Guid.NewGuid();

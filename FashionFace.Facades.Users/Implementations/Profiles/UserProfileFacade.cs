@@ -4,7 +4,6 @@ using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Profiles;
 using FashionFace.Facades.Users.Interfaces.Profiles;
 using FashionFace.Facades.Users.Models.Profiles;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Read.Interfaces;
 

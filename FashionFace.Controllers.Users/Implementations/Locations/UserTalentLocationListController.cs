@@ -59,16 +59,16 @@ public sealed class UserLocationListController(
         ListResult<UserLocationListItemResult> result
     )
     {
-        var LocationListItemResponseList =
+        var locationListItemResponseList =
             new List<UserLocationListItemResponse>();
 
-        foreach (var Location in result.ItemList)
+        foreach (var location in result.ItemList)
         {
             var city =
-                Location.City;
+                location.City;
 
             var place =
-                Location.Place;
+                location.Place;
 
             var cityModel =
                 new UserCityResponse(
@@ -112,24 +112,24 @@ public sealed class UserLocationListController(
                     );
             }
 
-            var LocationListItemResult =
+            var locationListItemResult =
                 new UserLocationListItemResponse(
-                    Location.Id,
-                    Location.Type,
+                    location.Id,
+                    location.LocationType,
                     cityModel,
                     placeModel
                 );
 
-            LocationListItemResponseList
+            locationListItemResponseList
                 .Add(
-                    LocationListItemResult
+                    locationListItemResult
                 );
         }
 
         var response =
             new ListResponse<UserLocationListItemResponse>(
                 result.TotalCount,
-                LocationListItemResponseList
+                locationListItemResponseList
             );
 
         return

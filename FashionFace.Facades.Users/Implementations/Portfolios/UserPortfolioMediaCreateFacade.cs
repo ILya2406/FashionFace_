@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Portfolios;
 using FashionFace.Facades.Users.Interfaces.Portfolios;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
@@ -74,10 +74,12 @@ public sealed class UserPortfolioMediaCreateFacade(
                     .FirstOrDefaultAsync();
 
         var lastPositionIndex =
-            lastPortfolioMedia?.PositionIndex ?? 0;
+            lastPortfolioMedia?.PositionIndex
+            ?? PositionIndexConstants.DefaultPositionIndex;
 
         var positionIndex =
-            lastPositionIndex + 1000;
+            lastPositionIndex
+            + PositionIndexConstants.PositionIndexShift;
 
         var newPortfolioMediaAggregate =
             new PortfolioMediaAggregate

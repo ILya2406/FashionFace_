@@ -16,18 +16,6 @@ public sealed class PortfolioConfiguration : EntityBaseConfiguration<Portfolio>
 
         builder
             .Property(
-                entity => entity.IsDeleted
-            )
-            .HasColumnName(
-                "IsDeleted"
-            )
-            .HasColumnType(
-                "boolean"
-            )
-            .IsRequired();
-
-        builder
-            .Property(
                 entity => entity.TalentId
             )
             .HasColumnName(

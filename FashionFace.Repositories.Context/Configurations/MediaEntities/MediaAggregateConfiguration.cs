@@ -16,18 +16,6 @@ public sealed class MediaAggregateConfiguration : EntityBaseConfiguration<MediaA
 
         builder
             .Property(
-                entity => entity.IsDeleted
-            )
-            .HasColumnName(
-                "IsDeleted"
-            )
-            .HasColumnType(
-                "boolean"
-            )
-            .IsRequired();
-
-        builder
-            .Property(
                 entity => entity.PreviewMediaId
             )
             .HasColumnName(

@@ -1,4 +1,7 @@
-﻿using FashionFace.Repositories.Context.Models.Base;
+﻿using System.Linq.Expressions;
+
+using FashionFace.Repositories.Context.Interfaces;
+using FashionFace.Repositories.Context.Models.Base;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,24 +13,91 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
+        var type =
+            typeof(TEntity);
+
         builder.ToTable(
-            typeof(TEntity).Name
+            type.Name
         );
 
-        builder.HasKey(
-            entity => entity.Id
-        );
+        var isWithIdentifier =
+            type
+                .IsAssignableFrom(
+                    typeof(IWithIdentifier)
+                );
 
-        builder
-            .Property(
-                entity => entity.Id
-            )
-            .HasColumnName(
-                "Id"
-            )
-            .HasColumnType(
-                "uuid"
-            )
-            .ValueGeneratedOnAdd();
+        if (isWithIdentifier)
+        {
+            var parameter = Expression.Parameter(type, "entity");
+            var property = Expression.Property(parameter, nameof(IWithIdentifier.Id));
+            var lambda = Expression.Lambda(property, parameter);
+
+            builder.HasKey(
+                (dynamic)lambda
+            );
+
+            builder
+                .Property(
+                    (dynamic)lambda
+                )
+                .HasColumnName(
+                    "Id"
+                )
+                .HasColumnType(
+                    "uuid"
+                )
+                .ValueGeneratedOnAdd();
+        }
+
+        var isWithIDeleted =
+            type
+                .IsAssignableFrom(
+                    typeof(IWithIsDeleted)
+                );
+
+        if (isWithIDeleted)
+        {
+            var parameter = Expression.Parameter(type, "entity");
+            var property = Expression.Property(parameter, nameof(IWithIsDeleted.IsDeleted));
+            var lambda = Expression.Lambda(property, parameter);
+
+            builder
+                .Property(
+                    (dynamic)lambda
+                )
+                .HasColumnName(
+                    "IsDeleted"
+                )
+                .HasColumnType(
+                    "boolean"
+                )
+                .IsRequired();
+        }
+
+        var isWithPositionIndex =
+            type
+                .IsAssignableFrom(
+                    typeof(IWithPositionIndex)
+                );
+
+        if (isWithPositionIndex)
+        {
+            var parameter = Expression.Parameter(type, "entity");
+            var property = Expression.Property(parameter, nameof(IWithPositionIndex.PositionIndex));
+            var lambda = Expression.Lambda(property, parameter);
+
+            builder
+                .Property(
+                    (dynamic)lambda
+                )
+                .HasColumnName(
+                    "PositionIndex"
+                )
+                .HasColumnType(
+                    "double precision"
+                )
+                .IsRequired();
+
+        }
     }
 }

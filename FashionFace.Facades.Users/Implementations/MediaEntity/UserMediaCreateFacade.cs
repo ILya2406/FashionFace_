@@ -7,7 +7,6 @@ using FashionFace.Dependencies.SkiaSharp.Interfaces;
 using FashionFace.Facades.Users.Args.MediaEntity;
 using FashionFace.Facades.Users.Interfaces.MediaEntity;
 using FashionFace.Facades.Users.Models.MediaEntity;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;

@@ -13,7 +13,6 @@ using FashionFace.Facades.Domains.Models;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Services.ConfigurationSettings.Interfaces;
 
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FashionFace.Facades.Domains.Implementations;

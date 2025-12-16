@@ -16,18 +16,6 @@ public sealed class MediaConfiguration : EntityBaseConfiguration<Media>
 
         builder
             .Property(
-                entity => entity.IsDeleted
-            )
-            .HasColumnName(
-                "IsDeleted"
-            )
-            .HasColumnType(
-                "boolean"
-            )
-            .IsRequired();
-
-        builder
-            .Property(
                 entity => entity.OriginalFileId
             )
             .HasColumnName(

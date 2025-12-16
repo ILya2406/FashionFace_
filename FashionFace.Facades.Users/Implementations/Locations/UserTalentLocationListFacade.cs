@@ -26,27 +26,27 @@ public sealed class UserLocationListFacade(
             talentId
             ) = args;
 
-        var LocationCollection =
+        var locationCollection =
             genericReadRepository.GetCollection<Location>();
 
-        var LocationList =
+        var locationList =
             await
-                LocationCollection
+                locationCollection
                     .Where(
                         entity => entity.TalentId == talentId
                     )
                     .ToListAsync();
 
-        var LocationListItemResultList =
+        var locationListItemResultList =
             new List<UserLocationListItemResult>();
 
-        foreach (var Location in LocationCollection)
+        foreach (var location in locationCollection)
         {
             var city =
-                Location.City!;
+                location.City!;
 
             var place =
-                Location.Place;
+                location.Place;
 
             var cityModel =
                 new CityModel(
@@ -90,24 +90,24 @@ public sealed class UserLocationListFacade(
                     );
             }
 
-            var LocationListItemResult =
+            var locationListItemResult =
                 new UserLocationListItemResult(
-                    Location.Id,
-                    Location.LocationType,
+                    location.Id,
+                    location.LocationType,
                     cityModel,
                     placeModel
                 );
 
-            LocationListItemResultList
+            locationListItemResultList
                 .Add(
-                    LocationListItemResult
+                    locationListItemResult
                 );
         }
 
         var result =
             new ListResult<UserLocationListItemResult>(
-                LocationList.Count,
-                LocationListItemResultList
+                locationList.Count,
+                locationListItemResultList
             );
 
         return

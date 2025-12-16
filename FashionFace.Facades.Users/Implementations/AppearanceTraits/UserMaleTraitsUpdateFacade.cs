@@ -4,7 +4,6 @@ using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.AppearanceTraits;
 using FashionFace.Facades.Users.Interfaces.AppearanceTraits;
 using FashionFace.Repositories.Context.Enums;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.AppearanceTraits;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;

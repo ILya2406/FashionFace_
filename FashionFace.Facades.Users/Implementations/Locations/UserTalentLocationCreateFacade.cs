@@ -108,7 +108,7 @@ public sealed class UserLocationCreateFacade(
                 Landmark = landmark,
             };
 
-        var Location =
+        var location =
             new Location
             {
                 Id =  Guid.NewGuid(),
@@ -123,12 +123,12 @@ public sealed class UserLocationCreateFacade(
         await
             createRepository
                 .CreateAsync(
-                    Location
+                    location
                 );
 
         var result =
             new UserLocationCreateResult(
-                Location.Id
+                location.Id
             );
 
         return

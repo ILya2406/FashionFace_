@@ -2,6 +2,7 @@
 
 public enum TalentType
 {
+    Undefined,
     Model,
     Photographer,
 }

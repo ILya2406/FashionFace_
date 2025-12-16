@@ -6,7 +6,7 @@ namespace FashionFace.Facades.Users.Models.Locations;
 
 public sealed record UserLocationListItemResult(
     Guid Id,
-    LocationType Type,
+    LocationType LocationType,
     CityModel City,
     PlaceModel? Place
 );

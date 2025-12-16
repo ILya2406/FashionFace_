@@ -6,7 +6,6 @@ using FashionFace.Dependencies.Identity.Interfaces;
 using FashionFace.Facades.Anonymous.Args;
 using FashionFace.Facades.Anonymous.Interfaces;
 using FashionFace.Repositories.Context.Enums;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.AppearanceTraits;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;

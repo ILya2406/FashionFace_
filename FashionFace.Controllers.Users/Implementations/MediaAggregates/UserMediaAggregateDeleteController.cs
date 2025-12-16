@@ -2,8 +2,7 @@
 
 using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Users.Implementations.Base;
-using FashionFace.Controllers.Users.Requests.MediaAggregates;
-using FashionFace.Controllers.Users.Responses.MediaAggregates;
+using FashionFace.Controllers.Users.Requests.Models.MediaAggregates;
 using FashionFace.Facades.Users.Args.MediaAggregates;
 using FashionFace.Facades.Users.Interfaces.MediaAggregates;
 

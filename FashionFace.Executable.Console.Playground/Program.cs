@@ -1,8 +1,6 @@
 ﻿using System;
 
 using FashionFace.Repositories.Context.Models.IdentityEntities;
-using FashionFace.Services.Singleton.Args;
-using FashionFace.Services.Singleton.Implementations;
 
 using Microsoft.AspNetCore.Identity;
 

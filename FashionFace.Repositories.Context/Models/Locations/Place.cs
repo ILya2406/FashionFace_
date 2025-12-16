@@ -1,6 +1,7 @@
 ﻿using System;
 
 using FashionFace.Repositories.Context.Models.Base;
+using FashionFace.Repositories.Context.Models.Filters;
 
 namespace FashionFace.Repositories.Context.Models.Locations;
 
@@ -13,5 +14,7 @@ public sealed class Place : EntityBase
 
     public Building? Building { get; set; }
     public Landmark? Landmark { get; set; }
+
     public Location? Location { get; set; }
+    public FilterLocation? FilterLocation { get; set; }
 }

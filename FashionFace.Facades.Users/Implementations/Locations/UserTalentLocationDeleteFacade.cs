@@ -23,18 +23,18 @@ public sealed class UserLocationDeleteFacade(
     {
         var (
             userId,
-            LocationId
+            locationId
             ) = args;
 
-        var LocationCollection =
+        var locationCollection =
             genericReadRepository.GetCollection<Location>();
 
-        var Location =
+        var location =
             await
-                LocationCollection
+                locationCollection
                     .FirstOrDefaultAsync(
                         entity =>
-                            entity.Id == LocationId
+                            entity.Id == locationId
                             && entity
                                 .Talent!
                                 .ProfileTalent!
@@ -42,17 +42,17 @@ public sealed class UserLocationDeleteFacade(
                                 .ApplicationUserId == userId
                     );
 
-        if (Location is null)
+        if (location is null)
         {
             throw exceptionDescriptor.NotFound<Location>();
         }
 
-        Location.IsDeleted = true;
+        location.IsDeleted = true;
 
         await
             updateRepository
                 .UpdateAsync(
-                    Location
+                    location
                 );
     }
 }

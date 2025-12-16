@@ -3,7 +3,6 @@
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Talents;
 using FashionFace.Facades.Users.Interfaces.Talents;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.Talents;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;

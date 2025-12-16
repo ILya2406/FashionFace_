@@ -16,18 +16,6 @@ public sealed class ProfileConfiguration : EntityBaseConfiguration<Profile>
 
         builder
             .Property(
-                entity => entity.IsDeleted
-            )
-            .HasColumnName(
-                "IsDeleted"
-            )
-            .HasColumnType(
-                "boolean"
-            )
-            .IsRequired();
-
-        builder
-            .Property(
                 entity => entity.ApplicationUserId
             )
             .HasColumnName(
@@ -91,9 +79,7 @@ public sealed class ProfileConfiguration : EntityBaseConfiguration<Profile>
             .HasOne(
                 entity => entity.ApplicationUser
             )
-            .WithOne(
-                entity => entity.Profile
-            )
+            .WithOne()
             .HasForeignKey<Profile>(
                 entity => entity.ApplicationUserId
             )

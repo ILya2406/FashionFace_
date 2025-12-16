@@ -39,18 +39,6 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
             .IsRequired();
 
         builder
-            .Property(
-                entity => entity.PositionIndex
-            )
-            .HasColumnName(
-                "PositionIndex"
-            )
-            .HasColumnType(
-                "double precision"
-            )
-            .IsRequired();
-
-        builder
             .HasOne(
                 entity => entity.MediaAggregate
             )
