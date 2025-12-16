@@ -7,6 +7,7 @@ using FashionFace.Facades.Users.Interfaces.Filters;
 using FashionFace.Facades.Users.Models.AppearanceTraits;
 using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Facades.Users.Models.Locations;
+using FashionFace.Facades.Users.Models.Portfolios;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Read.Interfaces;
 
@@ -124,7 +125,11 @@ public sealed class UserFilterFacade(
             filter
                 .FilterTagCollection
                 .Select(
-                    entity => entity.TagId
+                    entity =>
+                        new UserTagListItemResult(
+                            entity.TagId,
+                            entity.PositionIndex
+                        )
                 )
                 .ToList();
 

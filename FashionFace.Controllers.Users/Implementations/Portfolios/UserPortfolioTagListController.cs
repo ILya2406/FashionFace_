@@ -66,8 +66,7 @@ public sealed class UserPortfolioTagListController(
                     entity =>
                         new UserTagListItemResponse(
                             entity.Id,
-                            entity.PositionIndex,
-                            entity.Name
+                            entity.PositionIndex
                         )
                 )
                 .ToList();

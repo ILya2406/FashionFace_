@@ -57,8 +57,7 @@ public sealed class UserPortfolioTagListFacade(
                     entity =>
                         new UserTagListItemResult(
                             entity.TagId,
-                            entity.PositionIndex,
-                            entity.Tag!.Name
+                            entity.PositionIndex
                         )
                 )
                 .ToList();

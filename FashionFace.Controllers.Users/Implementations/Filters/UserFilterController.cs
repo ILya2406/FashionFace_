@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Users.Implementations.Base;
@@ -6,6 +7,7 @@ using FashionFace.Controllers.Users.Requests.Models.Filters;
 using FashionFace.Controllers.Users.Responses.Models.AppearanceTraits;
 using FashionFace.Controllers.Users.Responses.Models.Filters;
 using FashionFace.Controllers.Users.Responses.Models.Locations;
+using FashionFace.Controllers.Users.Responses.Models.Portfolios;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
 using FashionFace.Facades.Users.Models.Filters;
@@ -140,6 +142,18 @@ public sealed class UserFilterController(
                 );
         }
 
+        var userTagListItemResponseList =
+            result
+                .TagList
+                .Select(
+                    entity =>
+                        new UserTagListItemResponse(
+                            entity.Id,
+                            entity.PositionIndex
+                        )
+                )
+                .ToList();
+
         var response =
             new UserFilterResponse(
                 result.Id,
@@ -148,7 +162,7 @@ public sealed class UserFilterController(
                 result.TalentType,
                 userFilterLocationListItemResponse,
                 userAppearanceTraitsResponse,
-                result.TagList
+                userTagListItemResponseList
             );
 
         return
