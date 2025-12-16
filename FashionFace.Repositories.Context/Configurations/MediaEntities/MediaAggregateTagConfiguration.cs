@@ -1,15 +1,14 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
-using FashionFace.Repositories.Context.Models.Locations;
+using FashionFace.Repositories.Context.Models.MediaEntities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.MediaEntities;
 
-public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
+public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<MediaAggregateTag>
 {
-    public override void Configure(EntityTypeBuilder<Place> builder)
+    public override void Configure(EntityTypeBuilder<MediaAggregateTag> builder)
     {
         base.Configure(
             builder
@@ -17,10 +16,10 @@ public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 
         builder
             .Property(
-                entity => entity.BuildingId
+                entity => entity.MediaAggregateId
             )
             .HasColumnName(
-                "BuildingId"
+                "MediaAggregateId"
             )
             .HasColumnType(
                 "uuid"
@@ -29,10 +28,10 @@ public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 
         builder
             .Property(
-                entity => entity.LandmarkId
+                entity => entity.TagId
             )
             .HasColumnName(
-                "LandmarkId"
+                "TagId"
             )
             .HasColumnType(
                 "uuid"
@@ -41,25 +40,25 @@ public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 
         builder
             .Property(
-                entity => entity.Street
+                entity => entity.PositionIndex
             )
             .HasColumnName(
-                "Street"
+                "PositionIndex"
             )
             .HasColumnType(
-                "varchar(128)"
+                "double precision"
             )
             .IsRequired();
 
         builder
             .HasOne(
-                entity => entity.Building
+                entity => entity.MediaAggregate
             )
-            .WithOne(
-                entity => entity.Place
+            .WithMany(
+                entity => entity.PortfolioMediaTagCollection
             )
-            .HasForeignKey<Place>(
-                entity => entity.BuildingId
+            .HasForeignKey(
+                entity => entity.MediaAggregateId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -67,13 +66,13 @@ public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 
         builder
             .HasOne(
-                entity => entity.Landmark
+                entity => entity.Tag
             )
-            .WithOne(
-                entity => entity.Place
+            .WithMany(
+                entity => entity.PortfolioMediaTagCollection
             )
-            .HasForeignKey<Place>(
-                entity => entity.LandmarkId
+            .HasForeignKey(
+                entity => entity.TagId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

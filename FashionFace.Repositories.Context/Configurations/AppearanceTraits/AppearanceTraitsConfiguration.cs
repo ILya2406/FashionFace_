@@ -1,15 +1,13 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
-using FashionFace.Repositories.Context.Models.AppearanceTraits;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.AppearanceTraits;
 
-public sealed class AppearanceTraitsConfiguration : EntityBaseConfiguration<AppearanceTraits>
+public sealed class AppearanceTraitsConfiguration : EntityBaseConfiguration<Models.AppearanceTraits.AppearanceTraits>
 {
-    public override void Configure(EntityTypeBuilder<AppearanceTraits> builder)
+    public override void Configure(EntityTypeBuilder<Models.AppearanceTraits.AppearanceTraits> builder)
     {
         base.Configure(
             builder
@@ -201,7 +199,7 @@ public sealed class AppearanceTraitsConfiguration : EntityBaseConfiguration<Appe
             .WithOne(
                 entity => entity.AppearanceTraits
             )
-            .HasForeignKey<AppearanceTraits>(
+            .HasForeignKey<Models.AppearanceTraits.AppearanceTraits>(
                 entity => entity.ProfileId
             )
             .OnDelete(

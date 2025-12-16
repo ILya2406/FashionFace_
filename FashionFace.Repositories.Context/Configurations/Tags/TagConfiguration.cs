@@ -1,15 +1,14 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
-using FashionFace.Repositories.Context.Models.Locations;
+using FashionFace.Repositories.Context.Models.Tags;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.Tags;
 
-public sealed class BuildingConfiguration : EntityBaseConfiguration<Building>
+public sealed class TagConfiguration : EntityBaseConfiguration<Tag>
 {
-    public override void Configure(EntityTypeBuilder<Building> builder)
+    public override void Configure(EntityTypeBuilder<Tag> builder)
     {
         base.Configure(
             builder
@@ -23,7 +22,7 @@ public sealed class BuildingConfiguration : EntityBaseConfiguration<Building>
                 "Name"
             )
             .HasColumnType(
-                "varchar(128)"
+                "varchar(32)"
             )
             .IsRequired();
     }

@@ -1,15 +1,14 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
-using FashionFace.Repositories.Context.Models.Portfolios;
+using FashionFace.Repositories.Context.Models.Profiles;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.Profiles;
 
-public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<PortfolioTag>
+public sealed class ProfileTalentConfiguration : EntityBaseConfiguration<ProfileTalent>
 {
-    public override void Configure(EntityTypeBuilder<PortfolioTag> builder)
+    public override void Configure(EntityTypeBuilder<ProfileTalent> builder)
     {
         base.Configure(
             builder
@@ -17,10 +16,10 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
 
         builder
             .Property(
-                entity => entity.PortfolioId
+                entity => entity.ProfileId
             )
             .HasColumnName(
-                "PortfolioMediaAggregateId"
+                "ProfileMediaId"
             )
             .HasColumnType(
                 "uuid"
@@ -29,10 +28,10 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
 
         builder
             .Property(
-                entity => entity.TagId
+                entity => entity.TalentId
             )
             .HasColumnName(
-                "TagId"
+                "TalentId"
             )
             .HasColumnType(
                 "uuid"
@@ -53,13 +52,13 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
 
         builder
             .HasOne(
-                entity => entity.Portfolio
+                entity => entity.Profile
             )
             .WithMany(
-                entity => entity.PortfolioTagCollection
+                entity => entity.ProfileTalentCollection
             )
             .HasForeignKey(
-                entity => entity.PortfolioId
+                entity => entity.ProfileId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -67,13 +66,13 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
 
         builder
             .HasOne(
-                entity => entity.Tag
+                entity => entity.Talent
             )
-            .WithMany(
-                entity => entity.PortfolioTagCollection
+            .WithOne(
+                entity => entity.ProfileTalent
             )
-            .HasForeignKey(
-                entity => entity.TagId
+            .HasForeignKey<ProfileTalent>(
+                entity => entity.TalentId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

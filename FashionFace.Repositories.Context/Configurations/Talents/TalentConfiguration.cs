@@ -1,11 +1,10 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.Talents;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.Talents;
 
 public sealed class TalentConfiguration : EntityBaseConfiguration<Talent>
 {

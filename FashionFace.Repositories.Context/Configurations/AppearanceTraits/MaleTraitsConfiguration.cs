@@ -1,15 +1,14 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
 using FashionFace.Repositories.Context.Models.AppearanceTraits;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.AppearanceTraits;
 
-public sealed class FemaleTraitsConfiguration : EntityBaseConfiguration<FemaleTraits>
+public sealed class MaleTraitsConfiguration : EntityBaseConfiguration<MaleTraits>
 {
-    public override void Configure(EntityTypeBuilder<FemaleTraits> builder)
+    public override void Configure(EntityTypeBuilder<MaleTraits> builder)
     {
         base.Configure(
             builder
@@ -29,10 +28,10 @@ public sealed class FemaleTraitsConfiguration : EntityBaseConfiguration<FemaleTr
 
         builder
             .Property(
-                entity => entity.BustSizeType
+                entity => entity.FacialHairLengthType
             )
             .HasColumnName(
-                "BustSizeType"
+                "FacialHairLengthType"
             )
             .HasConversion<string>()
             .HasColumnType(
@@ -45,9 +44,9 @@ public sealed class FemaleTraitsConfiguration : EntityBaseConfiguration<FemaleTr
                 entity => entity.AppearanceTraits
             )
             .WithOne(
-                entity => entity.FemaleTraits
+                entity => entity.MaleTraits
             )
-            .HasForeignKey<FemaleTraits>(
+            .HasForeignKey<MaleTraits>(
                 entity => entity.AppearanceTraitsId
             )
             .OnDelete(

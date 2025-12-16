@@ -1,15 +1,14 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models;
-using FashionFace.Repositories.Context.Models.MediaEntities;
+using FashionFace.Repositories.Context.Models.Locations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations;
+namespace FashionFace.Repositories.Context.Configurations.Locations;
 
-public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<MediaAggregateTag>
+public sealed class PlaceConfiguration : EntityBaseConfiguration<Place>
 {
-    public override void Configure(EntityTypeBuilder<MediaAggregateTag> builder)
+    public override void Configure(EntityTypeBuilder<Place> builder)
     {
         base.Configure(
             builder
@@ -17,10 +16,10 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
 
         builder
             .Property(
-                entity => entity.MediaAggregateId
+                entity => entity.BuildingId
             )
             .HasColumnName(
-                "MediaAggregateId"
+                "BuildingId"
             )
             .HasColumnType(
                 "uuid"
@@ -29,10 +28,10 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
 
         builder
             .Property(
-                entity => entity.TagId
+                entity => entity.LandmarkId
             )
             .HasColumnName(
-                "TagId"
+                "LandmarkId"
             )
             .HasColumnType(
                 "uuid"
@@ -41,25 +40,25 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
 
         builder
             .Property(
-                entity => entity.PositionIndex
+                entity => entity.Street
             )
             .HasColumnName(
-                "PositionIndex"
+                "Street"
             )
             .HasColumnType(
-                "double precision"
+                "varchar(128)"
             )
             .IsRequired();
 
         builder
             .HasOne(
-                entity => entity.MediaAggregate
+                entity => entity.Building
             )
-            .WithMany(
-                entity => entity.PortfolioMediaTagCollection
+            .WithOne(
+                entity => entity.Place
             )
-            .HasForeignKey(
-                entity => entity.MediaAggregateId
+            .HasForeignKey<Place>(
+                entity => entity.BuildingId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -67,13 +66,13 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
 
         builder
             .HasOne(
-                entity => entity.Tag
+                entity => entity.Landmark
             )
-            .WithMany(
-                entity => entity.PortfolioMediaTagCollection
+            .WithOne(
+                entity => entity.Place
             )
-            .HasForeignKey(
-                entity => entity.TagId
+            .HasForeignKey<Place>(
+                entity => entity.LandmarkId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
