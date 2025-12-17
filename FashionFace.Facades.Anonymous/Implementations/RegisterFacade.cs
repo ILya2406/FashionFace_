@@ -6,7 +6,7 @@ using FashionFace.Dependencies.Identity.Interfaces;
 using FashionFace.Facades.Anonymous.Args;
 using FashionFace.Facades.Anonymous.Interfaces;
 using FashionFace.Repositories.Context.Enums;
-using FashionFace.Repositories.Context.Models.AppearanceTraits;
+using FashionFace.Repositories.Context.Models.AppearanceTraitsEntities;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
@@ -94,19 +94,19 @@ public sealed class RegisterFacade(
 
         var maleTraits =
             new MaleTraits
-        {
-            Id =  Guid.NewGuid(),
-            AppearanceTraitsId = appearanceTraitsId,
-            FacialHairLengthType = HairLengthType.Undefined,
-        };
+            {
+                Id = Guid.NewGuid(),
+                AppearanceTraitsId = appearanceTraitsId,
+                FacialHairLengthType = HairLengthType.Undefined,
+            };
 
         var femaleTraits =
             new FemaleTraits
-        {
-            Id =  Guid.NewGuid(),
-            AppearanceTraitsId = appearanceTraitsId,
-            BustSizeType =  BustSizeType.Undefined,
-        };
+            {
+                Id = Guid.NewGuid(),
+                AppearanceTraitsId = appearanceTraitsId,
+                BustSizeType = BustSizeType.Undefined,
+            };
 
         var appearanceTraits =
             new AppearanceTraits

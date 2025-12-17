@@ -28,9 +28,18 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
 
         if (isWithIdentifier)
         {
-            var parameter = Expression.Parameter(type, "entity");
-            var property = Expression.Property(parameter, nameof(IWithIdentifier.Id));
-            var lambda = Expression.Lambda(property, parameter);
+            var parameter = Expression.Parameter(
+                type,
+                "entity"
+            );
+            var property = Expression.Property(
+                parameter,
+                nameof(IWithIdentifier.Id)
+            );
+            var lambda = Expression.Lambda(
+                property,
+                parameter
+            );
 
             builder.HasKey(
                 (dynamic)lambda
@@ -57,9 +66,18 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
 
         if (isWithIDeleted)
         {
-            var parameter = Expression.Parameter(type, "entity");
-            var property = Expression.Property(parameter, nameof(IWithIsDeleted.IsDeleted));
-            var lambda = Expression.Lambda(property, parameter);
+            var parameter = Expression.Parameter(
+                type,
+                "entity"
+            );
+            var property = Expression.Property(
+                parameter,
+                nameof(IWithIsDeleted.IsDeleted)
+            );
+            var lambda = Expression.Lambda(
+                property,
+                parameter
+            );
 
             builder
                 .Property(
@@ -82,9 +100,18 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
 
         if (isWithPositionIndex)
         {
-            var parameter = Expression.Parameter(type, "entity");
-            var property = Expression.Property(parameter, nameof(IWithPositionIndex.PositionIndex));
-            var lambda = Expression.Lambda(property, parameter);
+            var parameter = Expression.Parameter(
+                type,
+                "entity"
+            );
+            var property = Expression.Property(
+                parameter,
+                nameof(IWithPositionIndex.PositionIndex)
+            );
+            var lambda = Expression.Lambda(
+                property,
+                parameter
+            );
 
             builder
                 .Property(
@@ -97,7 +124,6 @@ public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguratio
                     "double precision"
                 )
                 .IsRequired();
-
         }
     }
 }

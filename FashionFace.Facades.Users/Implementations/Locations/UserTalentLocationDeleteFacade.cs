@@ -39,7 +39,8 @@ public sealed class UserLocationDeleteFacade(
                                 .Talent!
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (location is null)

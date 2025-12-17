@@ -13,5 +13,7 @@ public sealed class BypassGenericReadRepository(
 {
     public IQueryable<T> GetCollection<T>()
         where T : class =>
-        context.Set<T>().IgnoreQueryFilters();
+        context
+            .Set<T>()
+            .IgnoreQueryFilters();
 }

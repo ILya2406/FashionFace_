@@ -1,5 +1,3 @@
 ﻿namespace FashionFace.Controllers.Authorized.Requests.Models;
 
-public sealed record AuthorizedCityListRequest(
-    
-);
+public sealed record AuthorizedCityListRequest;

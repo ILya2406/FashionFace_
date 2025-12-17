@@ -45,7 +45,8 @@ public sealed class UserLocationUpdateFacade(
                                 .Talent!
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (location is null)
@@ -71,14 +72,14 @@ public sealed class UserLocationUpdateFacade(
                 new Building
                 {
                     Id = buildingId,
-                    Name = place?.BuildingName ??  string.Empty,
+                    Name = place?.BuildingName ?? string.Empty,
                 };
 
             var landmark =
                 new Landmark
                 {
                     Id = landmarkId,
-                    Name = place?.LandmarkName ??  string.Empty,
+                    Name = place?.LandmarkName ?? string.Empty,
                 };
 
             location.Place =
@@ -90,7 +91,6 @@ public sealed class UserLocationUpdateFacade(
                     Street = place?.Street ?? string.Empty,
                     Building = building,
                     Landmark = landmark,
-
                 };
         }
 

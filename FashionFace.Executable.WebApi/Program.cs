@@ -85,6 +85,7 @@ serviceCollection.AddLogging(
 );
 
 serviceCollection.SetupDependencies();
+
 // todo : to use BCript for legacy users
 //serviceCollection.AddScoped<IPasswordHasher<ApplicationUser>, BcryptPasswordHasher<ApplicationUser>>();
 

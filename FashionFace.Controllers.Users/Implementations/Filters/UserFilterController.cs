@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FashionFace.Controllers.Base.Attributes.Groups;
 using FashionFace.Controllers.Users.Implementations.Base;
 using FashionFace.Controllers.Users.Requests.Models.Filters;
-using FashionFace.Controllers.Users.Responses.Models.AppearanceTraits;
+using FashionFace.Controllers.Users.Responses.Models.AppearanceTraitsEntities;
 using FashionFace.Controllers.Users.Responses.Models.Filters;
 using FashionFace.Controllers.Users.Responses.Models.Locations;
 using FashionFace.Controllers.Users.Responses.Models.Portfolios;
@@ -67,7 +67,6 @@ public sealed class UserFilterController(
 
         if (userFilterLocationListItem is not null)
         {
-
             UserPlaceResponse? userPlaceResponse = null;
 
             var place =

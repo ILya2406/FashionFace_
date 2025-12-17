@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
-using FashionFace.Facades.Users.Models.AppearanceTraits;
+using FashionFace.Facades.Users.Models.AppearanceTraitsEntities;
 using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Facades.Users.Models.Locations;
 using FashionFace.Facades.Users.Models.Portfolios;
@@ -35,9 +35,15 @@ public sealed class UserFilterFacade(
         var filter =
             await
                 filterCollection
-                    .Include(entity => entity.FilterLocation)
-                    .Include(entity => entity.FilterAppearanceTraits)
-                    .Include(entity => entity.FilterTagCollection)
+                    .Include(
+                        entity => entity.FilterLocation
+                    )
+                    .Include(
+                        entity => entity.FilterAppearanceTraits
+                    )
+                    .Include(
+                        entity => entity.FilterTagCollection
+                    )
                     .FirstOrDefaultAsync(
                         entity =>
                             entity.ApplicationUserId == userId

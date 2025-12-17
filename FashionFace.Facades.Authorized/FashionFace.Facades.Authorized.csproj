@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FashionFace.Facades.Base\FashionFace.Facades.Base.csproj" />
-      <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj" />
+        <ProjectReference Include="..\FashionFace.Facades.Base\FashionFace.Facades.Base.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj"/>
     </ItemGroup>
 
 </Project>

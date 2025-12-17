@@ -23,9 +23,9 @@ public sealed class UserMediaCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
     IExceptionDescriptor exceptionDescriptor,
-    IFilePathService  filePathService,
+    IFilePathService filePathService,
     IFileCreateService fileCreateService,
-    IImageResizeService  imageResizeService,
+    IImageResizeService imageResizeService,
     IApplicationSettingsFactory applicationSettingsFactory
 ) : IUserMediaCreateFacade
 {
@@ -86,7 +86,7 @@ public sealed class UserMediaCreateFacade(
         var optimizedFile =
             new MediaFile
             {
-                Id =  optimizedFileId,
+                Id = optimizedFileId,
                 ProfileId = profile.Id,
                 RelativePath = optimizedFileRelativePath,
             };
@@ -129,14 +129,14 @@ public sealed class UserMediaCreateFacade(
         Stream originalFileStream
     )
     {
-       await using var optimizedFileStream =
+        await using var optimizedFileStream =
             imageResizeService
                 .Optimize(
                     originalFileStream
                 );
 
-       var applicationSettings =
-           applicationSettingsFactory.GetSettings();
+        var applicationSettings =
+            applicationSettingsFactory.GetSettings();
 
         var fileBasePath =
             applicationSettings.FileBasePath;

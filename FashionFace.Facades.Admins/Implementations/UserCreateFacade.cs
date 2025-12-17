@@ -7,7 +7,7 @@ using FashionFace.Facades.Admins.Args;
 using FashionFace.Facades.Admins.Interfaces;
 using FashionFace.Facades.Admins.Models;
 using FashionFace.Repositories.Context.Enums;
-using FashionFace.Repositories.Context.Models.AppearanceTraits;
+using FashionFace.Repositories.Context.Models.AppearanceTraitsEntities;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
@@ -117,7 +117,7 @@ public sealed class UserCreateFacade(
         var maleTraits =
             new MaleTraits
             {
-                Id =  Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 AppearanceTraitsId = appearanceTraitsId,
                 FacialHairLengthType = HairLengthType.Undefined,
             };
@@ -125,9 +125,9 @@ public sealed class UserCreateFacade(
         var femaleTraits =
             new FemaleTraits
             {
-                Id =  Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 AppearanceTraitsId = appearanceTraitsId,
-                BustSizeType =  BustSizeType.Undefined,
+                BustSizeType = BustSizeType.Undefined,
             };
 
         var appearanceTraits =

@@ -126,7 +126,7 @@ public sealed class UserFilterUpdateFacade(
                     {
                         Id = Guid.NewGuid(),
                         FilterAppearanceTraitsId = appearanceTraitsId,
-                        BustSizeType =  filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
+                        BustSizeType = filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
                     };
 
             filter.FilterAppearanceTraits =

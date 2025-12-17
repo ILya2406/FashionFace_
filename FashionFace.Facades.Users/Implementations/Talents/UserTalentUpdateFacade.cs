@@ -39,7 +39,8 @@ public sealed class UserTalentUpdateFacade(
                             && entity
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (talent is null)

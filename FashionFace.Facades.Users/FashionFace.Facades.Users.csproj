@@ -9,8 +9,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
-        <ProjectReference Include="..\FashionFace.Repositories.Transactions\FashionFace.Repositories.Transactions.csproj" />
-        <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj" />
+        <ProjectReference Include="..\FashionFace.Repositories.Transactions\FashionFace.Repositories.Transactions.csproj"/>
+        <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj"/>
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>
         <ProjectReference Include="..\FashionFace.Dependencies.Identity\FashionFace.Dependencies.Identity.csproj"/>
         <ProjectReference Include="..\FashionFace.Facades.Domains\FashionFace.Facades.Domains.csproj"/>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using FashionFace.Controllers.Users.Responses.Models.AppearanceTraits;
+using FashionFace.Controllers.Users.Responses.Models.AppearanceTraitsEntities;
 using FashionFace.Controllers.Users.Responses.Models.Portfolios;
 using FashionFace.Repositories.Context.Enums;
 

@@ -38,7 +38,8 @@ public sealed class UserTalentDeleteFacade(
                             && entity
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (talent is null)

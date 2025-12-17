@@ -11,10 +11,14 @@ public sealed class FilePathService : IFilePathService
     )
     {
         var fileName =
-            fileId.ToString("D");
+            fileId.ToString(
+                "D"
+            );
 
         ReadOnlySpan<string> parts =
-            fileName.Split('-');
+            fileName.Split(
+                '-'
+            );
 
         var filePath =
             $"{parts[0]}/{parts[1]}/{parts[2]}/{fileName}";
@@ -22,5 +26,4 @@ public sealed class FilePathService : IFilePathService
         return
             filePath;
     }
-
 }

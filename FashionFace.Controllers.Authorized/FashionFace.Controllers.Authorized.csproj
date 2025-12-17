@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FashionFace.Controllers.Authorized.Requests\FashionFace.Controllers.Authorized.Requests.csproj" />
-      <ProjectReference Include="..\FashionFace.Controllers.Authorized.Responses\FashionFace.Controllers.Authorized.Responses.csproj" />
-      <ProjectReference Include="..\FashionFace.Controllers.Base.Responses\FashionFace.Controllers.Base.Responses.csproj" />
-      <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj" />
-      <ProjectReference Include="..\FashionFace.Facades.Authorized\FashionFace.Facades.Authorized.csproj" />
+        <ProjectReference Include="..\FashionFace.Controllers.Authorized.Requests\FashionFace.Controllers.Authorized.Requests.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Authorized.Responses\FashionFace.Controllers.Authorized.Responses.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Base.Responses\FashionFace.Controllers.Base.Responses.csproj"/>
+        <ProjectReference Include="..\FashionFace.Controllers.Base\FashionFace.Controllers.Base.csproj"/>
+        <ProjectReference Include="..\FashionFace.Facades.Authorized\FashionFace.Facades.Authorized.csproj"/>
     </ItemGroup>
 
 </Project>

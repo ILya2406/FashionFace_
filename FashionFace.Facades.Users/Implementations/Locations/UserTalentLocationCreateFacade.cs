@@ -45,7 +45,8 @@ public sealed class UserLocationCreateFacade(
                             && entity
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (talent is null)
@@ -111,12 +112,12 @@ public sealed class UserLocationCreateFacade(
         var location =
             new Location
             {
-                Id =  Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 IsDeleted = false,
-                TalentId =  talentId,
-                LocationType =   locationType,
-                CityId =  cityId,
-                PlaceId =  placeId,
+                TalentId = talentId,
+                LocationType = locationType,
+                CityId = cityId,
+                PlaceId = placeId,
                 Place = newPlace,
             };
 

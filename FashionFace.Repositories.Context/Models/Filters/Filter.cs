@@ -8,14 +8,13 @@ using FashionFace.Repositories.Context.Models.IdentityEntities;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
-public sealed class Filter : EntityBase, IWithIsDeleted, IWithPositionIndex
+public sealed class Filter : EntityBase,
+    IWithIsDeleted,
+    IWithPositionIndex
 {
     public required Guid ApplicationUserId { get; set; }
 
-    public required bool IsDeleted { get; set; }
-
     public required string Name { get; set; }
-    public required double PositionIndex { get; set; }
     public TalentType? TalentType { get; set; }
 
     public FilterLocation? FilterLocation { get; set; }
@@ -24,4 +23,7 @@ public sealed class Filter : EntityBase, IWithIsDeleted, IWithPositionIndex
     public ICollection<FilterTag> FilterTagCollection { get; set; }
 
     public ApplicationUser? ApplicationUser { get; set; }
+
+    public required bool IsDeleted { get; set; }
+    public required double PositionIndex { get; set; }
 }

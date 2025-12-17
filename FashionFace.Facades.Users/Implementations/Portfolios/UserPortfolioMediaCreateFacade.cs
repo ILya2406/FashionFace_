@@ -43,7 +43,8 @@ public sealed class UserPortfolioMediaCreateFacade(
                                 .Talent!
                                 .ProfileTalent!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (portfolio is null)

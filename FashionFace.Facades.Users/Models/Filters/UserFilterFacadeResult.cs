@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using FashionFace.Facades.Users.Models.AppearanceTraits;
+using FashionFace.Facades.Users.Models.AppearanceTraitsEntities;
 using FashionFace.Facades.Users.Models.Portfolios;
 using FashionFace.Repositories.Context.Enums;
 

@@ -41,8 +41,8 @@ public sealed class FileCreateService : IFileCreateService
                 FileMode.Create,
                 FileAccess.Write,
                 FileShare.None,
-                bufferSize: 81920,
-                useAsync: true
+                81920,
+                true
             );
 
         await

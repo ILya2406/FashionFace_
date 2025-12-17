@@ -39,7 +39,8 @@ public sealed class UserMediaAggregateDeleteFacade(
                                 .OriginalMedia!
                                 .OriginalFile!
                                 .Profile!
-                                .ApplicationUserId == userId
+                                .ApplicationUserId
+                            == userId
                     );
 
         if (mediaAggregate is null)
