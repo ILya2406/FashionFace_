@@ -14,6 +14,8 @@ public sealed class Filter : EntityBase,
 {
     public required Guid ApplicationUserId { get; set; }
 
+    public required bool IsDeleted { get; set; }
+    public required double PositionIndex { get; set; }
     public required string Name { get; set; }
     public TalentType? TalentType { get; set; }
 
@@ -23,7 +25,5 @@ public sealed class Filter : EntityBase,
     public ICollection<FilterTag> FilterTagCollection { get; set; }
 
     public ApplicationUser? ApplicationUser { get; set; }
-
-    public required bool IsDeleted { get; set; }
-    public required double PositionIndex { get; set; }
+    public FilterResult? FilterResult { get; set; }
 }

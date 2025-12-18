@@ -15,22 +15,6 @@ public abstract class Repository(
 ) : IRepository
 {
     protected async Task<int> InvokeActionAndSaveChangesAsync<TEntity>(
-        Action<DbSet<TEntity>> action,
-        CancellationToken cancellationToken = default
-    )
-        where TEntity : class
-    {
-        InvokeActionAsync(
-            action
-        );
-
-        return
-            await SaveChangesAsync(
-                cancellationToken
-            );
-    }
-
-    protected async Task<int> InvokeActionAndSaveChangesAsync<TEntity>(
         TEntity item,
         Action<DbSet<TEntity>, TEntity> action,
         CancellationToken cancellationToken = default

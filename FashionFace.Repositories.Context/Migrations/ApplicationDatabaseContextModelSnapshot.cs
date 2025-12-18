@@ -382,6 +382,61 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.ToTable("FilterMaleTraits", (string)null);
                 });
 
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FilterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ApplicationUserId");
+
+                    b.Property<string>("FilterResultStatus")
+                        .IsRequired()
+                        .HasColumnType("varchar(64)")
+                        .HasColumnName("FilterResultStatus");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilterId")
+                        .IsUnique();
+
+                    b.ToTable("FilterResult", (string)null);
+                });
+
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterResultTalent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FilterResultId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("FilterResultId");
+
+                    b.Property<bool>("IsValidated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("IsValidated");
+
+                    b.Property<double>("PositionIndex")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("TalentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("TalentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilterResultId");
+
+                    b.HasIndex("TalentId");
+
+                    b.ToTable("FilterResultTalent", (string)null);
+                });
+
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterTag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -919,6 +974,31 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.ToTable("Talent", (string)null);
                 });
 
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Talents.TalentMediaAggregate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MediaAggregateId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("MediaAggregateId");
+
+                    b.Property<Guid>("TalentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("TalentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaAggregateId")
+                        .IsUnique();
+
+                    b.HasIndex("TalentId")
+                        .IsUnique();
+
+                    b.ToTable("TalentMediaAggregate", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -1156,6 +1236,36 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.Navigation("FilterAppearanceTraits");
                 });
 
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterResult", b =>
+                {
+                    b.HasOne("FashionFace.Repositories.Context.Models.Filters.Filter", "Filter")
+                        .WithOne("FilterResult")
+                        .HasForeignKey("FashionFace.Repositories.Context.Models.Filters.FilterResult", "FilterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Filter");
+                });
+
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterResultTalent", b =>
+                {
+                    b.HasOne("FashionFace.Repositories.Context.Models.Filters.FilterResult", "FilterResult")
+                        .WithMany("FilterResultTalentCollection")
+                        .HasForeignKey("FilterResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FashionFace.Repositories.Context.Models.Talents.Talent", "Talent")
+                        .WithMany("FilterResultTalentCollection")
+                        .HasForeignKey("TalentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FilterResult");
+
+                    b.Navigation("Talent");
+                });
+
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterTag", b =>
                 {
                     b.HasOne("FashionFace.Repositories.Context.Models.Filters.Filter", "Filter")
@@ -1165,7 +1275,7 @@ namespace FashionFace.Repositories.Context.Migrations
                         .IsRequired();
 
                     b.HasOne("FashionFace.Repositories.Context.Models.Tags.Tag", "Tag")
-                        .WithMany("FilterTagCollection")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1262,13 +1372,13 @@ namespace FashionFace.Repositories.Context.Migrations
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.MediaEntities.MediaAggregateTag", b =>
                 {
                     b.HasOne("FashionFace.Repositories.Context.Models.MediaEntities.MediaAggregate", "MediaAggregate")
-                        .WithMany("PortfolioMediaTagCollection")
+                        .WithMany()
                         .HasForeignKey("MediaAggregateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FashionFace.Repositories.Context.Models.Tags.Tag", "Tag")
-                        .WithMany("PortfolioMediaTagCollection")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1328,7 +1438,7 @@ namespace FashionFace.Repositories.Context.Migrations
                         .IsRequired();
 
                     b.HasOne("FashionFace.Repositories.Context.Models.Tags.Tag", "Tag")
-                        .WithMany("PortfolioTagCollection")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1364,6 +1474,25 @@ namespace FashionFace.Repositories.Context.Migrations
                         .IsRequired();
 
                     b.Navigation("Profile");
+
+                    b.Navigation("Talent");
+                });
+
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Talents.TalentMediaAggregate", b =>
+                {
+                    b.HasOne("FashionFace.Repositories.Context.Models.MediaEntities.MediaAggregate", "MediaAggregate")
+                        .WithOne()
+                        .HasForeignKey("FashionFace.Repositories.Context.Models.Talents.TalentMediaAggregate", "MediaAggregateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FashionFace.Repositories.Context.Models.Talents.Talent", "Talent")
+                        .WithOne("TalentMediaAggregate")
+                        .HasForeignKey("FashionFace.Repositories.Context.Models.Talents.TalentMediaAggregate", "TalentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaAggregate");
 
                     b.Navigation("Talent");
                 });
@@ -1437,6 +1566,8 @@ namespace FashionFace.Repositories.Context.Migrations
 
                     b.Navigation("FilterLocation");
 
+                    b.Navigation("FilterResult");
+
                     b.Navigation("FilterTagCollection");
                 });
 
@@ -1445,6 +1576,11 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.Navigation("FilterFemaleTraits");
 
                     b.Navigation("FilterMaleTraits");
+                });
+
+            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Filters.FilterResult", b =>
+                {
+                    b.Navigation("FilterResultTalentCollection");
                 });
 
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.Locations.Building", b =>
@@ -1471,11 +1607,6 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("FashionFace.Repositories.Context.Models.MediaEntities.MediaAggregate", b =>
-                {
-                    b.Navigation("PortfolioMediaTagCollection");
-                });
-
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.Portfolios.Portfolio", b =>
                 {
                     b.Navigation("PortfolioMediaCollection");
@@ -1494,22 +1625,17 @@ namespace FashionFace.Repositories.Context.Migrations
                     b.Navigation("ProfileTalentCollection");
                 });
 
-            modelBuilder.Entity("FashionFace.Repositories.Context.Models.Tags.Tag", b =>
-                {
-                    b.Navigation("FilterTagCollection");
-
-                    b.Navigation("PortfolioMediaTagCollection");
-
-                    b.Navigation("PortfolioTagCollection");
-                });
-
             modelBuilder.Entity("FashionFace.Repositories.Context.Models.Talents.Talent", b =>
                 {
+                    b.Navigation("FilterResultTalentCollection");
+
                     b.Navigation("LocationCollection");
 
                     b.Navigation("Portfolio");
 
                     b.Navigation("ProfileTalent");
+
+                    b.Navigation("TalentMediaAggregate");
                 });
 #pragma warning restore 612, 618
         }

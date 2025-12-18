@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Portfolios;
 
-public sealed class PortfolioMediaConfiguration : EntityBaseConfiguration<PortfolioMediaAggregate>
+public sealed class PortfolioMediaAggregateConfiguration : EntityBaseConfiguration<PortfolioMediaAggregate>
 {
     public override void Configure(EntityTypeBuilder<PortfolioMediaAggregate> builder)
     {

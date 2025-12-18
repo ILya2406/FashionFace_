@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
+public sealed class FilterResultTalentConfiguration : EntityBaseConfiguration<FilterResultTalent>
 {
-    public override void Configure(EntityTypeBuilder<FilterTag> builder)
+    public override void Configure(EntityTypeBuilder<FilterResultTalent> builder)
     {
         base.Configure(
             builder
@@ -16,10 +16,10 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .Property(
-                entity => entity.FilterId
+                entity => entity.FilterResultId
             )
             .HasColumnName(
-                "FilterMediaAggregateId"
+                "FilterResultId"
             )
             .HasColumnType(
                 "uuid"
@@ -28,10 +28,10 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .Property(
-                entity => entity.TagId
+                entity => entity.TalentId
             )
             .HasColumnName(
-                "TagId"
+                "TalentId"
             )
             .HasColumnType(
                 "uuid"
@@ -39,14 +39,29 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
             .IsRequired();
 
         builder
+            .Property(
+                entity => entity.IsValidated
+            )
+            .HasColumnName(
+                "IsValidated"
+            )
+            .HasColumnType(
+                "boolean"
+            )
+            .HasDefaultValue(
+                true
+            )
+            .IsRequired();
+
+        builder
             .HasOne(
-                entity => entity.Filter
+                entity => entity.FilterResult
             )
             .WithMany(
-                entity => entity.FilterTagCollection
+                entity => entity.FilterResultTalentCollection
             )
             .HasForeignKey(
-                entity => entity.FilterId
+                entity => entity.FilterResultId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -54,11 +69,13 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .HasOne(
-                entity => entity.Tag
+                entity => entity.Talent
             )
-            .WithMany()
+            .WithMany(
+                entity => entity.FilterResultTalentCollection
+            )
             .HasForeignKey(
-                entity => entity.TagId
+                entity => entity.TalentId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

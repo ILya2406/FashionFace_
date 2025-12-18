@@ -1,18 +1,30 @@
 ﻿using FashionFace.Repositories.Context.Configurations.Base;
-using FashionFace.Repositories.Context.Models.MediaEntities;
+using FashionFace.Repositories.Context.Models.Talents;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FashionFace.Repositories.Context.Configurations.MediaEntities;
+namespace FashionFace.Repositories.Context.Configurations.Talents;
 
-public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<MediaAggregateTag>
+public sealed class TalentMediaAggregateConfiguration : EntityBaseConfiguration<TalentMediaAggregate>
 {
-    public override void Configure(EntityTypeBuilder<MediaAggregateTag> builder)
+    public override void Configure(EntityTypeBuilder<TalentMediaAggregate> builder)
     {
         base.Configure(
             builder
         );
+
+        builder
+            .Property(
+                entity => entity.TalentId
+            )
+            .HasColumnName(
+                "TalentId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
+            .IsRequired();
 
         builder
             .Property(
@@ -27,24 +39,14 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
             .IsRequired();
 
         builder
-            .Property(
-                entity => entity.TagId
-            )
-            .HasColumnName(
-                "TagId"
-            )
-            .HasColumnType(
-                "uuid"
-            )
-            .IsRequired();
-
-        builder
             .HasOne(
-                entity => entity.MediaAggregate
+                entity => entity.Talent
             )
-            .WithMany()
-            .HasForeignKey(
-                entity => entity.MediaAggregateId
+            .WithOne(
+                entity => entity.TalentMediaAggregate
+            )
+            .HasForeignKey<TalentMediaAggregate>(
+                entity => entity.TalentId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -52,11 +54,11 @@ public sealed class MediaAggregateTagConfiguration : EntityBaseConfiguration<Med
 
         builder
             .HasOne(
-                entity => entity.Tag
+                entity => entity.MediaAggregate
             )
-            .WithMany()
-            .HasForeignKey(
-                entity => entity.TagId
+            .WithOne()
+            .HasForeignKey<TalentMediaAggregate>(
+                entity => entity.MediaAggregateId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

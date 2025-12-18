@@ -56,9 +56,7 @@ public sealed class PortfolioTagConfiguration : EntityBaseConfiguration<Portfoli
             .HasOne(
                 entity => entity.Tag
             )
-            .WithMany(
-                entity => entity.PortfolioTagCollection
-            )
+            .WithMany()
             .HasForeignKey(
                 entity => entity.TagId
             )

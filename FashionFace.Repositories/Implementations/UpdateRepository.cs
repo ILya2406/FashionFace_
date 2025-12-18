@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,46 +58,6 @@ public sealed class UpdateRepository(
         await
             InvokeActionAndSaveChangesAsync(
                 items,
-                Action,
-                cancellationToken
-            );
-    }
-
-    public async Task UpdatePropertyAsync<TEntity, TProperty>(
-        TEntity entity,
-        Expression<Func<TEntity, TProperty>> propertySelector,
-        TProperty newValue,
-        CancellationToken cancellationToken = default
-    )
-        where TEntity : class
-    {
-        void Action(
-            DbSet<TEntity> set
-        )
-        {
-            var propertySelectorBody =
-                propertySelector.Body;
-
-            var memberExpression =
-                (MemberExpression)propertySelectorBody;
-
-            var propertyName =
-                memberExpression
-                    .Member
-                    .Name;
-
-            typeof(TEntity)
-                .GetProperty(
-                    propertyName
-                )!
-                .SetValue(
-                    entity,
-                    newValue
-                );
-        }
-
-        await
-            InvokeActionAndSaveChangesAsync<TEntity>(
                 Action,
                 cancellationToken
             );

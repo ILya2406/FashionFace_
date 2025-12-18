@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
+public sealed class FilterResultConfiguration : EntityBaseConfiguration<FilterResult>
 {
-    public override void Configure(EntityTypeBuilder<FilterTag> builder)
+    public override void Configure(EntityTypeBuilder<FilterResult> builder)
     {
         base.Configure(
             builder
@@ -19,7 +19,7 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
                 entity => entity.FilterId
             )
             .HasColumnName(
-                "FilterMediaAggregateId"
+                "ApplicationUserId"
             )
             .HasColumnType(
                 "uuid"
@@ -28,13 +28,14 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .Property(
-                entity => entity.TagId
+                entity => entity.FilterResultStatus
             )
             .HasColumnName(
-                "TagId"
+                "FilterResultStatus"
             )
+            .HasConversion<string>()
             .HasColumnType(
-                "uuid"
+                "varchar(64)"
             )
             .IsRequired();
 
@@ -42,23 +43,11 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
             .HasOne(
                 entity => entity.Filter
             )
-            .WithMany(
-                entity => entity.FilterTagCollection
+            .WithOne(
+                entity => entity.FilterResult
             )
-            .HasForeignKey(
+            .HasForeignKey<FilterResult>(
                 entity => entity.FilterId
-            )
-            .OnDelete(
-                DeleteBehavior.Cascade
-            );
-
-        builder
-            .HasOne(
-                entity => entity.Tag
-            )
-            .WithMany()
-            .HasForeignKey(
-                entity => entity.TagId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
