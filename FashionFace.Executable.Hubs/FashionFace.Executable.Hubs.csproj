@@ -7,9 +7,13 @@
         <ImplicitUsings>disable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <DocumentationFile>./FashionFace.Executable.Hubs.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22"/>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
         <PackageReference Include="Serilog" Version="4.3.0"/>
         <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0"/>
@@ -24,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FashionFace.Dependencies.Redis\FashionFace.Dependencies.Redis.csproj" />
       <ProjectReference Include="..\FashionFace.Dependencies.SignalR\FashionFace.Dependencies.SignalR.csproj" />
       <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj" />
       <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj" />

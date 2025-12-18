@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Common.Extensions.Implementations;
@@ -266,9 +265,23 @@ serviceCollection
         }
     );
 
-serviceCollection.AddSignalR(
-    options => { options.AddFilter<HubExceptionsFilter>(); }
-);
+serviceCollection
+    .AddSignalR(
+        options => { options.AddFilter<HubExceptionsFilter>(); }
+    )
+    .AddRedis(
+        redisSection["Configuration"],
+        options =>
+        {
+            options.Configuration.ChannelPrefix = "signalr";
+        }
+    );
+
+serviceCollection.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisSection["Configuration"];
+    options.InstanceName =  redisSection["InstanceName"];
+});
 
 serviceCollection.SetupDependencies();
 serviceCollection.AddSingleton<IUserIdProvider, UserIdProvider>();
