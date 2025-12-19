@@ -15,6 +15,7 @@ public sealed class Filter : EntityBase,
     public required Guid ApplicationUserId { get; set; }
 
     public required bool IsDeleted { get; set; }
+    public required int Version { get; set; }
     public required double PositionIndex { get; set; }
     public required string Name { get; set; }
     public TalentType? TalentType { get; set; }

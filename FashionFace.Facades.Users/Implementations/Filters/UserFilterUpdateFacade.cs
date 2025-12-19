@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
@@ -153,6 +154,8 @@ public sealed class UserFilterUpdateFacade(
                     FilterFemaleTraits = filterFemaleTraits,
                 };
         }
+
+        filter.Version += IntegerVersionConstants.VersionShift;
 
         await
             updateRepository

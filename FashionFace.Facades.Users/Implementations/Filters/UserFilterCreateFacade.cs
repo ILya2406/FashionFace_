@@ -58,6 +58,7 @@ public sealed class UserFilterCreateFacade(
                 IsDeleted = false,
                 Name = name,
                 PositionIndex = positionIndex,
+                Version = IntegerVersionConstants.DefaultVersion,
             };
 
         await
