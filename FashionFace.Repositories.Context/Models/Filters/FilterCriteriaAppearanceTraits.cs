@@ -5,9 +5,9 @@ using FashionFace.Repositories.Context.Models.Base;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
-public sealed class FilterAppearanceTraits : EntityBase
+public sealed class FilterCriteriaAppearanceTraits : EntityBase
 {
-    public required Guid FilterId { get; set; }
+    public required Guid FilterCriteriaId { get; set; }
 
     public SexType? SexType { get; set; }
     public FaceType? FaceType { get; set; }
@@ -22,8 +22,8 @@ public sealed class FilterAppearanceTraits : EntityBase
     public JawType? JawType { get; set; }
     public int? Height { get; set; }
     public int? ShoeSize { get; set; }
-    public FilterMaleTraits? FilterMaleTraits { get; set; }
-    public FilterFemaleTraits? FilterFemaleTraits { get; set; }
+    public FilterCriteriaMaleTraits? FilterMaleTraits { get; set; }
+    public FilterCriteriaFemaleTraits? FilterFemaleTraits { get; set; }
 
-    public Filter? Filter { get; set; }
+    public FilterCriteria? FilterCriteria { get; set; }
 }

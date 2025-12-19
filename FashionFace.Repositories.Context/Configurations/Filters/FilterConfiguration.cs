@@ -28,6 +28,18 @@ public sealed class FilterConfiguration : EntityBaseConfiguration<Filter>
 
         builder
             .Property(
+                entity => entity.FilterCriteriaId
+            )
+            .HasColumnName(
+                "FilterCriteriaId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
+            .IsRequired();
+
+        builder
+            .Property(
                 entity => entity.Name
             )
             .HasColumnName(
@@ -40,14 +52,13 @@ public sealed class FilterConfiguration : EntityBaseConfiguration<Filter>
 
         builder
             .Property(
-                entity => entity.TalentType
+                entity => entity.Version
             )
             .HasColumnName(
-                "LocationType"
+                "Version"
             )
-            .HasConversion<string>()
             .HasColumnType(
-                "varchar(32)"
+                "integer"
             )
             .IsRequired();
 
@@ -58,6 +69,18 @@ public sealed class FilterConfiguration : EntityBaseConfiguration<Filter>
             .WithMany()
             .HasForeignKey(
                 entity => entity.ApplicationUserId
+            )
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
+
+        builder
+            .HasOne(
+                entity => entity.FilterCriteria
+            )
+            .WithOne()
+            .HasForeignKey<Filter>(
+                entity => entity.FilterCriteriaId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

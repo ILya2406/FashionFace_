@@ -16,5 +16,5 @@ public sealed class Place : EntityBase
     public Landmark? Landmark { get; set; }
 
     public Location? Location { get; set; }
-    public FilterLocation? FilterLocation { get; set; }
+    public FilterCriteriaLocation? FilterLocation { get; set; }
 }

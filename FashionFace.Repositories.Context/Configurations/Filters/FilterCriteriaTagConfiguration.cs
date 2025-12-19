@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
+public sealed class FilterCriteriaTagConfiguration : EntityBaseConfiguration<FilterCriteriaTag>
 {
-    public override void Configure(EntityTypeBuilder<FilterTag> builder)
+    public override void Configure(EntityTypeBuilder<FilterCriteriaTag> builder)
     {
         base.Configure(
             builder
@@ -16,10 +16,10 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .Property(
-                entity => entity.FilterId
+                entity => entity.FilterCriteriaId
             )
             .HasColumnName(
-                "FilterMediaAggregateId"
+                "FilterCriteriaId"
             )
             .HasColumnType(
                 "uuid"
@@ -40,13 +40,13 @@ public sealed class FilterTagConfiguration : EntityBaseConfiguration<FilterTag>
 
         builder
             .HasOne(
-                entity => entity.Filter
+                entity => entity.FilterCriteria
             )
             .WithMany(
-                entity => entity.FilterTagCollection
+                entity => entity.FilterCriteriaTagCollection
             )
             .HasForeignKey(
-                entity => entity.FilterId
+                entity => entity.FilterCriteriaId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

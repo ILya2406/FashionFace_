@@ -40,6 +40,9 @@ public sealed class UserFilterUpdateFacade(
         var filter =
             await
                 filterCollection
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
                     .FirstOrDefaultAsync(
                         entity =>
                             entity.ApplicationUserId == userId
@@ -61,9 +64,12 @@ public sealed class UserFilterUpdateFacade(
             filter.PositionIndex = positionIndex.Value;
         }
 
+        var filterFilterCriteria =
+            filter.FilterCriteria!;
+
         if (talentType is not null)
         {
-            filter.TalentType = talentType.Value;
+            filterFilterCriteria.TalentType = talentType.Value;
         }
 
         if (filterLocationArgs is not null)
@@ -93,11 +99,11 @@ public sealed class UserFilterUpdateFacade(
                     Landmark = landmark,
                 };
 
-            filter.FilterLocation =
+            filterFilterCriteria.FilterCriteriaLocation =
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    FilterId = filterId,
+                    FilterCriteriaId = filterFilterCriteria.Id,
                     CityId = filterLocationArgs.CityId,
                     LocationType = filterLocationArgs.LocationType,
                     PlaceId = place.Id,
@@ -113,28 +119,28 @@ public sealed class UserFilterUpdateFacade(
             var filterMaleTraits =
                 filterAppearanceTraitsArgs.FilterMaleTraits is null
                     ? null
-                    : new FilterMaleTraits
+                    : new FilterCriteriaMaleTraits
                     {
                         Id = Guid.NewGuid(),
-                        FilterAppearanceTraitsId = appearanceTraitsId,
+                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
                         FacialHairLengthType = filterAppearanceTraitsArgs.FilterMaleTraits.FacialHairLengthType,
                     };
 
             var filterFemaleTraits =
                 filterAppearanceTraitsArgs.FilterFemaleTraits is null
                     ? null
-                    : new FilterFemaleTraits
+                    : new FilterCriteriaFemaleTraits
                     {
                         Id = Guid.NewGuid(),
-                        FilterAppearanceTraitsId = appearanceTraitsId,
+                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
                         BustSizeType = filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
                     };
 
-            filter.FilterAppearanceTraits =
+            filterFilterCriteria.FilterCriteriaAppearanceTraits =
                 new()
                 {
                     Id = appearanceTraitsId,
-                    FilterId = filterId,
+                    FilterCriteriaId = filterId,
 
                     SexType = filterAppearanceTraitsArgs.SexType,
                     FaceType = filterAppearanceTraitsArgs.FaceType,

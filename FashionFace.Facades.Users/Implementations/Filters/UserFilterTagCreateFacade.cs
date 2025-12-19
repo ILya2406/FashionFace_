@@ -48,13 +48,15 @@ public sealed class UserFilterTagCreateFacade(
         }
 
         var filterTagCollection =
-            genericReadRepository.GetCollection<FilterTag>();
+            genericReadRepository.GetCollection<FilterCriteriaTag>();
 
         var filterTag =
             await
                 filterTagCollection
                     .Where(
-                        entity => entity.FilterId == filterId
+                        entity =>
+                            entity.FilterCriteriaId == filter.FilterCriteriaId
+                            && entity.TagId == tagId
                     )
                     .OrderByDescending(
                         entity => entity.PositionIndex
@@ -70,10 +72,10 @@ public sealed class UserFilterTagCreateFacade(
             + PositionIndexConstants.PositionIndexShift;
 
         var newFilterTag =
-            new FilterTag
+            new FilterCriteriaTag
             {
                 Id = Guid.NewGuid(),
-                FilterId = filterId,
+                FilterCriteriaId = filter.FilterCriteriaId,
                 TagId = tagId,
                 PositionIndex = positionIndex,
             };

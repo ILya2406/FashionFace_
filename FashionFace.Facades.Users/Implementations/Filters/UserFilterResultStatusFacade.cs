@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
 using FashionFace.Facades.Users.Models.Filters;
+using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Read.Interfaces;
 
@@ -29,10 +29,13 @@ public sealed class UserFilterResultStatusFacade(
         var filterCollection =
             genericReadRepository.GetCollection<Filter>();
 
-        var filter =
+        /*var filter =
             await
                 filterCollection
                     .Include(
+                        entity => entity.FilterTemplate
+                    )
+                    .ThenInclude(
                         entity => entity.FilterResult
                     )
                     .ThenInclude(
@@ -50,7 +53,9 @@ public sealed class UserFilterResultStatusFacade(
         }
 
         var filterFilterResult =
-            filter.FilterResult;
+            filter
+                .FilterTemplate!
+                .FilterResult;
 
         if (filterFilterResult is null)
         {
@@ -72,6 +77,11 @@ public sealed class UserFilterResultStatusFacade(
             );
 
         return
-            result;
+            result;*/
+
+        return new UserFilterResultStatusResult(
+            FilterResultStatus.Created,
+            0
+        );
     }
 }

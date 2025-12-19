@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterFemaleTraitsConfiguration : EntityBaseConfiguration<FilterFemaleTraits>
+public sealed class FilterCriteriaMaleTraitsConfiguration : EntityBaseConfiguration<FilterCriteriaMaleTraits>
 {
-    public override void Configure(EntityTypeBuilder<FilterFemaleTraits> builder)
+    public override void Configure(EntityTypeBuilder<FilterCriteriaMaleTraits> builder)
     {
         base.Configure(
             builder
@@ -16,10 +16,10 @@ public sealed class FilterFemaleTraitsConfiguration : EntityBaseConfiguration<Fi
 
         builder
             .Property(
-                entity => entity.FilterAppearanceTraitsId
+                entity => entity.FilterCriteriaAppearanceTraitsId
             )
             .HasColumnName(
-                "FilterAppearanceTraitsId"
+                "FilterCriteriaAppearanceTraitsId"
             )
             .HasColumnType(
                 "uuid"
@@ -28,10 +28,10 @@ public sealed class FilterFemaleTraitsConfiguration : EntityBaseConfiguration<Fi
 
         builder
             .Property(
-                entity => entity.BustSizeType
+                entity => entity.FacialHairLengthType
             )
             .HasColumnName(
-                "BustSizeType"
+                "FacialHairLengthType"
             )
             .HasConversion<string>()
             .HasColumnType(
@@ -41,13 +41,13 @@ public sealed class FilterFemaleTraitsConfiguration : EntityBaseConfiguration<Fi
 
         builder
             .HasOne(
-                entity => entity.FilterAppearanceTraits
+                entity => entity.FilterCriteriaAppearanceTraits
             )
             .WithOne(
-                entity => entity.FilterFemaleTraits
+                entity => entity.FilterMaleTraits
             )
-            .HasForeignKey<FilterFemaleTraits>(
-                entity => entity.FilterAppearanceTraitsId
+            .HasForeignKey<FilterCriteriaMaleTraits>(
+                entity => entity.FilterCriteriaAppearanceTraitsId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

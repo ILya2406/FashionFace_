@@ -45,20 +45,20 @@ public sealed class UserFilterTagDeleteFacade(
         }
 
         var filterTagCollection =
-            genericReadRepository.GetCollection<FilterTag>();
+            genericReadRepository.GetCollection<FilterCriteriaTag>();
 
         var filterTag =
             await
                 filterTagCollection
                     .FirstOrDefaultAsync(
                         entity =>
-                            entity.FilterId == filterId
+                            entity.FilterCriteriaId == filter.FilterCriteriaId
                             && entity.TagId == tagId
                     );
 
         if (filterTag is null)
         {
-            throw exceptionDescriptor.NotFound<FilterTag>();
+            throw exceptionDescriptor.NotFound<FilterCriteriaTag>();
         }
 
         await

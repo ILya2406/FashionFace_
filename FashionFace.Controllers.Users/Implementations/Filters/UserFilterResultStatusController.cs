@@ -20,6 +20,9 @@ public sealed class UserFilterResultStatusController(
     IUserFilterResultStatusFacade facade
 ) : BaseUserController
 {
+    [ApiExplorerSettings(
+        IgnoreApi = true
+    )]
     [HttpGet]
     public async Task<UserFilterResultStatusResponse> Invoke(
         [FromQuery] UserFilterResultStatusRequest request

@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterAppearanceTraitsConfiguration : EntityBaseConfiguration<FilterAppearanceTraits>
+public sealed class FilterCriteriaAppearanceTraitsConfiguration : EntityBaseConfiguration<FilterCriteriaAppearanceTraits>
 {
-    public override void Configure(EntityTypeBuilder<FilterAppearanceTraits> builder)
+    public override void Configure(EntityTypeBuilder<FilterCriteriaAppearanceTraits> builder)
     {
         base.Configure(
             builder
@@ -16,10 +16,10 @@ public sealed class FilterAppearanceTraitsConfiguration : EntityBaseConfiguratio
 
         builder
             .Property(
-                entity => entity.FilterId
+                entity => entity.FilterCriteriaId
             )
             .HasColumnName(
-                "FilterId"
+                "FilterCriteriaId"
             )
             .HasColumnType(
                 "uuid"
@@ -182,13 +182,13 @@ public sealed class FilterAppearanceTraitsConfiguration : EntityBaseConfiguratio
 
         builder
             .HasOne(
-                entity => entity.Filter
+                entity => entity.FilterCriteria
             )
             .WithOne(
-                entity => entity.FilterAppearanceTraits
+                entity => entity.FilterCriteriaAppearanceTraits
             )
-            .HasForeignKey<FilterAppearanceTraits>(
-                entity => entity.FilterId
+            .HasForeignKey<FilterCriteriaAppearanceTraits>(
+                entity => entity.FilterCriteriaId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

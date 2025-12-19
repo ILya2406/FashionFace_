@@ -48,7 +48,7 @@ public sealed class UserFilterStartFacade(
         var filterResultCollection =
             genericReadRepository.GetCollection<FilterResult>();
 
-        var filterResult =
+        /*var filterResult =
             await
                 filterResultCollection
                     .FirstOrDefaultAsync(
@@ -73,6 +73,6 @@ public sealed class UserFilterStartFacade(
             createRepository
                 .CreateAsync(
                     newFilterResult
-                );
+                );*/
     }
 }

@@ -5,11 +5,11 @@ using FashionFace.Repositories.Context.Models.Base;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
-public sealed class FilterFemaleTraits : EntityBase
+public sealed class FilterCriteriaFemaleTraits : EntityBase
 {
-    public required Guid FilterAppearanceTraitsId { get; set; }
+    public required Guid FilterCriteriaAppearanceTraitsId { get; set; }
 
     public required BustSizeType BustSizeType { get; set; }
 
-    public FilterAppearanceTraits? FilterAppearanceTraits { get; set; }
+    public FilterCriteriaAppearanceTraits? FilterCriteriaAppearanceTraits { get; set; }
 }

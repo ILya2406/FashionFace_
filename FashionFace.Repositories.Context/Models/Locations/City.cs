@@ -11,5 +11,5 @@ public sealed class City : EntityBase
     public required string Name { get; set; }
 
     public ICollection<Location> LocationCollection { get; set; }
-    public ICollection<FilterLocation> FilterLocationCollection { get; set; }
+    public ICollection<FilterCriteriaLocation> FilterLocationCollection { get; set; }
 }

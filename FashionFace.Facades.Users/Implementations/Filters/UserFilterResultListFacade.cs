@@ -46,6 +46,21 @@ public sealed class UserFilterResultListFacade(
             throw exceptionDescriptor.NotFound<Filter>();
         }
 
+        var filterFilterTemplateCollection =
+            genericReadRepository.GetCollection<FilterFilterTemplate>();
+
+        var filterFilterTemplate =
+            await
+                filterFilterTemplateCollection
+                    .FirstOrDefaultAsync(
+                        entity => entity.FilterId == filterId
+                    );
+
+        if (filterFilterTemplate is null)
+        {
+            throw exceptionDescriptor.NotFound<FilterFilterTemplate>();
+        }
+
         var filterResultTalentCollection =
             genericReadRepository.GetCollection<FilterResultTalent>();
 
@@ -57,8 +72,8 @@ public sealed class UserFilterResultListFacade(
                             entity.IsValidated
                             && entity
                                 .FilterResult!
-                                .FilterId
-                            == filterId
+                                .FilterTemplateId
+                            == filterFilterTemplate.FilterTemplateId
                     )
                     .OrderBy(
                         entity =>

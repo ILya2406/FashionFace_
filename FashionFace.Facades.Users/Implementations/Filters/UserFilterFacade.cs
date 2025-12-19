@@ -36,13 +36,22 @@ public sealed class UserFilterFacade(
             await
                 filterCollection
                     .Include(
-                        entity => entity.FilterLocation
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterCriteriaLocation
                     )
                     .Include(
-                        entity => entity.FilterAppearanceTraits
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterCriteriaAppearanceTraits
                     )
                     .Include(
-                        entity => entity.FilterTagCollection
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterCriteriaTagCollection
                     )
                     .FirstOrDefaultAsync(
                         entity =>
@@ -55,8 +64,17 @@ public sealed class UserFilterFacade(
             throw exceptionDescriptor.NotFound<Filter>();
         }
 
+        var filterCriteria =
+            filter.FilterCriteria!;
+
         var filterFilterLocation =
-            filter.FilterLocation;
+            filterCriteria.FilterCriteriaLocation;
+
+        var filterCriteriaAppearanceTraits =
+            filterCriteria.FilterCriteriaAppearanceTraits;
+
+        var filterCriteriaTagCollection =
+            filterCriteria.FilterCriteriaTagCollection;
 
         UserFilterLocationListItemResult? userLocationListItemResult = null;
 
@@ -107,29 +125,28 @@ public sealed class UserFilterFacade(
 
         UserAppearanceTraitsResult? userAppearanceTraitsResult = null;
 
-        if (filter.FilterAppearanceTraits is not null)
+        if (filterCriteriaAppearanceTraits is not null)
         {
             userAppearanceTraitsResult =
                 new(
-                    filter.FilterAppearanceTraits.SexType,
-                    filter.FilterAppearanceTraits.FaceType,
-                    filter.FilterAppearanceTraits.HairColorType,
-                    filter.FilterAppearanceTraits.HairType,
-                    filter.FilterAppearanceTraits.HairLengthType,
-                    filter.FilterAppearanceTraits.BodyType,
-                    filter.FilterAppearanceTraits.SkinToneType,
-                    filter.FilterAppearanceTraits.EyeShapeType,
-                    filter.FilterAppearanceTraits.EyeColorType,
-                    filter.FilterAppearanceTraits.NoseType,
-                    filter.FilterAppearanceTraits.JawType,
-                    filter.FilterAppearanceTraits.Height,
-                    filter.FilterAppearanceTraits.ShoeSize
+                    filterCriteriaAppearanceTraits.SexType,
+                    filterCriteriaAppearanceTraits.FaceType,
+                    filterCriteriaAppearanceTraits.HairColorType,
+                    filterCriteriaAppearanceTraits.HairType,
+                    filterCriteriaAppearanceTraits.HairLengthType,
+                    filterCriteriaAppearanceTraits.BodyType,
+                    filterCriteriaAppearanceTraits.SkinToneType,
+                    filterCriteriaAppearanceTraits.EyeShapeType,
+                    filterCriteriaAppearanceTraits.EyeColorType,
+                    filterCriteriaAppearanceTraits.NoseType,
+                    filterCriteriaAppearanceTraits.JawType,
+                    filterCriteriaAppearanceTraits.Height,
+                    filterCriteriaAppearanceTraits.ShoeSize
                 );
         }
 
         var tagList =
-            filter
-                .FilterTagCollection
+            filterCriteriaTagCollection
                 .Select(
                     entity =>
                         new UserTagListItemResult(
@@ -144,7 +161,7 @@ public sealed class UserFilterFacade(
                 filter.Id,
                 filter.Name,
                 filter.PositionIndex,
-                filter.TalentType,
+                filterCriteria.TalentType,
                 userLocationListItemResult,
                 userAppearanceTraitsResult,
                 tagList

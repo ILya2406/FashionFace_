@@ -50,6 +50,12 @@ public sealed class UserFilterCreateFacade(
             lastPositionIndex
             + PositionIndexConstants.PositionIndexShift;
 
+        var filterCriteria =
+            new FilterCriteria
+            {
+                Id = Guid.NewGuid(),
+            };
+
         var newFilter =
             new Filter
             {
@@ -59,6 +65,9 @@ public sealed class UserFilterCreateFacade(
                 Name = name,
                 PositionIndex = positionIndex,
                 Version = IntegerVersionConstants.DefaultVersion,
+
+                FilterCriteriaId = filterCriteria.Id,
+                FilterCriteria = filterCriteria,
             };
 
         await

@@ -6,13 +6,25 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterResultConfiguration : EntityBaseConfiguration<FilterResult>
+public sealed class FilterFilterTemplateConfiguration : EntityBaseConfiguration<FilterFilterTemplate>
 {
-    public override void Configure(EntityTypeBuilder<FilterResult> builder)
+    public override void Configure(EntityTypeBuilder<FilterFilterTemplate> builder)
     {
         base.Configure(
             builder
         );
+
+        builder
+            .Property(
+                entity => entity.FilterId
+            )
+            .HasColumnName(
+                "FilterId"
+            )
+            .HasColumnType(
+                "uuid"
+            )
+            .IsRequired();
 
         builder
             .Property(
@@ -27,26 +39,25 @@ public sealed class FilterResultConfiguration : EntityBaseConfiguration<FilterRe
             .IsRequired();
 
         builder
-            .Property(
-                entity => entity.FilterResultStatus
+            .HasOne(
+                entity => entity.Filter
             )
-            .HasColumnName(
-                "FilterResultStatus"
+            .WithOne(
             )
-            .HasConversion<string>()
-            .HasColumnType(
-                "varchar(64)"
+            .HasForeignKey<FilterFilterTemplate>(
+                entity => entity.FilterId
             )
-            .IsRequired();
+            .OnDelete(
+                DeleteBehavior.Cascade
+            );
 
         builder
             .HasOne(
                 entity => entity.FilterTemplate
             )
             .WithOne(
-                entity => entity.FilterResult
             )
-            .HasForeignKey<FilterResult>(
+            .HasForeignKey<FilterFilterTemplate>(
                 entity => entity.FilterTemplateId
             )
             .OnDelete(

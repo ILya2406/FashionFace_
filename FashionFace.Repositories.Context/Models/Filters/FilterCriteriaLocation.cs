@@ -6,15 +6,15 @@ using FashionFace.Repositories.Context.Models.Locations;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
-public sealed class FilterLocation : EntityBase
+public sealed class FilterCriteriaLocation : EntityBase
 {
+    public required Guid FilterCriteriaId { get; set; }
     public required Guid CityId { get; set; }
-    public required Guid FilterId { get; set; }
     public required Guid PlaceId { get; set; }
 
     public required LocationType LocationType { get; set; }
 
     public City? City { get; set; }
-    public Filter? Filter { get; set; }
     public Place? Place { get; set; }
+    public FilterCriteria? FilterCriteria { get; set; }
 }

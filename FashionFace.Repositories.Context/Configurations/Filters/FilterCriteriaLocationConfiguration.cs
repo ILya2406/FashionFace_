@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class FilterLocationConfiguration : EntityBaseConfiguration<FilterLocation>
+public sealed class FilterCriteriaLocationConfiguration : EntityBaseConfiguration<FilterCriteriaLocation>
 {
-    public override void Configure(EntityTypeBuilder<FilterLocation> builder)
+    public override void Configure(EntityTypeBuilder<FilterCriteriaLocation> builder)
     {
         base.Configure(
             builder
@@ -16,10 +16,10 @@ public sealed class FilterLocationConfiguration : EntityBaseConfiguration<Filter
 
         builder
             .Property(
-                entity => entity.FilterId
+                entity => entity.FilterCriteriaId
             )
             .HasColumnName(
-                "FilterId"
+                "FilterCriteriaId"
             )
             .HasColumnType(
                 "uuid"
@@ -84,7 +84,7 @@ public sealed class FilterLocationConfiguration : EntityBaseConfiguration<Filter
             .WithOne(
                 entity => entity.FilterLocation
             )
-            .HasForeignKey<FilterLocation>(
+            .HasForeignKey<FilterCriteriaLocation>(
                 entity => entity.PlaceId
             )
             .OnDelete(
@@ -93,13 +93,13 @@ public sealed class FilterLocationConfiguration : EntityBaseConfiguration<Filter
 
         builder
             .HasOne(
-                entity => entity.Filter
+                entity => entity.FilterCriteria
             )
             .WithOne(
-                entity => entity.FilterLocation
+                entity => entity.FilterCriteriaLocation
             )
-            .HasForeignKey<FilterLocation>(
-                entity => entity.FilterId
+            .HasForeignKey<FilterCriteriaLocation>(
+                entity => entity.FilterCriteriaId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
