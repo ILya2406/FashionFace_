@@ -2,7 +2,7 @@
 
 namespace FashionFace.Facades.Users.Args.Filters;
 
-public sealed record UserFilterResultListArgs(
+public sealed record UserFilterCursorDeleteArgs(
     Guid UserId,
     Guid FilterId
 );

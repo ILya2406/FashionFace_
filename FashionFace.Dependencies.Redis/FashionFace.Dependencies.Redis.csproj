@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj" />
+      <ProjectReference Include="..\FashionFace.Common.Models\FashionFace.Common.Models.csproj" />
       <ProjectReference Include="..\FashionFace.Dependencies.Serialization\FashionFace.Dependencies.Serialization.csproj" />
     </ItemGroup>
 

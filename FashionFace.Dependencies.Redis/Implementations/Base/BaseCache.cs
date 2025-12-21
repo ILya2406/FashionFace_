@@ -1,18 +1,19 @@
 using System;
+using System.Threading.Tasks;
 
 using FashionFace.Common.Extensions.Implementations;
-using FashionFace.Dependencies.Redis.Interfaces;
+using FashionFace.Common.Models.Models;
+using FashionFace.Dependencies.Redis.Interfaces.Base;
 using FashionFace.Dependencies.Serialization.Interfaces;
 
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace FashionFace.Dependencies.Redis.Implementations;
+namespace FashionFace.Dependencies.Redis.Implementations.Base;
 
 public abstract class BaseCache<TKey, TEntity>(
     IDistributedCache distributedCache,
     ISerializationDecorator serializationDecorator
-) :
-    IBaseCache<TKey, TEntity>
+) : IBaseCache<TKey, TEntity>
     where TEntity : class
 {
     private readonly DistributedCacheEntryOptions
@@ -26,7 +27,7 @@ public abstract class BaseCache<TKey, TEntity>(
                         ),
             };
 
-    public TEntity? Read(
+    public async Task<ResultContainer<TEntity>> ReadAsync(
         TKey key
     )
     {
@@ -36,19 +37,22 @@ public abstract class BaseCache<TKey, TEntity>(
             );
 
         var resultJson =
+            await
             distributedCache
-                .GetString(
+                .GetStringAsync(
                     strKey
                 );
 
         if (resultJson.IsEmpty())
         {
-            distributedCache
-                .Remove(
-                    strKey
-                );
+            var failedResultContainer =
+                ResultContainer<TEntity>
+                    .Failed(
+                        "EmptyResult"
+                    );
 
-            return default;
+            return
+                failedResultContainer;
         }
 
         var result =
@@ -57,29 +61,38 @@ public abstract class BaseCache<TKey, TEntity>(
                     resultJson
                 );
 
-        if (result == null)
+        if (result is null)
         {
+            var failedResultContainer =
+                ResultContainer<TEntity>
+                    .Failed(
+                        "InvalidResultType"
+                    );
+
+            return
+                failedResultContainer;
+        }
+
+        await
             distributedCache
-                .Remove(
+                .RefreshAsync(
                     strKey
                 );
 
-            return default;
-        }
-
-        distributedCache
-            .Refresh(
-                strKey
-            );
+        var successfulResultContainer =
+            ResultContainer<TEntity>
+                .Successful(
+                    result
+                );
 
         return
-            result;
+            successfulResultContainer;
     }
 
-    public void Set(
+    public async Task SetAsync(
         TKey key,
         TEntity response,
-        DistributedCacheEntryOptions? options = default
+        DistributedCacheEntryOptions? options = null
     )
     {
         var strKey =
@@ -96,15 +109,16 @@ public abstract class BaseCache<TKey, TEntity>(
         options ??=
             defaultOptions;
 
-        distributedCache
-            .SetString(
-                strKey,
-                responseJson,
-                options
-            );
+        await
+            distributedCache
+                .SetStringAsync(
+                    strKey,
+                    responseJson,
+                    options
+                );
     }
 
-    public void Delete(
+    public async Task DeleteAsync(
         TKey key
     )
     {
@@ -113,10 +127,11 @@ public abstract class BaseCache<TKey, TEntity>(
                 key
             );
 
-        distributedCache
-            .Remove(
-                strKey
-            );
+        await
+            distributedCache
+                .RemoveAsync(
+                    strKey
+                );
     }
 
     protected abstract string GetKey(

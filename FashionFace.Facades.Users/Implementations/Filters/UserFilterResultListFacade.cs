@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Common.Extensions.Implementations;
-using FashionFace.Facades.Base.Models;
+using FashionFace.Dependencies.Redis.Args;
+using FashionFace.Dependencies.Redis.Interfaces;
+using FashionFace.Dependencies.Redis.Models;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
-using FashionFace.Facades.Users.Models.Portfolios;
+using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Talents;
@@ -20,18 +23,17 @@ namespace FashionFace.Facades.Users.Implementations.Filters;
 
 public sealed class UserFilterResultListFacade(
     IGenericReadRepository genericReadRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IFilterCursorCache filterCursorCache
 ) : IUserFilterResultListFacade
 {
-    public async Task<ListResult<UserMediaListItemResult>> Execute(
+    public async Task<UserFilterResultListResult> Execute(
         UserFilterResultListArgs args
     )
     {
         var (
             userId,
-            filterId,
-            offset,
-            count
+            filterId
             ) = args;
 
         var filterCollection =
@@ -40,22 +42,48 @@ public sealed class UserFilterResultListFacade(
         var filter =
             await
                 filterCollection
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity.AppearanceTraits)
-                    .ThenInclude(entity => entity.Height)
-                    .ThenInclude(entity => entity.FilterRangeValue)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity.Height
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterRangeValue
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity.AppearanceTraits)
-                    .ThenInclude(entity => entity.ShoeSize)
-                    .ThenInclude(entity => entity.FilterRangeValue)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity.ShoeSize
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterRangeValue
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity.Location)
-                    .ThenInclude(entity => entity.Place)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.Location
+                    )
+                    .ThenInclude(
+                        entity => entity.Place
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity.DimensionCollection)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.DimensionCollection
+                    )
 
                     .FirstOrDefaultAsync(
                         entity =>
@@ -88,28 +116,24 @@ public sealed class UserFilterResultListFacade(
 
         var talentFilterDimensionQuery =
             talentFilterDimensionCollection
-            .Where(
-                entity =>
-                    filterCriteriaDimensionList
-                        .Any(
-                            dimensionValueId =>
-                                dimensionValueId == entity.DimensionValueId
-                        )
-            )
-            .GroupBy(
-                entity => entity.TalentId
-            )
-            .Where(
-                entity =>
-                    entity.Count() == filterCriteriaDimensionList.Count
-            )
-            .Select(
-                entity => entity.Key
-            );
-
-        var totalCount =
-            await
-                talentFilterDimensionQuery.CountAsync();
+                .Where(
+                    entity =>
+                        filterCriteriaDimensionList
+                            .Any(
+                                dimensionValueId =>
+                                    dimensionValueId == entity.DimensionValueId
+                            )
+                )
+                .GroupBy(
+                    entity => entity.TalentId
+                )
+                .Where(
+                    entity =>
+                        entity.Count() == filterCriteriaDimensionList.Count
+                )
+                .Select(
+                    entity => entity.Key
+                );
 
         var talentCollection =
             genericReadRepository.GetCollection<Talent>();
@@ -212,16 +236,44 @@ public sealed class UserFilterResultListFacade(
                             )
                 );
 
-        var talentIdMediaAggregateIdList =
+        queryable =
             queryable
                 .OrderBy(
-                    entity => entity
-                )
-                .Skip(
-                    offset
-                )
+                    entity => entity.Id
+                );
+
+        var filterCursorCacheArgs =
+            new FilterCursorCacheArgs(
+                filterId,
+                filter.Version
+            );
+
+        var cursor =
+            await
+                filterCursorCache
+                    .ReadAsync(
+                        filterCursorCacheArgs
+                    );
+
+        Guid? cursorPoint =
+            cursor.IsSuccess
+                ? cursor.Value.TalentId
+                : null;
+
+        if (cursorPoint is not null)
+        {
+            queryable =
+                queryable
+                    .Where(
+                        entity =>
+                            entity.Id > cursorPoint
+                    );
+        }
+
+        var talentIdMediaAggregateIdList =
+            queryable
                 .Take(
-                    count
+                    TalentFilterPageConstants.PageSize
                 )
                 .Select(
                     entity => new
@@ -274,7 +326,7 @@ public sealed class UserFilterResultListFacade(
                     .ToListAsync();
 
         var talentFilterDimensionList =
-            new List<UserMediaListItemResult>();
+            new List<UserFilterResultListItemResult>();
 
         foreach (var model in talentIdMediaAggregateIdList)
         {
@@ -304,10 +356,8 @@ public sealed class UserFilterResultListFacade(
 
 
             var listItem =
-                new UserMediaListItemResult(
+                new UserFilterResultListItemResult(
                     model.TalentId,
-                    offset,
-                    description,
                     relativePath
                 );
 
@@ -317,9 +367,44 @@ public sealed class UserFilterResultListFacade(
                 );
         }
 
+        var cursorLastTalentId =
+            talentFilterDimensionList
+                .LastOrDefault()?
+                .TalentId;
+
+        if (cursorLastTalentId is null)
+        {
+            await
+                filterCursorCache
+                    .DeleteAsync(
+                        filterCursorCacheArgs
+                    );
+
+            var emptyListResult =
+                new UserFilterResultListResult(
+                    []
+                );
+
+            return
+                emptyListResult;
+        }
+
+        var filterCursorCacheModel =
+            new FilterCursorCacheModel(
+                cursorLastTalentId.Value,
+                filterId,
+                filter.Version
+            );
+
+        await
+            filterCursorCache
+                .SetAsync(
+                    filterCursorCacheArgs,
+                    filterCursorCacheModel
+                );
+
         var result =
-            new ListResult<UserMediaListItemResult>(
-                totalCount,
+            new UserFilterResultListResult(
                 talentFilterDimensionList
             );
 

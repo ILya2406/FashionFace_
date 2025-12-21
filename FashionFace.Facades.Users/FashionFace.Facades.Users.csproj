@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\FashionFace.Common.Extensions.Dependencies\FashionFace.Common.Extensions.Dependencies.csproj"/>
         <ProjectReference Include="..\FashionFace.Dependencies.LinqKit\FashionFace.Dependencies.LinqKit.csproj" />
+        <ProjectReference Include="..\FashionFace.Dependencies.Redis\FashionFace.Dependencies.Redis.csproj" />
         <ProjectReference Include="..\FashionFace.Repositories.Transactions\FashionFace.Repositories.Transactions.csproj"/>
         <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj"/>
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>

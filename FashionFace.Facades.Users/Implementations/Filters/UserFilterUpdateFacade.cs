@@ -166,7 +166,7 @@ public sealed class UserFilterUpdateFacade(
                 filterAppearanceTraitsArgs.ShoeSize;
 
             FilterCriteriaShoeSize? shoeSize = null;
-            
+
             if (shoeSizeArgs is not null)
             {
                 var filterRangeValue =

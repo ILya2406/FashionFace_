@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 
 using FashionFace.Controllers.Base.Attributes.Groups;
-using FashionFace.Controllers.Base.Responses.Models;
 using FashionFace.Controllers.Users.Implementations.Base;
 using FashionFace.Controllers.Users.Requests.Models.Filters;
-using FashionFace.Controllers.Users.Responses.Models.Portfolios;
+using FashionFace.Controllers.Users.Responses.Models.Filters;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
 
@@ -23,7 +22,7 @@ public sealed class UserFilterResultListController(
 ) : BaseUserController
 {
     [HttpGet]
-    public async Task<ListResponse<UserMediaListItemResponse>> Invoke(
+    public async Task<UserFilterResultListResponse> Invoke(
         [FromQuery] UserFilterResultListRequest request
     )
     {
@@ -33,9 +32,7 @@ public sealed class UserFilterResultListController(
         var facadeArgs =
             new UserFilterResultListArgs(
                 userId,
-                request.FilterId,
-                request.Offset,
-                request.Count
+                request.FilterId
             );
 
         var result =
@@ -50,18 +47,15 @@ public sealed class UserFilterResultListController(
                 .ItemList
                 .Select(
                     entity =>
-                        new UserMediaListItemResponse(
-                            entity.Id,
-                            entity.PositionIndex,
-                            entity.Description,
-                            entity.RelativePath
+                        new UserFilterResultListItemResponse(
+                            entity.TalentId,
+                            entity.AvatarRelativePath
                         )
                 )
                 .ToList();
 
         var response =
-            new ListResponse<UserMediaListItemResponse>(
-                result.TotalCount,
+            new UserFilterResultListResponse(
                 userMediaListItemResponses
             );
 

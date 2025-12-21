@@ -1,4 +1,4 @@
-﻿namespace FashionFace.Controllers.Users.Requests.Models.Filters
+﻿namespace FashionFace.Controllers.Users.Responses.Models.Filters
 {
     public sealed record FilterRangeResponse(
         int? Min,

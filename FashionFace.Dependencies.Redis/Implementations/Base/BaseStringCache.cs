@@ -2,13 +2,12 @@
 
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace FashionFace.Dependencies.Redis.Implementations;
+namespace FashionFace.Dependencies.Redis.Implementations.Base;
 
 public abstract class BaseStringCache<TEntity>(
     IDistributedCache distributedCache,
     ISerializationDecorator serializationDecorator
-) :
-    BaseCache<string, TEntity>(
+) : BaseCache<string, TEntity>(
         distributedCache,
         serializationDecorator
     )
@@ -16,6 +15,5 @@ public abstract class BaseStringCache<TEntity>(
 {
     protected override string GetKey(
         string key
-    ) =>
-        key;
+    ) => key;
 }

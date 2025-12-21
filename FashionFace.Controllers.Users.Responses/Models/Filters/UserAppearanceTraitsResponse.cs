@@ -1,5 +1,4 @@
-﻿using FashionFace.Controllers.Users.Requests.Models.Filters;
-using FashionFace.Repositories.Context.Enums;
+﻿using FashionFace.Repositories.Context.Enums;
 
 namespace FashionFace.Controllers.Users.Responses.Models.Filters;
 

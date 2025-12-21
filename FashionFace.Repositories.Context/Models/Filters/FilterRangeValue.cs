@@ -1,6 +1,4 @@
-﻿using System;
-
-using FashionFace.Repositories.Context.Models.Base;
+﻿using FashionFace.Repositories.Context.Models.Base;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
