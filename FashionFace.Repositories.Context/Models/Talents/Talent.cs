@@ -3,7 +3,6 @@
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Interfaces;
 using FashionFace.Repositories.Context.Models.Base;
-using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.Locations;
 using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Context.Models.Profiles;
@@ -20,5 +19,4 @@ public sealed class Talent : EntityBase, IWithIsDeleted
     public ProfileTalent? ProfileTalent { get; set; }
     public TalentMediaAggregate? TalentMediaAggregate { get; set; }
     public ICollection<Location> LocationCollection { get; set; }
-    public ICollection<TalentDimensionValue> TalentDimensionValueCollection { get; set; }
 }

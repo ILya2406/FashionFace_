@@ -22,6 +22,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FashionFace.Common.Constants\FashionFace.Common.Constants.csproj" />
+      <ProjectReference Include="..\FashionFace.Dependencies.RabbitMq.Facades\FashionFace.Dependencies.RabbitMq.Facades.csproj" />
+      <ProjectReference Include="..\FashionFace.Dependencies.RabbitMq\FashionFace.Dependencies.RabbitMq.csproj" />
       <ProjectReference Include="..\FashionFace.Dependencies.Redis\FashionFace.Dependencies.Redis.csproj" />
       <ProjectReference Include="..\FashionFace.Repositories.Context\FashionFace.Repositories.Context.csproj" />
       <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj" />

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace FashionFace.Executable.Worker.FilterTemplates.Workers;
+namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public abstract class BaseBackgroundWorker<TWorker>(
     ILogger<TWorker> logger

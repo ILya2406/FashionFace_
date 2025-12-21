@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
+using FashionFace.Common.Models.Models;
 using FashionFace.Facades.Users.Args.AppearanceTraitsEntities;
 using FashionFace.Facades.Users.Interfaces.AppearanceTraitsEntities;
 using FashionFace.Repositories.Context.Models.AppearanceTraitsEntities;
@@ -9,12 +11,16 @@ using FashionFace.Repositories.Read.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
+using FashionFace.Dependencies.RabbitMq.Facades.Args;
+using FashionFace.Dependencies.RabbitMq.Facades.Interfaces;
+
 namespace FashionFace.Facades.Users.Implementations.AppearanceTraitsEntities;
 
 public sealed class UserAppearanceTraitsUpdateFacade(
     IGenericReadRepository genericReadRepository,
     IUpdateRepository updateRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IQueuePublishFacade queuePublishFacade
 ) : IUserAppearanceTraitsUpdateFacade
 {
     public async Task Execute(
@@ -133,5 +139,24 @@ public sealed class UserAppearanceTraitsUpdateFacade(
                 .UpdateAsync(
                     appearanceTraits
                 );
+
+        var eventModel =
+            new AppearanceTraitsUpdatedEventModel(
+                appearanceTraits.ProfileId
+            );
+
+        var queuePublishFacadeArgs =
+            new QueuePublishFacadeArgs<AppearanceTraitsUpdatedEventModel>(
+                eventModel,
+                RabbitMqChannelsConstants.UserProfileUpdateExchange,
+                RabbitMqChannelsConstants.UserProfileUpdateQueue
+            );
+
+        await
+            queuePublishFacade
+                .PublishAsync(
+                    queuePublishFacadeArgs
+                );
+
     }
 }

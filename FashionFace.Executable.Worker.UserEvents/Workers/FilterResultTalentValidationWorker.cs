@@ -7,7 +7,7 @@ using FashionFace.Repositories.Read.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace FashionFace.Executable.Worker.FilterTemplates.Workers;
+namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public sealed class FilterResultTalentValidationWorker(
     IGenericReadRepository genericReadRepository,

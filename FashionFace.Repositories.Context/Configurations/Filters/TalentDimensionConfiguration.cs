@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<TalentDimensionValue>
+public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<ProfileDimensionValue>
 {
-    public override void Configure(EntityTypeBuilder<TalentDimensionValue> builder)
+    public override void Configure(EntityTypeBuilder<ProfileDimensionValue> builder)
     {
         base.Configure(
             builder
@@ -28,10 +28,10 @@ public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<
 
         builder
             .Property(
-                entity => entity.TalentId
+                entity => entity.ProfileId
             )
             .HasColumnName(
-                "TalentId"
+                "ProfileId"
             )
             .HasColumnType(
                 "uuid"
@@ -52,13 +52,13 @@ public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<
 
         builder
             .HasOne(
-                entity => entity.Talent
+                entity => entity.Profile
             )
             .WithMany(
-                entity => entity.TalentDimensionValueCollection
+                entity => entity.ProfileDimensionValueCollection
             )
             .HasForeignKey(
-                entity => entity.TalentId
+                entity => entity.ProfileId
             )
             .OnDelete(
                 DeleteBehavior.Cascade
@@ -70,7 +70,7 @@ public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<
                     new
                     {
                         entity.DimensionValueId,
-                        entity.TalentId,
+                        entity.ProfileId,
                     }
             )
             .IsUnique();

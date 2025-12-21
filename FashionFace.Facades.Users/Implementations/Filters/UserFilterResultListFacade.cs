@@ -12,6 +12,7 @@ using FashionFace.Dependencies.Redis.Models;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
 using FashionFace.Facades.Users.Models.Filters;
+using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Talents;
@@ -82,6 +83,13 @@ public sealed class UserFilterResultListFacade(
                         entity => entity.FilterCriteria
                     )
                     .ThenInclude(
+                        entity => entity.TagCollection
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
                         entity => entity.DimensionCollection
                     )
 
@@ -96,55 +104,22 @@ public sealed class UserFilterResultListFacade(
             throw exceptionDescriptor.NotFound<Filter>();
         }
 
-        var filterCriteriaDimensionList =
-            filter
-                .FilterCriteria!
-                .DimensionCollection
-                .Select(
-                    entity => entity.DimensionValueId
-                )
-                .Distinct()
-                .ToList();
-
-        if (filterCriteriaDimensionList.IsEmpty())
-        {
-            throw exceptionDescriptor.NotFound<FilterCriteriaDimension>();
-        }
-
-        var talentFilterDimensionCollection =
-            genericReadRepository.GetCollection<TalentDimensionValue>();
-
-        var talentFilterDimensionQuery =
-            talentFilterDimensionCollection
-                .Where(
-                    entity =>
-                        filterCriteriaDimensionList
-                            .Any(
-                                dimensionValueId =>
-                                    dimensionValueId == entity.DimensionValueId
-                            )
-                )
-                .GroupBy(
-                    entity => entity.TalentId
-                )
-                .Where(
-                    entity =>
-                        entity.Count() == filterCriteriaDimensionList.Count
-                )
-                .Select(
-                    entity => entity.Key
-                );
-
         var talentCollection =
             genericReadRepository.GetCollection<Talent>();
 
         var queryable =
             talentCollection.AsQueryable();
 
+        var criteria =
+            filter.FilterCriteria;
+
+        if (criteria is null)
+        {
+            throw exceptionDescriptor.NotFound<FilterCriteria>();
+        }
+
         var criteriaAppearanceTraits =
-            filter
-                .FilterCriteria
-                .AppearanceTraits;
+            criteria.AppearanceTraits;
 
         if (criteriaAppearanceTraits is not null)
         {
@@ -182,9 +157,7 @@ public sealed class UserFilterResultListFacade(
         }
 
         var criteriaLocation =
-            filter
-                .FilterCriteria
-                .Location;
+            criteria.Location;
 
         if (criteriaLocation is not null)
         {
@@ -202,8 +175,7 @@ public sealed class UserFilterResultListFacade(
         }
 
         var criteriaTagList =
-            filter
-                .FilterCriteria
+            criteria
                 .TagCollection;
 
         if (criteriaTagList.IsNotEmpty())
@@ -212,29 +184,73 @@ public sealed class UserFilterResultListFacade(
                 queryable
                     .Where(
                         entity =>
-                            criteriaTagList.All(
-                                filterTag =>
-                                    entity
-                                        .Portfolio!
-                                        .PortfolioTagCollection
-                                        .Any(
-                                            portfolioTag =>
-                                                portfolioTag.Id == filterTag.Id
-                                        )
-                            )
+                            criteriaTagList
+                                .All(
+                                    filterTag =>
+                                        entity
+                                            .Portfolio!
+                                            .PortfolioTagCollection
+                                            .Any(
+                                                portfolioTag =>
+                                                    portfolioTag.Id == filterTag.Id
+                                            )
+                                )
 
                     );
         }
 
-        queryable =
-            queryable
-                .Where(
-                    entity =>
-                        talentFilterDimensionQuery
-                            .Contains(
-                                entity.Id
-                            )
-                );
+        if (criteria.TalentType == TalentType.Model)
+        {
+            var filterCriteriaDimensionList =
+                criteria
+                    .DimensionCollection
+                    .Select(
+                        entity => entity.DimensionValueId
+                    )
+                    .Distinct()
+                    .ToList();
+
+            if (filterCriteriaDimensionList.IsEmpty())
+            {
+                throw exceptionDescriptor.NotFound<FilterCriteriaDimension>();
+            }
+
+            var profileFilterDimensionCollection =
+                genericReadRepository.GetCollection<ProfileDimensionValue>();
+
+            var profileFilterDimensionQuery =
+                profileFilterDimensionCollection
+                    .Where(
+                        entity =>
+                            filterCriteriaDimensionList
+                                .Any(
+                                    dimensionValueId =>
+                                        dimensionValueId == entity.DimensionValueId
+                                )
+                    )
+                    .GroupBy(
+                        entity => entity.ProfileId
+                    )
+                    .Where(
+                        entity =>
+                            entity.Count() == filterCriteriaDimensionList.Count
+                    )
+                    .Select(
+                        entity => entity.Key
+                    );
+
+            queryable =
+                queryable
+                    .Where(
+                        entity =>
+                            profileFilterDimensionQuery
+                                .Contains(
+                                    entity
+                                        .ProfileTalent!
+                                        .ProfileId
+                                )
+                    );
+        }
 
         queryable =
             queryable

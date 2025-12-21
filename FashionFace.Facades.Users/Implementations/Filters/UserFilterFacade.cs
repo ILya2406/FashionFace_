@@ -34,22 +34,55 @@ public sealed class UserFilterFacade(
         var filter =
             await
                 filterCollection
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity!.AppearanceTraits)
-                    .ThenInclude(entity => entity!.Height)
-                    .ThenInclude(entity => entity!.FilterRangeValue)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.Height
+                    )
+                    .ThenInclude(
+                        entity => entity!.FilterRangeValue
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity!.AppearanceTraits)
-                    .ThenInclude(entity => entity!.ShoeSize)
-                    .ThenInclude(entity => entity!.FilterRangeValue)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.ShoeSize
+                    )
+                    .ThenInclude(
+                        entity => entity!.FilterRangeValue
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity!.Location)
-                    .ThenInclude(entity => entity!.Place)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.Location
+                    )
+                    .ThenInclude(
+                        entity => entity!.Place
+                    )
 
-                    .Include(entity => entity.FilterCriteria)
-                    .ThenInclude(entity => entity!.TagCollection)
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.TagCollection
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.TagCollection
+                    )
 
                     .FirstOrDefaultAsync(
                         entity =>

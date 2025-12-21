@@ -1,5 +1,9 @@
+using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Extensions.Dependencies.Implementations;
-using FashionFace.Executable.Worker.FilterTemplates.Workers;
+using FashionFace.Dependencies.RabbitMq.Facades.Interfaces;
+using FashionFace.Dependencies.RabbitMq.Interfaces;
+using FashionFace.Executable.Worker.UserEvents.Args;
+using FashionFace.Executable.Worker.UserEvents.Interfaces;
 using FashionFace.Repositories.Context;
 using FashionFace.Services.ConfigurationSettings.Models;
 
@@ -7,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using RabbitMQ.Client.Events;
 
 using Serilog;
 
@@ -86,9 +92,68 @@ serviceCollection.AddStackExchangeRedisCache(
 
 serviceCollection.SetupDependencies();
 
-builder.Services.AddHostedService<FilterResultTalentValidationWorker>();
+//builder.Services.AddHostedService<FilterResultTalentValidationWorker>();
 
 var host =
     builder.Build();
 
+var serviceProvider =
+    host.Services;
+
+var queueConnectionCreateDomainFacadeBuilder =
+    serviceProvider.GetRequiredService<IQueueConnectionCreateDomainFacadeBuilder>();
+
+var publishSubscribeChannelService =
+    serviceProvider.GetRequiredService<IPublishSubscribeChannelService>();
+
+var channelSubscribeService =
+    serviceProvider.GetRequiredService<IChannelSubscribeService>();
+
+var queueConnectionCreateDomainFacade =
+    queueConnectionCreateDomainFacadeBuilder.Build();
+
+var connection =
+    await
+        queueConnectionCreateDomainFacade.CreateAsync();
+
+var channel =
+    await
+        publishSubscribeChannelService
+            .CreateFanout(
+                connection,
+                RabbitMqChannelsConstants.UserProfileUpdateExchange,
+                RabbitMqChannelsConstants.UserProfileUpdateQueue
+            );
+
+var asyncEventHandler =
+    GetEventHandler();
+
+await
+    channelSubscribeService
+        .Subscribe(
+            channel,
+            asyncEventHandler
+        );
+
 host.Run();
+
+return;
+
+AsyncEventHandler<BasicDeliverEventArgs> GetEventHandler()
+{
+    var eventHandlerBuilderArgs =
+        new EventHandlerBuilderArgs(
+            serviceProvider
+        );
+
+    var eventHandlerBuilder =
+        serviceProvider.GetRequiredService<IUserProfileUpdatedEventHandlerBuilder>();
+
+    var asyncEventHandler =
+        eventHandlerBuilder
+            .Build(
+                eventHandlerBuilderArgs
+            );
+    return
+        asyncEventHandler;
+}
