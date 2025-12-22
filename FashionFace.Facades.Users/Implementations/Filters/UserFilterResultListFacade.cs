@@ -174,7 +174,7 @@ public sealed class UserFilterResultListFacade(
             }
 
             var profileFilterDimensionCollection =
-                genericReadRepository.GetCollection<ProfileDimensionValue>();
+                genericReadRepository.GetCollection<AppearanceTraitsDimensionValue>();
 
             var profileFilterDimensionQuery =
                 profileFilterDimensionCollection

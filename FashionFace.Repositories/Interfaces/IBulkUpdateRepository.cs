@@ -11,7 +11,7 @@ public interface IBulkUpdateRepository
 {
     Task<int> ExecuteUpdateAsync<TEntity>(
         Expression<Func<TEntity, bool>> predicate,
-        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setFunction,
+        Action<UpdateSettersBuilder<TEntity>> setPropertyCalls,
         CancellationToken cancellationToken = default
     )
         where TEntity : class;

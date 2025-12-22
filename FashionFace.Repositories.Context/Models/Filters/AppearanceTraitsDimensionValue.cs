@@ -5,7 +5,7 @@ using FashionFace.Repositories.Context.Models.Profiles;
 
 namespace FashionFace.Repositories.Context.Models.Filters;
 
-public sealed class ProfileDimensionValue : EntityBase
+public sealed class AppearanceTraitsDimensionValue : EntityBase
 {
     public required Guid ProfileId { get; set; }
     public required Guid DimensionValueId { get; set; }

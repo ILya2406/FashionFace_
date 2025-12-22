@@ -26,7 +26,7 @@ public sealed class Profile : EntityBase,
     public AppearanceTraits? AppearanceTraits { get; set; }
     public ICollection<ProfileTalent> ProfileTalentCollection { get; set; }
     public ICollection<MediaFile> MediaFileCollection { get; set; }
-    public ICollection<ProfileDimensionValue> ProfileDimensionValueCollection { get; set; }
+    public ICollection<AppearanceTraitsDimensionValue> AppearanceTraitsDimensionValueCollection { get; set; }
 
     public ApplicationUser? ApplicationUser { get; set; }
     public ProfileMediaAggregate? ProfileMediaAggregate { get; set; }

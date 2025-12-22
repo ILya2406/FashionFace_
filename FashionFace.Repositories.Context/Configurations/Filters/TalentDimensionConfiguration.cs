@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FashionFace.Repositories.Context.Configurations.Filters;
 
-public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<ProfileDimensionValue>
+public sealed class AppearanceTraitsDimensionValueConfiguration : EntityBaseConfiguration<AppearanceTraitsDimensionValue>
 {
-    public override void Configure(EntityTypeBuilder<ProfileDimensionValue> builder)
+    public override void Configure(EntityTypeBuilder<AppearanceTraitsDimensionValue> builder)
     {
         base.Configure(
             builder
@@ -55,7 +55,7 @@ public sealed class TalentDimensionValueConfiguration : EntityBaseConfiguration<
                 entity => entity.Profile
             )
             .WithMany(
-                entity => entity.ProfileDimensionValueCollection
+                entity => entity.AppearanceTraitsDimensionValueCollection
             )
             .HasForeignKey(
                 entity => entity.ProfileId

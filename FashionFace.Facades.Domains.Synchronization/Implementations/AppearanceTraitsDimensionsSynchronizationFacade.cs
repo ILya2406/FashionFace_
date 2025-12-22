@@ -55,7 +55,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
         }
 
         var talentDimensionValueCollection =
-            genericReadRepository.GetCollection<ProfileDimensionValue>();
+            genericReadRepository.GetCollection<AppearanceTraitsDimensionValue>();
 
         var talentDimensionValueList =
             await
@@ -147,7 +147,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
     }
 
     private async Task UpdateDimensionValue(
-        IReadOnlyList<ProfileDimensionValue> talentDimensionValueList,
+        IReadOnlyList<AppearanceTraitsDimensionValue> talentDimensionValueList,
         string dimensionTypeCode,
         string newDimensionValueCode,
         Guid profileId
@@ -209,7 +209,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
             }
 
             var newTalentDimensionValue =
-                new ProfileDimensionValue
+                new AppearanceTraitsDimensionValue
                 {
                     Id = Guid.NewGuid(),
                     DimensionValueId = dimensionValue.Id,

@@ -1,15 +1,7 @@
 ﻿namespace FashionFace.Common.Constants.Constants;
 
-public sealed class DimensionValuesConstants
+public sealed class AppearanceTraitsDimensionValuesConstants
 {
-    // TalentType
-    public const string Model = nameof(Model);
-    public const string Photographer = nameof(Photographer);
-
-    // LocationType
-    public const string City = nameof(City);
-    public const string Place = nameof(Place);
-
     // SexType
     public const string Male = nameof(Male);
     public const string Female = nameof(Female);

@@ -18,7 +18,7 @@ public sealed class BulkUpdateRepository(
 {
     public Task<int> ExecuteUpdateAsync<TEntity>(
         Expression<Func<TEntity, bool>> predicate,
-        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setFunction,
+        Action<UpdateSettersBuilder<TEntity>> setPropertyCalls,
         CancellationToken cancellationToken = default
     )
         where TEntity : class =>
@@ -28,7 +28,7 @@ public sealed class BulkUpdateRepository(
                 predicate
             )
             .ExecuteUpdateAsync(
-                setFunction,
+                setPropertyCalls,
                 cancellationToken
             );
 }

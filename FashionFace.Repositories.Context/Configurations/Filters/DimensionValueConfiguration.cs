@@ -46,7 +46,7 @@ public sealed class DimensionValueConfiguration : EntityBaseConfiguration<Dimens
                 entity => entity.DimensionValueCollection
             )
             .HasForeignKey(
-                entity => entity.Dimension
+                entity => entity.DimensionId
             )
             .OnDelete(
                 DeleteBehavior.Cascade

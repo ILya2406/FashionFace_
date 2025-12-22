@@ -159,28 +159,6 @@ public sealed class FilterCriteriaAppearanceTraitsConfiguration : EntityBaseConf
             );
 
         builder
-            .Property(
-                entity => entity.Height
-            )
-            .HasColumnName(
-                "Height"
-            )
-            .HasColumnType(
-                "integer"
-            );
-
-        builder
-            .Property(
-                entity => entity.ShoeSize
-            )
-            .HasColumnName(
-                "ShoeSize"
-            )
-            .HasColumnType(
-                "integer"
-            );
-
-        builder
             .HasOne(
                 entity => entity.FilterCriteria
             )

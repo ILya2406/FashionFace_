@@ -14,7 +14,7 @@ namespace FashionFace.Controllers.Users.Implementations.Filters;
 [UserControllerGroup(
     "Filter"
 )]
-[Microsoft.AspNetCore.Components.Route(
+[Route(
     "api/v1/user/filter/result/list"
 )]
 public sealed class UserFilterResultListController(
