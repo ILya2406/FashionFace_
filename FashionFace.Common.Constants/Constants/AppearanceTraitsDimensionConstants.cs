@@ -16,5 +16,4 @@ public static class AppearanceTraitsDimensionConstants
 
     public const string FaceHairLengthType = nameof(FaceHairLengthType);
     public const string BustSizeType = nameof(BustSizeType);
-
 }

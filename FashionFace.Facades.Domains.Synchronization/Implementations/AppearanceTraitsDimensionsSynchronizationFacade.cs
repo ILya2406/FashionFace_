@@ -39,8 +39,12 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
         var appearanceTraits =
             await
                 appearanceTraitsCollection
-                    .Include(entity => entity.FemaleTraits)
-                    .Include(entity => entity.MaleTraits)
+                    .Include(
+                        entity => entity.FemaleTraits
+                    )
+                    .Include(
+                        entity => entity.MaleTraits
+                    )
                     .FirstOrDefaultAsync(
                         entity => entity.ProfileId == profileId
                     );
@@ -82,14 +86,9 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
 
             await
                 UpdateDimensionValue(
-                    genericReadRepository,
-                    deleteRepository,
-                    createRepository,
-                    exceptionDescriptor,
-
                     talentDimensionValueList,
                     dimensionTypeCode,
-                    newDimensionValueCode ,
+                    newDimensionValueCode,
                     profileId
                 );
         }
@@ -108,7 +107,9 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
 
                 { AppearanceTraitsDimensionConstants.HairColorType, appearanceTraits.HairColorType.ToStringOrEmpty() },
                 { AppearanceTraitsDimensionConstants.HairType, appearanceTraits.HairType.ToStringOrEmpty() },
-                { AppearanceTraitsDimensionConstants.HairLengthType, appearanceTraits.HairLengthType.ToStringOrEmpty() },
+                {
+                    AppearanceTraitsDimensionConstants.HairLengthType, appearanceTraits.HairLengthType.ToStringOrEmpty()
+                },
 
                 { AppearanceTraitsDimensionConstants.BodyType, appearanceTraits.BodyType.ToStringOrEmpty() },
                 { AppearanceTraitsDimensionConstants.SkinToneType, appearanceTraits.SkinToneType.ToStringOrEmpty() },
@@ -145,12 +146,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
             dimensionValueTupleList;
     }
 
-    private static async Task UpdateDimensionValue(
-        IGenericReadRepository genericReadRepository,
-        IDeleteRepository deleteRepository,
-        ICreateRepository createRepository,
-        IExceptionDescriptor  exceptionDescriptor,
-
+    private async Task UpdateDimensionValue(
         IReadOnlyList<ProfileDimensionValue> talentDimensionValueList,
         string dimensionTypeCode,
         string newDimensionValueCode,
@@ -164,7 +160,8 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
                         entity
                             .DimensionValue!
                             .Dimension!
-                            .Code == dimensionTypeCode
+                            .Code
+                        == dimensionTypeCode
                 );
 
         var oldDimensionValueCode =
@@ -180,7 +177,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
             return;
         }
 
-        if(talentDimensionValue is not null)
+        if (talentDimensionValue is not null)
         {
             await
                 deleteRepository
@@ -226,5 +223,4 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
                     );
         }
     }
-
 }

@@ -1,6 +1,6 @@
 ﻿namespace FashionFace.Common.Constants.Constants;
 
-public sealed class TalentDimensionValuesConstants
+public sealed class DimensionValuesConstants
 {
     // TalentType
     public const string Model = nameof(Model);

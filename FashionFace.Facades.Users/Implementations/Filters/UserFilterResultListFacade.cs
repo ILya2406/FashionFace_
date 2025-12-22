@@ -37,67 +37,12 @@ public sealed class UserFilterResultListFacade(
             filterId
             ) = args;
 
-        var filterCollection =
-            genericReadRepository.GetCollection<Filter>();
-
         var filter =
             await
-                filterCollection
-                    .Include(
-                        entity => entity.FilterCriteria
-                    )
-                    .ThenInclude(
-                        entity => entity.AppearanceTraits
-                    )
-                    .ThenInclude(
-                        entity => entity.Height
-                    )
-                    .ThenInclude(
-                        entity => entity.FilterRangeValue
-                    )
-
-                    .Include(
-                        entity => entity.FilterCriteria
-                    )
-                    .ThenInclude(
-                        entity => entity.AppearanceTraits
-                    )
-                    .ThenInclude(
-                        entity => entity.ShoeSize
-                    )
-                    .ThenInclude(
-                        entity => entity.FilterRangeValue
-                    )
-
-                    .Include(
-                        entity => entity.FilterCriteria
-                    )
-                    .ThenInclude(
-                        entity => entity.Location
-                    )
-                    .ThenInclude(
-                        entity => entity.Place
-                    )
-
-                    .Include(
-                        entity => entity.FilterCriteria
-                    )
-                    .ThenInclude(
-                        entity => entity.TagCollection
-                    )
-
-                    .Include(
-                        entity => entity.FilterCriteria
-                    )
-                    .ThenInclude(
-                        entity => entity.DimensionCollection
-                    )
-
-                    .FirstOrDefaultAsync(
-                        entity =>
-                            entity.Id == filterId
-                            && entity.ApplicationUserId == userId
-                    );
+                GetFilter(
+                    filterId,
+                    userId
+                );
 
         if (filter is null)
         {
@@ -116,6 +61,38 @@ public sealed class UserFilterResultListFacade(
         if (criteria is null)
         {
             throw exceptionDescriptor.NotFound<FilterCriteria>();
+        }
+
+        var criteriaTalentType =
+            criteria.TalentType;
+
+        if (criteriaTalentType is not null)
+        {
+            queryable =
+                queryable
+                    .Where(
+                        entity =>
+                            entity.TalentType == criteriaTalentType
+                    );
+        }
+
+        var criteriaLocation =
+            criteria.Location;
+
+        if (criteriaLocation is not null)
+        {
+            queryable =
+                queryable
+                    .Where(
+                        entity =>
+                            entity
+                                .LocationCollection
+                                .Any(
+                                    location =>
+                                        location.LocationType == criteriaLocation.LocationType
+                                        && location.CityId == criteriaLocation.CityId
+                                )
+                    );
         }
 
         var criteriaAppearanceTraits =
@@ -156,27 +133,8 @@ public sealed class UserFilterResultListFacade(
             }
         }
 
-        var criteriaLocation =
-            criteria.Location;
-
-        if (criteriaLocation is not null)
-        {
-            queryable =
-                queryable
-                    .Where(
-                        entity =>
-                            entity
-                                .LocationCollection
-                                .Any(
-                                    location =>
-                                        location.CityId == criteriaLocation.CityId
-                                )
-                    );
-        }
-
         var criteriaTagList =
-            criteria
-                .TagCollection;
+            criteria.TagCollection;
 
         if (criteriaTagList.IsNotEmpty())
         {
@@ -426,5 +384,74 @@ public sealed class UserFilterResultListFacade(
 
         return
             result;
+    }
+
+    private async Task<Filter?> GetFilter(
+        Guid filterId,
+        Guid userId
+    )
+    {
+        var filterCollection =
+            genericReadRepository.GetCollection<Filter>();
+
+        var filter =
+            await
+                filterCollection
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity.Height
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterRangeValue
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity.ShoeSize
+                    )
+                    .ThenInclude(
+                        entity => entity.FilterRangeValue
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.Location
+                    )
+                    .ThenInclude(
+                        entity => entity.Place
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.TagCollection
+                    )
+
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity.DimensionCollection
+                    )
+
+                    .FirstOrDefaultAsync(
+                        entity =>
+                            entity.Id == filterId
+                            && entity.ApplicationUserId == userId
+                    );
+        return filter;
     }
 }
