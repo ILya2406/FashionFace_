@@ -30,7 +30,7 @@
 
 
   web_api:
-    image: fashionface.webapi
+    image: web_api
     container_name: web_api
     hostname: web_api
     build:
@@ -46,9 +46,12 @@
       - Jwt__AccessTokenExpiryMinutes=$Jwt_AccessTokenExpiryMinutes
       - Jwt__RefreshTokenExpiryDays=$Jwt_RefreshTokenExpiryDays
       - RabbitMq__Host=$RabbitMq_Host
+      - RabbitMq__VHost=$RabbitMq_VHost
       - RabbitMq__Port=$RabbitMq_Port
       - RabbitMq__UserName=$RabbitMq_UserName
       - RabbitMq__Password=$RabbitMq_Password
+      - Redis__Configuration=$Redis_Configuration
+      - Redis__InstanceName=$Redis_InstanceName
     ports:
       - "8080:8080"
     expose:
@@ -57,6 +60,40 @@
       - "${Files_Dir}:/app/files:rw"
       - "${Web_Api_Log_Dir}:/app/logs:rw"
       - files:/app/files/media:ro
+    depends_on:
+      postgres_migration:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      redis_stack:
+        condition: service_started
+    logging:
+      options:
+        max-size: $Docker_Log_Size
+    restart: unless-stopped
+    networks:
+      - app-network
+
+
+  user_event_worker:
+    image: user_event_worker
+    container_name: user_event_worker
+    hostname: user_event_worker
+    build:
+      context: .
+      dockerfile: FashionFace.Executable.Worker.UserEvents/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=$Environment
+      - Database__ConnectionString=Host=${Postgres_Host};Port=${Postgres_Port};Database=${Postgres_Db};Username=${Postgres_User};Password=${Postgres_Password};Include Error Detail=true;
+      - RabbitMq__Host=$RabbitMq_Host
+      - RabbitMq__VHost=$RabbitMq_VHost
+      - RabbitMq__Port=$RabbitMq_Port
+      - RabbitMq__UserName=$RabbitMq_UserName
+      - RabbitMq__Password=$RabbitMq_Password
+      - Redis__Configuration=$Redis_Configuration
+      - Redis__InstanceName=$Redis_InstanceName
     depends_on:
       postgres_migration:
         condition: service_completed_successfully
