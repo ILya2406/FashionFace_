@@ -2,17 +2,17 @@
 
 public static class SqlTemplateConstants
 {
-    public const string SelectByStatus =
+    public const string SelectPendingForClaim =
         """
             SELECT *
             FROM "{0}"
-            WHERE "Status" = @Status
+            WHERE "Status" = @Status and "ProcessingStartedAt" is null
             ORDER BY "MessageCreatedAt"
             FOR UPDATE SKIP LOCKED
             LIMIT @BatchCount
         """;
 
-    public const string SelectClaimedRetry =
+    public const string SelectClaimedForRetry =
         """
             SELECT *
             FROM "{0}"

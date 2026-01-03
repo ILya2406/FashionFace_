@@ -19,7 +19,7 @@ public sealed class UserToUserChatMessageOutbox : EntityBase, IOutbox
     public required DateTime MessageCreatedAt { get; set; }
     public required OutboxStatus Status { get; set; }
     public required int AttemptCount { get; set; }
-    public required DateTime ProcessingStartedAt { get; set; }
+    public required DateTime? ProcessingStartedAt { get; set; }
 
     public UserToUserChat? Chat { get; set; }
     public ApplicationUser? InitiatorUser { get; set; }

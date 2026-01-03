@@ -8,5 +8,5 @@ public interface IOutbox
 {
     OutboxStatus Status { get; set; }
     int AttemptCount { get; set; }
-    DateTime ProcessingStartedAt { get; set; }
+    DateTime? ProcessingStartedAt { get; set; }
 }

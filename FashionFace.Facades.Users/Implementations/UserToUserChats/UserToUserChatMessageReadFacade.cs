@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
+using FashionFace.Dependencies.SignalR.Interfaces;
+using FashionFace.Dependencies.SignalR.Models;
 using FashionFace.Facades.Users.Args.UserToUserChats;
 using FashionFace.Facades.Users.Interfaces.UserToUserChats;
 using FashionFace.Repositories.Context.Models.UserToUserChats;
@@ -15,7 +17,8 @@ namespace FashionFace.Facades.Users.Implementations.UserToUserChats;
 public sealed class UserToUserChatMessageReadFacade(
     IGenericReadRepository genericReadRepository,
     IExceptionDescriptor exceptionDescriptor,
-    IUpdateRepository updateRepository
+    IUpdateRepository updateRepository,
+    IUserToUserChatNotificationsHubService  userToUserChatNotificationsHubService
 ) : IUserToUserChatMessageReadFacade
 {
     public async Task Execute(
@@ -23,7 +26,6 @@ public sealed class UserToUserChatMessageReadFacade(
     )
     {
         var (userId, messageId) = args;
-
 
         var userToUserChatMessageCollection =
             genericReadRepository.GetCollection<UserToUserChatMessage>();
@@ -95,5 +97,34 @@ public sealed class UserToUserChatMessageReadFacade(
                 .UpdateAsync(
                     userToUserChatProfile
                 );
+
+        var targetUserIdList =
+            userToUserChat
+                .UserCollection
+                .Where(
+                    entity =>
+                        entity.ApplicationUserId != userId
+                )
+                .Select(
+                    entity => entity.ApplicationUserId
+                )
+                .ToList();
+
+        var messageReadMessage =
+            new MessageReadMessage(
+                chatId,
+                userId,
+                messageId
+            );
+
+        foreach (var targetUserId in targetUserIdList)
+        {
+            await
+                userToUserChatNotificationsHubService
+                    .NotifyMessageRead(
+                        targetUserId,
+                        messageReadMessage
+                    );
+        }
     }
 }

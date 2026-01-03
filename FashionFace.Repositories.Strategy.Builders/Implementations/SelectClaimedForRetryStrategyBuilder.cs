@@ -11,7 +11,7 @@ using FashionFace.Repositories.Strategy.Builders.Interfaces;
 
 namespace FashionFace.Repositories.Strategy.Builders.Implementations;
 
-public sealed class SelectClaimedRetryStrategyBuilder : ISelectClaimedRetryStrategyBuilder
+public sealed class SelectClaimedForRetryStrategyBuilder : ISelectClaimedRetryStrategyBuilder
 {
     public OutboxBatchStrategyArgs Build<TEntity>(
         SelectClaimedRetryStrategyBuilderArgs args
@@ -26,7 +26,7 @@ public sealed class SelectClaimedRetryStrategyBuilder : ISelectClaimedRetryStrat
         var sql =
             string
                 .Format(
-                    SqlTemplateConstants.SelectClaimedRetry,
+                    SqlTemplateConstants.SelectClaimedForRetry,
                     TableName
                 );
 

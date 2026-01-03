@@ -10,7 +10,7 @@ using FashionFace.Repositories.Strategy.Builders.Interfaces;
 
 namespace FashionFace.Repositories.Strategy.Builders.Implementations;
 
-public sealed class SelectPendingStrategyBuilder : ISelectPendingStrategyBuilder
+public sealed class SelectPendingForClaimStrategyBuilder : ISelectPendingStrategyBuilder
 {
     public OutboxBatchStrategyArgs Build<TEntity>(
         SelectPendingStrategyBuilderArgs args
@@ -23,7 +23,7 @@ public sealed class SelectPendingStrategyBuilder : ISelectPendingStrategyBuilder
         var sql =
             string
                 .Format(
-                    SqlTemplateConstants.SelectByStatus,
+                    SqlTemplateConstants.SelectPendingForClaim,
                     TableName
                 );
 

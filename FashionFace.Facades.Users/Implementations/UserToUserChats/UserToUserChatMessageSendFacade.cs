@@ -7,9 +7,11 @@ using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.UserToUserChats;
 using FashionFace.Facades.Users.Interfaces.UserToUserChats;
 using FashionFace.Facades.Users.Models.UserToUserChats;
+using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.UserToUserChats;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Repositories.Transactions.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +20,8 @@ namespace FashionFace.Facades.Users.Implementations.UserToUserChats;
 public sealed class UserToUserChatMessageSendFacade(
     IGenericReadRepository genericReadRepository,
     IExceptionDescriptor exceptionDescriptor,
-    ICreateRepository createRepository
+    ICreateRepository createRepository,
+    ITransactionManager  transactionManager
 ) : IUserToUserChatMessageSendFacade
 {
     public async Task<UserToUserChatMessageSendResult> Execute(
@@ -88,22 +91,67 @@ public sealed class UserToUserChatMessageSendFacade(
                 Value =  message,
             };
 
+        var createdAt =
+            DateTime.UtcNow;
+
         var userToUserChatMessage =
             new UserToUserChatMessage
             {
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
-                CreatedAt =  DateTime.UtcNow,
+                CreatedAt =  createdAt,
                 PositionIndex = positionIndex,
                 MessageId = messageId,
                 Message = userToUserMessage,
             };
+
+        var userToUserChatMessageOutboxList =
+            userToUserChat
+                .UserCollection
+                .Where(
+                    entity =>
+                        entity.ApplicationUserId != userId
+                )
+                .Select(
+                    entity => entity.ApplicationUserId
+                )
+                .Select(
+                    targetUserId =>
+                        new UserToUserChatMessageOutbox
+                        {
+                            Id = Guid.NewGuid(),
+                            ChatId = chatId,
+                            MessageId = messageId,
+                            MessageValue = message,
+                            MessagePositionIndex = positionIndex,
+                            MessageCreatedAt = createdAt,
+                            InitiatorUserId = userId,
+                            TargetUserId = targetUserId,
+                            AttemptCount = 0,
+                            Status = OutboxStatus.Pending,
+                            ProcessingStartedAt = null,
+                        }
+                )
+                .ToList();
+
+        using var transaction =
+            await
+                transactionManager.BeginTransaction();
 
         await
             createRepository
                 .CreateAsync(
                     userToUserChatMessage
                 );
+
+        await
+            createRepository
+                .CreateCollectionAsync(
+                    userToUserChatMessageOutboxList
+                );
+
+        await
+            transaction.CommitAsync();
 
         var result =
             new UserToUserChatMessageSendResult(
