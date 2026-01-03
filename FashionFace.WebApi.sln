@@ -121,6 +121,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Dependencies.Ra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Facades.Domains.Synchronization", "FashionFace.Facades.Domains.Synchronization\FashionFace.Facades.Domains.Synchronization.csproj", "{45806B55-050D-424D-8B93-63543EFD22A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FashionFace.Repositories.Strategy", "FashionFace.Repositories.Strategy\FashionFace.Repositories.Strategy.csproj", "{CF0F767E-5A55-4B62-8C9A-E7C763F67C88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +333,10 @@ Global
 		{45806B55-050D-424D-8B93-63543EFD22A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45806B55-050D-424D-8B93-63543EFD22A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45806B55-050D-424D-8B93-63543EFD22A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF0F767E-5A55-4B62-8C9A-E7C763F67C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF0F767E-5A55-4B62-8C9A-E7C763F67C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF0F767E-5A55-4B62-8C9A-E7C763F67C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF0F767E-5A55-4B62-8C9A-E7C763F67C88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACE0776C-AE27-4DA0-BE79-83CDC1DA5748} = {8B56EEFF-7026-4D28-9A8E-499765367DC5}
@@ -384,5 +390,6 @@ Global
 		{6DE941FF-9F61-462E-9C5D-66E167D69EF8} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 		{629CB6A4-8827-49D4-9CD0-A9F6C83D15C4} = {E43C653E-C18F-4866-9F1E-638925A315E4}
 		{45806B55-050D-424D-8B93-63543EFD22A0} = {41DF6FDC-46B1-4610-A756-B8E1251FC2A8}
+		{CF0F767E-5A55-4B62-8C9A-E7C763F67C88} = {86DF73FB-6AE1-40CF-9536-D1E91D39D2E2}
 	EndGlobalSection
 EndGlobal

@@ -273,7 +273,8 @@ serviceCollection
         redisSection["Configuration"],
         options =>
         {
-            options.Configuration.ChannelPrefix = "signalr";
+            options.Configuration.ChannelPrefix =
+                $"signalr:{builder.Environment.EnvironmentName}";
         }
     );
 
@@ -304,6 +305,9 @@ app.MapHub<UserNotificationHub>($"/hubs/{nameof(UserNotificationHub)}")
     .RequireAuthorization();
 
 app.MapHub<AdminNotificationHub>($"/hubs/{nameof(AdminNotificationHub)}")
+    .RequireAuthorization();
+
+app.MapHub<UserToUserChatNotificationHub>($"/hubs/{nameof(UserToUserChatNotificationHub)}")
     .RequireAuthorization();
 
 app.Run();
