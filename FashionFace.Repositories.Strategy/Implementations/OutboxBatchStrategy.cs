@@ -61,9 +61,28 @@ public sealed class OutboxBatchStrategy<TEntity>(
 
     public async Task MakeDoneAsync(
         TEntity entity
+    ) =>
+        await
+            SetOutboxStatusAsync(
+                entity,
+                OutboxStatus.Done
+            );
+
+    public async Task MakeFailedAsync(
+        TEntity entity
+    ) =>
+        await
+            SetOutboxStatusAsync(
+                entity,
+                OutboxStatus.Failed
+            );
+
+    private async Task SetOutboxStatusAsync(
+        TEntity entity,
+        OutboxStatus outboxStatus
     )
     {
-        entity.OutboxStatus = OutboxStatus.Done;
+        entity.OutboxStatus = outboxStatus;
 
         await
             updateRepository

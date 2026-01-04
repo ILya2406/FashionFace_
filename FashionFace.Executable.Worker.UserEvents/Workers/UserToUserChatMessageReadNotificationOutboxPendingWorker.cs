@@ -13,33 +13,31 @@ using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
-public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker(
+public sealed class UserToUserChatMessageReadNotificationOutboxPendingWorker(
     IUserToUserChatNotificationsHubService userToUserChatNotificationsHubService,
-    IOutboxBatchStrategy<UserToUserChatMessageSendNotificationOutbox> outboxBatchStrategy,
-    ISelectClaimedRetryStrategyBuilder selectClaimedRetryStrategyBuilder,
-    ILogger<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker> logger
-) : BaseBackgroundWorker<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker>(
+    IOutboxBatchStrategy<UserToUserChatMessageReadNotificationOutbox> outboxBatchStrategy,
+    ISelectPendingStrategyBuilder selectPendingStrategyBuilder,
+    ILogger<UserToUserChatMessageReadNotificationOutboxPendingWorker> logger
+) : BaseBackgroundWorker<UserToUserChatMessageReadNotificationOutboxPendingWorker>(
     logger
 )
 {
     private const int CycleDelayInSeconds = 5;
-    private const int RetryDelayMinutes = 5;
     private const int BatchCount = 5;
 
     protected override async Task DoWorkAsync(
         CancellationToken cancellationToken
     )
     {
-        var selectClaimedRetryStrategyBuilderArgs =
-            new SelectClaimedRetryStrategyBuilderArgs(
-                BatchCount,
-                RetryDelayMinutes
+        var selectPendingStrategyBuilderArgs =
+            new SelectPendingStrategyBuilderArgs(
+                BatchCount
             );
 
         var outboxBatchStrategyArgs =
-            selectClaimedRetryStrategyBuilder
-                .Build<UserToUserChatMessageSendNotificationOutbox>(
-                    selectClaimedRetryStrategyBuilderArgs
+            selectPendingStrategyBuilder
+                .Build<UserToUserChatMessageReadNotificationOutbox>(
+                    selectPendingStrategyBuilderArgs
                 );
 
         var outboxList =
@@ -56,14 +54,11 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
         foreach (var outbox in outboxList)
         {
-            var messageReceivedMessage =
-                new MessageReceivedMessage(
+            var messageReadMessage =
+                new MessageReadMessage(
                     outbox.ChatId,
                     outbox.InitiatorUserId,
-                    outbox.MessageId,
-                    outbox.MessageValue,
-                    outbox.MessagePositionIndex,
-                    outbox.MessageCreatedAt
+                    outbox.MessageId
                 );
 
             if (cancellationToken.IsCancellationRequested)
@@ -73,9 +68,9 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
             await
                 userToUserChatNotificationsHubService
-                    .NotifyMessageReceived(
+                    .NotifyMessageRead(
                         outbox.TargetUserId,
-                        messageReceivedMessage
+                        messageReadMessage
                     );
 
             await

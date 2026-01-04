@@ -5,4 +5,5 @@ public enum OutboxStatus
     Pending,
     Claimed,
     Done,
+    Failed,
 }

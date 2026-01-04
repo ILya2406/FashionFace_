@@ -84,23 +84,23 @@ public sealed class UserToUserChatMessageSendFacade(
         var messageId =
             Guid.NewGuid();
 
+        var createdAt =
+            DateTime.UtcNow;
+
         var userToUserMessage =
             new UserToUserMessage
             {
                 Id = messageId,
                 ApplicationUserId = userId,
                 Value =  message,
+                CreatedAt =  createdAt,
             };
-
-        var createdAt =
-            DateTime.UtcNow;
 
         var userToUserChatMessage =
             new UserToUserChatMessage
             {
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
-                CreatedAt =  createdAt,
                 PositionIndex = positionIndex,
                 MessageId = messageId,
                 Message = userToUserMessage,
@@ -139,7 +139,7 @@ public sealed class UserToUserChatMessageSendFacade(
 
         var result =
             new UserToUserChatMessageSendResult(
-                userToUserChatMessage.MessageId
+                messageId
             );
 
         return

@@ -13,12 +13,12 @@ using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
-public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker(
+public sealed class UserToUserChatMessageReadNotificationOutboxClaimedRetryWorker(
     IUserToUserChatNotificationsHubService userToUserChatNotificationsHubService,
-    IOutboxBatchStrategy<UserToUserChatMessageSendNotificationOutbox> outboxBatchStrategy,
+    IOutboxBatchStrategy<UserToUserChatMessageReadNotificationOutbox> outboxBatchStrategy,
     ISelectClaimedRetryStrategyBuilder selectClaimedRetryStrategyBuilder,
-    ILogger<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker> logger
-) : BaseBackgroundWorker<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker>(
+    ILogger<UserToUserChatMessageReadNotificationOutboxClaimedRetryWorker> logger
+) : BaseBackgroundWorker<UserToUserChatMessageReadNotificationOutboxClaimedRetryWorker>(
     logger
 )
 {
@@ -38,7 +38,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
         var outboxBatchStrategyArgs =
             selectClaimedRetryStrategyBuilder
-                .Build<UserToUserChatMessageSendNotificationOutbox>(
+                .Build<UserToUserChatMessageReadNotificationOutbox>(
                     selectClaimedRetryStrategyBuilderArgs
                 );
 
@@ -56,14 +56,11 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
         foreach (var outbox in outboxList)
         {
-            var messageReceivedMessage =
-                new MessageReceivedMessage(
+            var messageReadMessage =
+                new MessageReadMessage(
                     outbox.ChatId,
                     outbox.InitiatorUserId,
-                    outbox.MessageId,
-                    outbox.MessageValue,
-                    outbox.MessagePositionIndex,
-                    outbox.MessageCreatedAt
+                    outbox.MessageId
                 );
 
             if (cancellationToken.IsCancellationRequested)
@@ -73,9 +70,9 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
             await
                 userToUserChatNotificationsHubService
-                    .NotifyMessageReceived(
+                    .NotifyMessageRead(
                         outbox.TargetUserId,
-                        messageReceivedMessage
+                        messageReadMessage
                     );
 
             await

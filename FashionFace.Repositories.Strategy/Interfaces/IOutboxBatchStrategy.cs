@@ -16,4 +16,8 @@ public interface IOutboxBatchStrategy<TEntity>
     Task MakeDoneAsync(
         TEntity entity
     );
+
+    Task MakeFailedAsync(
+        TEntity entity
+    );
 }

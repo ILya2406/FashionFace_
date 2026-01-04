@@ -40,7 +40,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
                     selectPendingStrategyBuilderArgs
                 );
 
-        var userToUserChatMessageOutboxList =
+        var outboxList =
             await
                 outboxBatchStrategy
                     .ClaimBatchAsync(
@@ -52,16 +52,16 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
             return;
         }
 
-        foreach (var userToUserChatMessageOutbox in userToUserChatMessageOutboxList)
+        foreach (var outbox in outboxList)
         {
             var messageReceivedMessage =
                 new MessageReceivedMessage(
-                    userToUserChatMessageOutbox.ChatId,
-                    userToUserChatMessageOutbox.InitiatorUserId,
-                    userToUserChatMessageOutbox.MessageId,
-                    userToUserChatMessageOutbox.MessageValue,
-                    userToUserChatMessageOutbox.MessagePositionIndex,
-                    userToUserChatMessageOutbox.MessageCreatedAt
+                    outbox.ChatId,
+                    outbox.InitiatorUserId,
+                    outbox.MessageId,
+                    outbox.MessageValue,
+                    outbox.MessagePositionIndex,
+                    outbox.MessageCreatedAt
                 );
 
             if (cancellationToken.IsCancellationRequested)
@@ -72,14 +72,14 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
             await
                 userToUserChatNotificationsHubService
                     .NotifyMessageReceived(
-                        userToUserChatMessageOutbox.TargetUserId,
+                        outbox.TargetUserId,
                         messageReceivedMessage
                     );
 
             await
                 outboxBatchStrategy
                     .MakeDoneAsync(
-                        userToUserChatMessageOutbox
+                        outbox
                     );
         }
     }
