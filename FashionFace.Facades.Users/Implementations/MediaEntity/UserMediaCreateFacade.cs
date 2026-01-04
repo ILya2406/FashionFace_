@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
@@ -26,7 +25,8 @@ public sealed class UserMediaCreateFacade(
     IFilePathService filePathService,
     IFileCreateService fileCreateService,
     IImageResizeService imageResizeService,
-    IApplicationSettingsFactory applicationSettingsFactory
+    IApplicationSettingsFactory applicationSettingsFactory,
+    IGuidGenerator guidGenerator
 ) : IUserMediaCreateFacade
 {
     public async Task<UserMediaCreateResult> Execute(
@@ -55,13 +55,13 @@ public sealed class UserMediaCreateFacade(
         }
 
         var mediaId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var originalFileId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var optimizedFileId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var originalFileRelativePath =
             filePathService

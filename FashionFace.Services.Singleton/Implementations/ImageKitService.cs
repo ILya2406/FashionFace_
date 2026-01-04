@@ -16,7 +16,8 @@ namespace FashionFace.Services.Singleton.Implementations;
 
 public sealed class ImageKitService(
     ILoggerDecorator loggerDecorator,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IGuidGenerator guidGenerator
 ) : IImageKitService
 {
     private const string UploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
@@ -29,7 +30,7 @@ public sealed class ImageKitService(
     {
         var tmpInput = Path.Combine(
             Path.GetTempPath(),
-            Guid.NewGuid() + ".tmp"
+            guidGenerator.GetNew() + ".tmp"
         );
         File.WriteAllBytes(
             tmpInput,
@@ -76,7 +77,7 @@ public sealed class ImageKitService(
 
             var tmpOutput = Path.Combine(
                 Path.GetTempPath(),
-                Guid.NewGuid() + ".jpg"
+                guidGenerator.GetNew() + ".jpg"
             );
 
             using var outputStream = File.OpenWrite(

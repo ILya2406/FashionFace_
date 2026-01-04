@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.MediaAggregates;
@@ -9,6 +8,7 @@ using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,8 @@ namespace FashionFace.Facades.Users.Implementations.MediaAggregates;
 public sealed class UserMediaAggregateCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IGuidGenerator guidGenerator
 ) : IUserMediaAggregateCreateFacade
 {
     public async Task<UserMediaAggregateCreateResult> Execute(
@@ -60,7 +61,7 @@ public sealed class UserMediaAggregateCreateFacade(
         }
 
         var mediaAggregateId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var mediaAggregate =
             new MediaAggregate

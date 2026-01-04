@@ -16,6 +16,7 @@
         <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj" />
         <ProjectReference Include="..\FashionFace.Services.ConfigurationSettings\FashionFace.Services.ConfigurationSettings.csproj"/>
         <ProjectReference Include="..\FashionFace.Facades.Base\FashionFace.Facades.Base.csproj"/>
+        <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj" />
     </ItemGroup>
 
     <ItemGroup>

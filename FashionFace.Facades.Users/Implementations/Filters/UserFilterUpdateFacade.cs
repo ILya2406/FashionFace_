@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
@@ -9,6 +8,7 @@ using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.Locations;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,8 @@ namespace FashionFace.Facades.Users.Implementations.Filters;
 public sealed class UserFilterUpdateFacade(
     IGenericReadRepository genericReadRepository,
     IUpdateRepository updateRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IGuidGenerator guidGenerator
 ) : IUserFilterUpdateFacade
 {
     public async Task Execute(
@@ -77,21 +78,21 @@ public sealed class UserFilterUpdateFacade(
             var building =
                 new Building
                 {
-                    Id = Guid.NewGuid(),
+                    Id = guidGenerator.GetNew(),
                     Name = "",
                 };
 
             var landmark =
                 new Landmark
                 {
-                    Id = Guid.NewGuid(),
+                    Id = guidGenerator.GetNew(),
                     Name = "",
                 };
 
             var place =
                 new Place
                 {
-                    Id = Guid.NewGuid(),
+                    Id = guidGenerator.GetNew(),
                     Street = "",
                     BuildingId = building.Id,
                     LandmarkId = landmark.Id,
@@ -102,7 +103,7 @@ public sealed class UserFilterUpdateFacade(
             filterFilterCriteria.Location =
                 new()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = guidGenerator.GetNew(),
                     FilterCriteriaId = filterFilterCriteria.Id,
                     CityId = filterLocationArgs.CityId,
                     LocationType = filterLocationArgs.LocationType,
@@ -114,14 +115,14 @@ public sealed class UserFilterUpdateFacade(
         if (filterAppearanceTraitsArgs is not null)
         {
             var appearanceTraitsId =
-                Guid.NewGuid();
+                guidGenerator.GetNew();
 
             var filterMaleTraits =
                 filterAppearanceTraitsArgs.FilterMaleTraits is null
                     ? null
                     : new FilterCriteriaMaleTraits
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
                         FacialHairLengthType = filterAppearanceTraitsArgs.FilterMaleTraits.FacialHairLengthType,
                     };
@@ -131,7 +132,7 @@ public sealed class UserFilterUpdateFacade(
                     ? null
                     : new FilterCriteriaFemaleTraits
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
                         BustSizeType = filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
                     };
@@ -146,7 +147,7 @@ public sealed class UserFilterUpdateFacade(
                 var filterRangeValue =
                     new FilterRangeValue
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         Min = heightArgs.Min,
                         Max = heightArgs.Max,
                     };
@@ -154,7 +155,7 @@ public sealed class UserFilterUpdateFacade(
                 height =
                     new()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
 
                         FilterRangeValue = filterRangeValue,
@@ -172,7 +173,7 @@ public sealed class UserFilterUpdateFacade(
                 var filterRangeValue =
                     new FilterRangeValue
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         Min = shoeSizeArgs.Min,
                         Max = shoeSizeArgs.Max,
                     };
@@ -180,7 +181,7 @@ public sealed class UserFilterUpdateFacade(
                 shoeSize =
                     new()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = guidGenerator.GetNew(),
                         FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
 
                         FilterRangeValue = filterRangeValue,

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
@@ -11,6 +10,7 @@ using FashionFace.Repositories.Context.Models.UserToUserChats;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +21,8 @@ public sealed class UserToUserChatMessageReadFacade(
     IExceptionDescriptor exceptionDescriptor,
     IUpdateRepository updateRepository,
     ICreateRepository createRepository,
-    ITransactionManager  transactionManager
+    ITransactionManager  transactionManager,
+    IGuidGenerator guidGenerator
 ) : IUserToUserChatMessageReadFacade
 {
     public async Task Execute(
@@ -98,7 +99,7 @@ public sealed class UserToUserChatMessageReadFacade(
         var userToUserChatMessageOutbox =
             new UserToUserChatMessageReadOutbox
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 ChatId = chatId,
                 MessageId = messageId,
                 InitiatorUserId = userId,

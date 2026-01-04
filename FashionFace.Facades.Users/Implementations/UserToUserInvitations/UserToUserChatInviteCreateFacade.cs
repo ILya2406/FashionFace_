@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Facades.Users.Args.UserToUserInvitations;
 using FashionFace.Facades.Users.Interfaces.UserToUserInvitations;
@@ -8,6 +7,7 @@ using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.UserToUserChats;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,9 @@ namespace FashionFace.Facades.Users.Implementations.UserToUserInvitations;
 
 public sealed class UserToUserChatInvitationCreateFacade(
     IGenericReadRepository genericReadRepository,
-    ICreateRepository createRepository
+    ICreateRepository createRepository,
+    IDateTimePicker dateTimePicker,
+    IGuidGenerator guidGenerator
 ) : IUserToUserChatInvitationCreateFacade
 {
     public async Task<UserToUserChatInvitationCreateResult> Execute(
@@ -53,11 +55,11 @@ public sealed class UserToUserChatInvitationCreateFacade(
         var newUserToUserChatInvitation =
             new UserToUserChatInvitation
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 InitiatorUserId = userId,
                 TargetUserId = targetUserId,
                 Status = ChatInvitationStatus.Created,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = dateTimePicker.GetUtcNow(),
             };
 
         await

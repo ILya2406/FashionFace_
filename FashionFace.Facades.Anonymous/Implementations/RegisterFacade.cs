@@ -11,6 +11,7 @@ using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using static FashionFace.Common.Constants.Constants.UserRoleConstants;
 
@@ -21,7 +22,9 @@ public sealed class RegisterFacade(
     IRoleManagerDecorator roleManagerDecorator,
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
-    ITransactionManager transactionManager
+    ITransactionManager transactionManager,
+    IDateTimePicker dateTimePicker,
+    IGuidGenerator guidGenerator
 ) : IRegisterFacade
 {
     public async Task Execute(
@@ -125,7 +128,7 @@ public sealed class RegisterFacade(
                 Id = profileId,
                 IsDeleted = false,
                 ApplicationUserId = applicationUser.Id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = dateTimePicker.GetUtcNow(),
                 AgeCategoryType = AgeCategoryType.Minor,
                 Name = string.Empty,
                 Description = string.Empty,

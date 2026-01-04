@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Dependencies.Identity.Interfaces;
@@ -12,6 +11,7 @@ using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using static FashionFace.Common.Constants.Constants.UserRoleConstants;
 using static FashionFace.Common.Exceptions.Constants.ExceptionConstants;
@@ -23,7 +23,9 @@ public sealed class UserCreateFacade(
     IRoleManagerDecorator roleManagerDecorator,
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
-    ITransactionManager transactionManager
+    ITransactionManager transactionManager,
+    IDateTimePicker dateTimePicker,
+    IGuidGenerator guidGenerator
 ) : IUserCreateFacade
 {
     public async Task<UserCreateResult> Execute(UserCreateArgs args)
@@ -108,16 +110,16 @@ public sealed class UserCreateFacade(
         }
 
         var profileId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
 
         var appearanceTraitsId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var maleTraits =
             new MaleTraits
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 AppearanceTraitsId = appearanceTraitsId,
                 FacialHairLengthType = HairLengthType.Undefined,
             };
@@ -125,7 +127,7 @@ public sealed class UserCreateFacade(
         var femaleTraits =
             new FemaleTraits
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 AppearanceTraitsId = appearanceTraitsId,
                 BustSizeType = BustSizeType.Undefined,
             };
@@ -143,10 +145,10 @@ public sealed class UserCreateFacade(
         var profile =
             new Profile
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 IsDeleted = false,
                 ApplicationUserId = applicationUser.Id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = dateTimePicker.GetUtcNow(),
                 AgeCategoryType = ageCategoryType,
                 Name = name,
                 Description = description,

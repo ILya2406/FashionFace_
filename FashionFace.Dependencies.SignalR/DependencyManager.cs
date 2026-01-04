@@ -2,8 +2,6 @@ using System.Collections.Generic;
 
 using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Common.Extensions.Dependencies.Models;
-using FashionFace.Dependencies.SignalR.Implementations;
-using FashionFace.Dependencies.SignalR.Interfaces;
 
 namespace FashionFace.Dependencies.SignalR;
 

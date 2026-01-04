@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using FashionFace.Repositories.Context.Enums;
@@ -8,6 +7,7 @@ using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Strategy.Args;
 using FashionFace.Repositories.Strategy.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,8 @@ namespace FashionFace.Repositories.Strategy.Implementations;
 public sealed class OutboxBatchStrategy<TEntity>(
     IExecuteRepository executeRepository,
     IUpdateRepository updateRepository,
-    ITransactionManager transactionManager
+    ITransactionManager transactionManager,
+    IDateTimePicker dateTimePicker
 ) : IOutboxBatchStrategy<TEntity>
     where TEntity : class, IOutbox
 {
@@ -43,7 +44,7 @@ public sealed class OutboxBatchStrategy<TEntity>(
         {
             entity.AttemptCount++;
             entity.OutboxStatus = OutboxStatus.Claimed;
-            entity.ProcessingStartedAt = DateTime.UtcNow;
+            entity.ProcessingStartedAt = dateTimePicker.GetUtcNow();
         }
 
         await

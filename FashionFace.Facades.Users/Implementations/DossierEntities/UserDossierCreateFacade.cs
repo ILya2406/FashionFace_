@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.DossierEntities;
@@ -8,6 +7,7 @@ using FashionFace.Repositories.Context.Models.DossierEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,8 @@ namespace FashionFace.Facades.Users.Implementations.DossierEntities;
 public sealed class UserDossierCreateFacade(
     IGenericReadRepository genericReadRepository,
     IUpdateRepository updateRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IGuidGenerator guidGenerator
 ) : IUserDossierCreateFacade
 {
     public async Task Execute(
@@ -61,7 +62,7 @@ public sealed class UserDossierCreateFacade(
         var newDossier =
             new Dossier
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 ProfileId = profile.Id,
                 IsDeleted = false,
             };

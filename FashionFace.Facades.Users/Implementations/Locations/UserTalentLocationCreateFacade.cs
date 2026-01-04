@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Locations;
@@ -10,6 +9,7 @@ using FashionFace.Repositories.Context.Models.Locations;
 using FashionFace.Repositories.Context.Models.Talents;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,8 @@ namespace FashionFace.Facades.Users.Implementations.Locations;
 public sealed class UserLocationCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IGuidGenerator guidGenerator
 ) : IUserLocationCreateFacade
 {
     public async Task<UserLocationCreateResult> Execute(
@@ -76,10 +77,10 @@ public sealed class UserLocationCreateFacade(
                 : string.Empty;
 
         var buildingId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var landmarkId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var building =
             new Building
@@ -96,7 +97,7 @@ public sealed class UserLocationCreateFacade(
             };
 
         var placeId =
-            Guid.NewGuid();
+            guidGenerator.GetNew();
 
         var newPlace =
             new Place
@@ -112,7 +113,7 @@ public sealed class UserLocationCreateFacade(
         var location =
             new Location
             {
-                Id = Guid.NewGuid(),
+                Id = guidGenerator.GetNew(),
                 IsDeleted = false,
                 TalentId = talentId,
                 LocationType = locationType,

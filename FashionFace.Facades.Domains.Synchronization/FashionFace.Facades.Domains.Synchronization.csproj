@@ -12,6 +12,7 @@
       <ProjectReference Include="..\FashionFace.Common.Exceptions\FashionFace.Common.Exceptions.csproj" />
       <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj" />
       <ProjectReference Include="..\FashionFace.Repositories\FashionFace.Repositories.csproj" />
+      <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj" />
     </ItemGroup>
 
 </Project>

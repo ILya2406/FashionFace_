@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Locations;
@@ -8,6 +7,7 @@ using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.Locations;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,8 @@ public sealed class UserLocationUpdateFacade(
     IGenericReadRepository genericReadRepository,
     IExceptionDescriptor exceptionDescriptor,
     IUpdateRepository updateRepository,
-    IDeleteRepository deleteRepository
+    IDeleteRepository deleteRepository,
+    IGuidGenerator guidGenerator
 ) : IUserLocationUpdateFacade
 {
     public async Task Execute(
@@ -63,10 +64,10 @@ public sealed class UserLocationUpdateFacade(
         if (locationType == LocationType.Place)
         {
             var buildingId =
-                Guid.NewGuid();
+                guidGenerator.GetNew();
 
             var landmarkId =
-                Guid.NewGuid();
+                guidGenerator.GetNew();
 
             var building =
                 new Building
@@ -85,7 +86,7 @@ public sealed class UserLocationUpdateFacade(
             location.Place =
                 new()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = guidGenerator.GetNew(),
                     BuildingId = buildingId,
                     LandmarkId = landmarkId,
                     Street = place?.Street ?? string.Empty,

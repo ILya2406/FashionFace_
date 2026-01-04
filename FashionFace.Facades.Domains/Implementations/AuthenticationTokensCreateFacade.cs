@@ -12,6 +12,7 @@ using FashionFace.Facades.Domains.Interfaces;
 using FashionFace.Facades.Domains.Models;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Services.ConfigurationSettings.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,7 +22,8 @@ public sealed class AuthenticationModelCreateFacade(
     IJwtSettingsFactory jwtSettingsFactory,
     IRoleManagerDecorator roleManagerDecorator,
     IUserManagerDecorator userManagerDecorator,
-    IExceptionDescriptor exceptionDescriptor
+    IExceptionDescriptor exceptionDescriptor,
+    IDateTimePicker dateTimePicker
 ) : IAuthenticationModelCreateFacade
 {
     public async Task<AuthenticationModel> Execute(
@@ -99,7 +101,7 @@ public sealed class AuthenticationModelCreateFacade(
                 jwtSettings.Issuer,
                 jwtSettings.Audience,
                 claims,
-                DateTime.UtcNow,
+                dateTimePicker.GetUtcNow(),
                 refreshTokenExpiresAt,
                 signingCredentials
             );
@@ -116,7 +118,7 @@ public sealed class AuthenticationModelCreateFacade(
                 jwtSettings.Issuer,
                 jwtSettings.Audience,
                 claims,
-                DateTime.UtcNow,
+                dateTimePicker.GetUtcNow(),
                 accessTokenExpiresAt,
                 signingCredentials
             );
