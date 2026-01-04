@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using FashionFace.Common.Extensions.Dependencies.Implementations;
 using FashionFace.Common.Extensions.Dependencies.Models;
 using FashionFace.Dependencies.SignalR.Implementations;
 using FashionFace.Dependencies.SignalR.Interfaces;
@@ -10,7 +11,8 @@ public sealed class DependencyManager :
     IDependencyManager
 {
     public IReadOnlyList<DependencyBase> GetDependencies() =>
-    [
+        typeof(Serialization.DependencyManager).GetSingletonDependencies();
+    /*[
         new ScopeDependency(
             typeof(IUserNotificationsHubService),
             typeof(UserNotificationsHubService)
@@ -19,5 +21,9 @@ public sealed class DependencyManager :
             typeof(IAdminNotificationsHubService),
             typeof(AdminNotificationsHubService)
         ),
-    ];
+        new ScopeDependency(
+            typeof(IUserToUserChatNotificationsHubService),
+            typeof(UserToUserChatNotificationsHubService)
+        ),
+    ];*/
 }

@@ -43,7 +43,7 @@ public sealed class UserToUserChatInvitationConfiguration : EntityConfigurationB
                 entity => entity.Status
             )
             .HasColumnName(
-                "OutboxStatus"
+                "Status"
             )
             .HasConversion<string>()
             .HasColumnType(
