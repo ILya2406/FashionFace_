@@ -50,7 +50,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "Id"
+                    nameof(IWithIdentifier.Id)
                 )
                 .HasColumnType(
                     "uuid"
@@ -84,7 +84,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "IsDeleted"
+                    nameof(IWithIsDeleted.IsDeleted)
                 )
                 .HasColumnType(
                     "boolean"
@@ -118,7 +118,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "PositionIndex"
+                    nameof(IWithPositionIndex.PositionIndex)
                 )
                 .HasColumnType(
                     "double precision"
@@ -152,7 +152,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "CreatedAt"
+                    nameof(IWithCreatedAt.CreatedAt)
                 )
                 .HasColumnType(
                     "timestamp with time zone"
@@ -186,7 +186,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "OutboxStatus"
+                    nameof(IWithOutboxStatus.OutboxStatus)
                 )
                 .HasConversion<string>()
                 .HasColumnType(
@@ -221,7 +221,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "AttemptCount"
+                    nameof(IWithAttemptCount.AttemptCount)
                 )
                 .HasColumnType(
                     "integer"
@@ -255,7 +255,7 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                     (dynamic)lambda
                 )
                 .HasColumnName(
-                    "ProcessingStartedAt"
+                    nameof(IWithProcessingStartedAt.ProcessingStartedAt)
                 )
                 .HasColumnType(
                     "timestamp with time zone"

@@ -62,7 +62,6 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
                     outbox.InitiatorUserId,
                     outbox.MessageId,
                     outbox.MessageValue,
-                    outbox.MessagePositionIndex,
                     outbox.MessageCreatedAt
                 );
 

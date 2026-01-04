@@ -14,7 +14,7 @@ public sealed class UserToUserChatApplicationUser : EntityBase
     public required ChatMemberType Type { get; set; }
     public required ChatMemberStatus Status { get; set; }
 
-    public required double LastReadMessagePositionIndex { get; set; }
+    public required DateTime LastReadAt { get; set; }
 
     public ApplicationUser? ApplicationUser  { get; set; }
     public UserToUserChat? Chat { get; set; }

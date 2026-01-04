@@ -67,7 +67,7 @@ public sealed class UserToUserChatMessageListFacade(
                         predicate
                     )
                     .OrderByDescending(
-                        entity => entity.PositionIndex
+                        entity => entity.CreatedAt
                     )
                     .Skip(
                         offset

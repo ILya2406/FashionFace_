@@ -77,18 +77,6 @@ public sealed class UserToUserChatMessageSendNotificationOutboxConfiguration :
 
         builder
             .Property(
-                entity => entity.MessagePositionIndex
-            )
-            .HasColumnName(
-                "PositionIndex"
-            )
-            .HasColumnType(
-                "double precision"
-            )
-            .IsRequired();
-
-        builder
-            .Property(
                 entity => entity.MessageCreatedAt
             )
             .HasColumnName(

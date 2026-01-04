@@ -92,8 +92,8 @@ public sealed class UserToUserChatMessageReadFacade(
             throw exceptionDescriptor.NotFound<UserToUserChatApplicationUser>();
         }
 
-        userToUserChatProfile.LastReadMessagePositionIndex =
-            message.PositionIndex;
+        userToUserChatProfile.LastReadAt =
+            message.CreatedAt;
 
         var userToUserChatMessageOutbox =
             new UserToUserChatMessageReadOutbox

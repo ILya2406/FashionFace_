@@ -7,6 +7,5 @@ public sealed record MessageReceivedMessage(
     Guid UserId,
     Guid MessageId,
     string MessageValue,
-    double MessagePositionIndex,
     DateTime MessageCreatedAt
 );

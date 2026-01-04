@@ -66,13 +66,13 @@ public sealed class UserToUserChatApplicationUserConfiguration : EntityConfigura
 
         builder
             .Property(
-                entity => entity.LastReadMessagePositionIndex
+                entity => entity.LastReadAt
             )
             .HasColumnName(
-                "LastReadMessagePositionIndex"
+                "LastReadAt"
             )
             .HasColumnType(
-                "double precision"
+                "timestamp with time zone"
             )
             .IsRequired();
 

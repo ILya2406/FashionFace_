@@ -58,29 +58,6 @@ public sealed class UserToUserChatMessageSendFacade(
             throw exceptionDescriptor.NotFound<UserToUserChat>();
         }
 
-        var userToUserChatMessageCollection =
-            genericReadRepository.GetCollection<UserToUserChatMessage>();
-
-        var lastMessagePositionIndex =
-            await
-                userToUserChatMessageCollection
-                    .Where(
-                        entity =>
-                            entity.ChatId == chatId
-                    )
-                    .OrderByDescending(
-                        entity => entity.PositionIndex
-                    )
-                    .FirstOrDefaultAsync();
-
-        var lastPositionIndex =
-            lastMessagePositionIndex?.PositionIndex
-            ?? PositionIndexConstants.DefaultPositionIndex;
-
-        var positionIndex =
-            lastPositionIndex
-            + PositionIndexConstants.PositionIndexShift;
-
         var messageId =
             Guid.NewGuid();
 
@@ -101,9 +78,9 @@ public sealed class UserToUserChatMessageSendFacade(
             {
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
-                PositionIndex = positionIndex,
                 MessageId = messageId,
                 Message = userToUserMessage,
+                CreatedAt = createdAt,
             };
 
         var userToUserChatMessageOutbox =

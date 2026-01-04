@@ -60,7 +60,6 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
                     outbox.InitiatorUserId,
                     outbox.MessageId,
                     outbox.MessageValue,
-                    outbox.MessagePositionIndex,
                     outbox.MessageCreatedAt
                 );
 

@@ -70,7 +70,7 @@ public sealed class UserToUserChatInvitationAcceptFacade(
                     Id = Guid.NewGuid(),
                     ChatId = chatId,
                     Status = ChatMemberStatus.Active,
-                    LastReadMessagePositionIndex = 0,
+                    LastReadAt = DateTime.UtcNow,
                     ApplicationUserId = userToUserChatInvitation.InitiatorUserId,
                     Type = ChatMemberType.Creator,
 
@@ -80,7 +80,7 @@ public sealed class UserToUserChatInvitationAcceptFacade(
                     Id = Guid.NewGuid(),
                     ChatId = chatId,
                     Status = ChatMemberStatus.Active,
-                    LastReadMessagePositionIndex = 0,
+                    LastReadAt = DateTime.UtcNow,
                     ApplicationUserId = userToUserChatInvitation.TargetUserId,
                     Type = ChatMemberType.Member,
 

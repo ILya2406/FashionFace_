@@ -138,18 +138,14 @@ public sealed class UserToUserChatMessageSendOutboxClaimedRetryWorker(
                 continue;
             }
 
-            var message =
-                userToUserChatMessage
-                    .Message!
-                    .Value;
+            var chatMessage =
+                userToUserChatMessage.Message!;
 
-            var positionIndex =
-                userToUserChatMessage.PositionIndex;
+            var message =
+                chatMessage.Value;
 
             var createdAt =
-                userToUserChatMessage
-                    .Message
-                    .CreatedAt;
+                chatMessage.CreatedAt;
 
             var userToUserChatMessageSendNotificationOutboxList =
                 userToUserChat
@@ -169,7 +165,6 @@ public sealed class UserToUserChatMessageSendOutboxClaimedRetryWorker(
                                 ChatId = chatId,
                                 MessageId = messageId,
                                 MessageValue = message,
-                                MessagePositionIndex = positionIndex,
                                 MessageCreatedAt = createdAt,
                                 InitiatorUserId = initiatorUserId,
                                 TargetUserId = targetUserId,
