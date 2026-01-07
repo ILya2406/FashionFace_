@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 using FashionFace.Common.Exceptions.Interfaces;
@@ -8,7 +9,6 @@ using FashionFace.Executable.Worker.UserEvents.Args;
 using FashionFace.Executable.Worker.UserEvents.Interfaces;
 using FashionFace.Facades.Domains.Synchronization.Args;
 using FashionFace.Facades.Domains.Synchronization.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,13 +47,10 @@ public sealed class UserProfileUpdatedEventHandlerBuilder : IUserProfileUpdatedE
             var talentDimensionSynchronizer =
                 serviceProvider.GetRequiredService<IAppearanceTraitsDimensionsSynchronizationFacade>();
 
-            var guidGenerator =
-                serviceProvider.GetRequiredService<IGuidGenerator>();
-
             var dictionary =
                 new Dictionary<string, object>
                 {
-                    { "HandleId", guidGenerator.GetNew() },
+                    { "HandleId", Guid.NewGuid() },
                 };
 
             using var loggerScope =

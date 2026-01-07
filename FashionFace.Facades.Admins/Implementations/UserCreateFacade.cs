@@ -1,3 +1,5 @@
+using System;
+using FashionFace.Services.Singleton.Interfaces;
 ﻿using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
@@ -11,11 +13,8 @@ using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
-
 using static FashionFace.Common.Constants.Constants.UserRoleConstants;
 using static FashionFace.Common.Exceptions.Constants.ExceptionConstants;
-
 namespace FashionFace.Facades.Admins.Implementations;
 
 public sealed class UserCreateFacade(
@@ -24,9 +23,8 @@ public sealed class UserCreateFacade(
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
     ITransactionManager transactionManager,
-    IDateTimePicker dateTimePicker,
-    IGuidGenerator guidGenerator
-) : IUserCreateFacade
+    IDateTimePicker dateTimePicker
+): IUserCreateFacade
 {
     public async Task<UserCreateResult> Execute(UserCreateArgs args)
     {
@@ -110,16 +108,16 @@ public sealed class UserCreateFacade(
         }
 
         var profileId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
 
         var appearanceTraitsId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
         var maleTraits =
             new MaleTraits
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 AppearanceTraitsId = appearanceTraitsId,
                 FacialHairLengthType = HairLengthType.Undefined,
             };
@@ -127,7 +125,7 @@ public sealed class UserCreateFacade(
         var femaleTraits =
             new FemaleTraits
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 AppearanceTraitsId = appearanceTraitsId,
                 BustSizeType = BustSizeType.Undefined,
             };
@@ -145,7 +143,7 @@ public sealed class UserCreateFacade(
         var profile =
             new Profile
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 IsDeleted = false,
                 ApplicationUserId = applicationUser.Id,
                 CreatedAt = dateTimePicker.GetUtcNow(),

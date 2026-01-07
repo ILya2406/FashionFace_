@@ -1,6 +1,7 @@
+using System;
+using FashionFace.Services.Singleton.Interfaces;
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.UserToUserInvitations;
 using FashionFace.Facades.Users.Interfaces.UserToUserInvitations;
@@ -10,10 +11,7 @@ using FashionFace.Repositories.Context.Models.UserToUserChats;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
-
 using Microsoft.EntityFrameworkCore;
-
 namespace FashionFace.Facades.Users.Implementations.UserToUserInvitations;
 
 public sealed class UserToUserChatInvitationAcceptFacade(
@@ -22,9 +20,8 @@ public sealed class UserToUserChatInvitationAcceptFacade(
     IUpdateRepository updateRepository,
     ICreateRepository createRepository,
     ITransactionManager transactionManager,
-    IDateTimePicker dateTimePicker,
-    IGuidGenerator guidGenerator
-) : IUserToUserChatInvitationAcceptFacade
+    IDateTimePicker dateTimePicker
+): IUserToUserChatInvitationAcceptFacade
 {
     public async Task<UserToUserChatInvitationAcceptResult> Execute(
         UserToUserChatInvitationAcceptArgs args
@@ -54,12 +51,12 @@ public sealed class UserToUserChatInvitationAcceptFacade(
             ChatInvitationStatus.Accepted;
 
         var chatId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
         var userToUserChatSettings =
             new UserToUserChatSettings
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 ChatId = chatId,
                 ChatType = UserToUserChatType.Direct,
             };
@@ -69,7 +66,7 @@ public sealed class UserToUserChatInvitationAcceptFacade(
             {
                 new()
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     ChatId = chatId,
                     Status = ChatMemberStatus.Active,
                     LastReadAt = dateTimePicker.GetUtcNow(),
@@ -79,7 +76,7 @@ public sealed class UserToUserChatInvitationAcceptFacade(
                 },
                 new()
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     ChatId = chatId,
                     Status = ChatMemberStatus.Active,
                     LastReadAt = dateTimePicker.GetUtcNow(),

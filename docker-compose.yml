@@ -59,7 +59,6 @@
     volumes:
       - "${Files_Dir}:/app/files:rw"
       - "${Web_Api_Log_Dir}:/app/logs:rw"
-      - files:/app/files/media:ro
     depends_on:
       postgres_migration:
         condition: service_completed_successfully
@@ -68,7 +67,7 @@
       rabbitmq:
         condition: service_started
       redis_stack:
-        condition: service_started
+        condition: service_healthy
     logging:
       options:
         max-size: $Docker_Log_Size
@@ -114,7 +113,7 @@
       rabbitmq:
         condition: service_started
       redis_stack:
-        condition: service_started
+        condition: service_healthy
     logging:
       options:
         max-size: $Docker_Log_Size
@@ -148,7 +147,7 @@
       rabbitmq:
         condition: service_started
       redis_stack:
-        condition: service_started
+        condition: service_healthy
     logging:
       options:
         max-size: $Docker_Log_Size
@@ -244,6 +243,11 @@
       - redis_volume:/data
       - "${Redis_Stack_Log_Dir}:/app/logs:rw"
     command: redis-server --logfile /app/logs/redis.log
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     logging:
       options:
         max-size: $Docker_Log_Size

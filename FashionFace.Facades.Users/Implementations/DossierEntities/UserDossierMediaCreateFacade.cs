@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Constants.Constants;
@@ -8,7 +9,6 @@ using FashionFace.Facades.Users.Interfaces.DossierEntities;
 using FashionFace.Repositories.Context.Models.DossierEntities;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +17,8 @@ namespace FashionFace.Facades.Users.Implementations.DossierEntities;
 public sealed class UserDossierMediaCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
-    IExceptionDescriptor exceptionDescriptor,
-    IGuidGenerator guidGenerator
-) : IUserDossierMediaCreateFacade
+    IExceptionDescriptor exceptionDescriptor
+): IUserDossierMediaCreateFacade
 {
     public async Task Execute(
         UserDossierMediaCreateArgs args
@@ -83,7 +82,7 @@ public sealed class UserDossierMediaCreateFacade(
         var newDossierMediaAggregate =
             new DossierMediaAggregate
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 PositionIndex = positionIndex,
                 DossierId = dossierId,
                 MediaAggregateId = mediaId,

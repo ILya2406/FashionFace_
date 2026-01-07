@@ -45,6 +45,7 @@ public sealed class UserPortfolioController(
         var response =
             new UserPortfolioResponse(
                 result.Id,
+                result.TalentId,
                 result.Description
             );
 

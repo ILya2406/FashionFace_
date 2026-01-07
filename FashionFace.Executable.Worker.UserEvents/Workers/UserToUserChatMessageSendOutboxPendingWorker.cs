@@ -12,7 +12,6 @@ using FashionFace.Repositories.Strategy.Builders.Args;
 using FashionFace.Repositories.Strategy.Builders.Interfaces;
 using FashionFace.Repositories.Strategy.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,6 @@ public sealed class UserToUserChatMessageSendOutboxPendingWorker(
     IGenericReadRepository genericReadRepository,
     IUpdateRepository updateRepository,
     ITransactionManager  transactionManager,
-    IGuidGenerator guidGenerator,
     ILogger<UserToUserChatMessageSendOutboxPendingWorker> logger
 ) : BaseBackgroundWorker<UserToUserChatMessageSendOutboxPendingWorker>(
     logger
@@ -161,7 +159,7 @@ public sealed class UserToUserChatMessageSendOutboxPendingWorker(
                         targetUserId =>
                             new UserToUserChatMessageSendNotificationOutbox
                             {
-                                Id = guidGenerator.GetNew(),
+                                Id = Guid.NewGuid(),
                                 ChatId = chatId,
                                 MessageId = messageId,
                                 MessageValue = message,

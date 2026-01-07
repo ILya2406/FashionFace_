@@ -1,6 +1,7 @@
+using System;
+using FashionFace.Services.Singleton.Interfaces;
 ﻿using System.Linq;
 using System.Threading.Tasks;
-
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.UserToUserChats;
 using FashionFace.Facades.Users.Interfaces.UserToUserChats;
@@ -11,10 +12,7 @@ using FashionFace.Repositories.Context.Models.UserToUserChats;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
-
 using Microsoft.EntityFrameworkCore;
-
 namespace FashionFace.Facades.Users.Implementations.UserToUserChats;
 
 public sealed class UserToUserChatMessageSendFacade(
@@ -22,9 +20,8 @@ public sealed class UserToUserChatMessageSendFacade(
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
     ITransactionManager  transactionManager,
-    IDateTimePicker dateTimePicker,
-    IGuidGenerator guidGenerator
-) : IUserToUserChatMessageSendFacade
+    IDateTimePicker dateTimePicker
+): IUserToUserChatMessageSendFacade
 {
     public async Task<UserToUserChatMessageSendResult> Execute(
         UserToUserChatMessageSendArgs args
@@ -60,7 +57,7 @@ public sealed class UserToUserChatMessageSendFacade(
         }
 
         var messageId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
         var createdAt =
             dateTimePicker.GetUtcNow();
@@ -77,7 +74,7 @@ public sealed class UserToUserChatMessageSendFacade(
         var userToUserChatMessage =
             new UserToUserChatMessage
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 ChatId = chatId,
                 MessageId = messageId,
                 Message = userToUserMessage,
@@ -87,7 +84,7 @@ public sealed class UserToUserChatMessageSendFacade(
         var userToUserChatMessageOutbox =
             new UserToUserChatMessageSendOutbox
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 ChatId = chatId,
                 MessageId = messageId,
                 InitiatorUserId = userId,

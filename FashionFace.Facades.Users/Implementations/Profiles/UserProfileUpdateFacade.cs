@@ -23,6 +23,7 @@ public sealed class UserProfileUpdateFacade(
     {
         var (
             userId,
+            name,
             description,
             ageCategoryType
             ) = args;
@@ -41,6 +42,12 @@ public sealed class UserProfileUpdateFacade(
         if (profile is null)
         {
             throw exceptionDescriptor.NotFound<Profile>();
+        }
+
+        if (name is not null)
+        {
+            profile.Name =
+                name;
         }
 
         if (description is not null)

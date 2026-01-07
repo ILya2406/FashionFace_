@@ -25,6 +25,6 @@ public sealed class FilterCriteriaConfiguration : EntityConfigurationBase<Filter
             .HasColumnType(
                 "varchar(32)"
             )
-            .IsRequired();
+            .IsRequired(false);
     }
 }

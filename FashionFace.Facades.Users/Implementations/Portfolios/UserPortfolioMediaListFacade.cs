@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
@@ -7,6 +9,7 @@ using FashionFace.Facades.Users.Args.Portfolios;
 using FashionFace.Facades.Users.Interfaces.Portfolios;
 using FashionFace.Facades.Users.Models.Portfolios;
 using FashionFace.Repositories.Context.Models.Portfolios;
+using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Read.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +26,33 @@ public sealed class UserPortfolioMediaListFacade(
     )
     {
         var (
-            _,
-            portfolioId
+            userId,
+            talentId
             ) = args;
+
+        // If talentId is empty, find the first talent for the user
+        if (talentId == Guid.Empty)
+        {
+            var profileTalentCollection =
+                genericReadRepository.GetCollection<ProfileTalent>();
+
+            var profileTalent =
+                await
+                    profileTalentCollection
+                        .Where(entity => entity.Profile!.ApplicationUserId == userId)
+                        .OrderBy(entity => entity.PositionIndex)
+                        .FirstOrDefaultAsync();
+
+            if (profileTalent is null)
+            {
+                return new ListResult<UserMediaListItemResult>(
+                    0,
+                    new List<UserMediaListItemResult>()
+                );
+            }
+
+            talentId = profileTalent.TalentId;
+        }
 
         var portfolioCollection =
             genericReadRepository.GetCollection<Portfolio>();
@@ -46,12 +73,15 @@ public sealed class UserPortfolioMediaListFacade(
                         entity => entity!.OptimizedFile
                     )
                     .FirstOrDefaultAsync(
-                        entity => entity.Id == portfolioId
+                        entity => entity.TalentId == talentId
                     );
 
         if (portfolio is null)
         {
-            throw exceptionDescriptor.NotFound<Portfolio>();
+            return new ListResult<UserMediaListItemResult>(
+                0,
+                new List<UserMediaListItemResult>()
+            );
         }
 
         var portfolioMediaCollection =

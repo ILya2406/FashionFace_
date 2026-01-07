@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Constants.Constants;
@@ -8,7 +9,6 @@ using FashionFace.Facades.Users.Interfaces.Portfolios;
 using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +17,8 @@ namespace FashionFace.Facades.Users.Implementations.Portfolios;
 public sealed class UserPortfolioTagCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
-    IExceptionDescriptor exceptionDescriptor,
-    IGuidGenerator guidGenerator
-) : IUserPortfolioTagCreateFacade
+    IExceptionDescriptor exceptionDescriptor
+): IUserPortfolioTagCreateFacade
 {
     public async Task Execute(
         UserPortfolioTagCreateArgs args
@@ -104,7 +103,7 @@ public sealed class UserPortfolioTagCreateFacade(
         var newPortfolioTag =
             new PortfolioTag
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 TagId = tagId,
                 PortfolioId = portfolioId,
                 PositionIndex = positionIndex,

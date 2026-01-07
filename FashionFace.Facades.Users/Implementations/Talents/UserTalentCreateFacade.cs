@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Constants.Constants;
@@ -11,7 +12,6 @@ using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Context.Models.Talents;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +20,8 @@ namespace FashionFace.Facades.Users.Implementations.Talents;
 public sealed class UserTalentCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
-    IExceptionDescriptor exceptionDescriptor,
-    IGuidGenerator guidGenerator
-) : IUserTalentCreateFacade
+    IExceptionDescriptor exceptionDescriptor
+): IUserTalentCreateFacade
 {
     public async Task<UserTalentCreateResult> Execute(
         UserTalentCreateArgs args
@@ -76,10 +75,10 @@ public sealed class UserTalentCreateFacade(
             + PositionIndexConstants.PositionIndexShift;
 
         var talentId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
         var portfolioId =
-            guidGenerator.GetNew();
+            Guid.NewGuid();
 
         var portfolio =
             new Portfolio
@@ -103,7 +102,7 @@ public sealed class UserTalentCreateFacade(
         var profileTalent =
             new ProfileTalent
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 ProfileId = profile.Id,
                 TalentId = talentId,
                 Talent = talent,

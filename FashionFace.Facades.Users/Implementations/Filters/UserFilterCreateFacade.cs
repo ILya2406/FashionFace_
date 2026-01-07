@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Constants.Constants;
@@ -8,7 +9,6 @@ using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +16,8 @@ namespace FashionFace.Facades.Users.Implementations.Filters;
 
 public sealed class UserFilterCreateFacade(
     IGenericReadRepository genericReadRepository,
-    ICreateRepository createRepository,
-    IGuidGenerator guidGenerator
-) : IUserFilterCreateFacade
+    ICreateRepository createRepository
+): IUserFilterCreateFacade
 {
     public async Task<UserFilterCreateResult> Execute(
         UserFilterCreateArgs args
@@ -54,13 +53,13 @@ public sealed class UserFilterCreateFacade(
         var filterCriteria =
             new FilterCriteria
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
             };
 
         var newFilter =
             new Filter
             {
-                Id = guidGenerator.GetNew(),
+                Id = Guid.NewGuid(),
                 ApplicationUserId = userId,
                 IsDeleted = false,
                 Name = name,

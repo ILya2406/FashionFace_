@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 
+using System;
 using FashionFace.Common.Constants.Constants;
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.Filters;
 using FashionFace.Facades.Users.Interfaces.Filters;
+using FashionFace.Repositories.Context;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.Locations;
-using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +16,9 @@ namespace FashionFace.Facades.Users.Implementations.Filters;
 
 public sealed class UserFilterUpdateFacade(
     IGenericReadRepository genericReadRepository,
-    IUpdateRepository updateRepository,
-    IExceptionDescriptor exceptionDescriptor,
-    IGuidGenerator guidGenerator
-) : IUserFilterUpdateFacade
+    ApplicationDatabaseContext dbContext,
+    IExceptionDescriptor exceptionDescriptor
+): IUserFilterUpdateFacade
 {
     public async Task Execute(
         UserFilterUpdateArgs args
@@ -43,6 +42,45 @@ public sealed class UserFilterUpdateFacade(
                 filterCollection
                     .Include(
                         entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.Height
+                    )
+                    .ThenInclude(
+                        entity => entity!.FilterRangeValue
+                    )
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.ShoeSize
+                    )
+                    .ThenInclude(
+                        entity => entity!.FilterRangeValue
+                    )
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.MaleTraits
+                    )
+                    .Include(
+                        entity => entity.FilterCriteria
+                    )
+                    .ThenInclude(
+                        entity => entity!.AppearanceTraits
+                    )
+                    .ThenInclude(
+                        entity => entity!.FemaleTraits
                     )
                     .FirstOrDefaultAsync(
                         entity =>
@@ -78,21 +116,21 @@ public sealed class UserFilterUpdateFacade(
             var building =
                 new Building
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     Name = "",
                 };
 
             var landmark =
                 new Landmark
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     Name = "",
                 };
 
             var place =
                 new Place
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     Street = "",
                     BuildingId = building.Id,
                     LandmarkId = landmark.Id,
@@ -103,7 +141,7 @@ public sealed class UserFilterUpdateFacade(
             filterFilterCriteria.Location =
                 new()
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     FilterCriteriaId = filterFilterCriteria.Id,
                     CityId = filterLocationArgs.CityId,
                     LocationType = filterLocationArgs.LocationType,
@@ -114,113 +152,146 @@ public sealed class UserFilterUpdateFacade(
 
         if (filterAppearanceTraitsArgs is not null)
         {
-            var appearanceTraitsId =
-                guidGenerator.GetNew();
+            var existingAppearanceTraits =
+                filterFilterCriteria.AppearanceTraits;
 
-            var filterMaleTraits =
-                filterAppearanceTraitsArgs.FilterMaleTraits is null
-                    ? null
-                    : new FilterCriteriaMaleTraits
-                    {
-                        Id = guidGenerator.GetNew(),
-                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
-                        FacialHairLengthType = filterAppearanceTraitsArgs.FilterMaleTraits.FacialHairLengthType,
-                    };
-
-            var filterFemaleTraits =
-                filterAppearanceTraitsArgs.FilterFemaleTraits is null
-                    ? null
-                    : new FilterCriteriaFemaleTraits
-                    {
-                        Id = guidGenerator.GetNew(),
-                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
-                        BustSizeType = filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
-                    };
-
-            var heightArgs =
-                filterAppearanceTraitsArgs.Height;
-
-            FilterCriteriaHeight? height = null;
-
-            if (heightArgs is not null)
+            if (existingAppearanceTraits is not null)
             {
-                var filterRangeValue =
-                    new FilterRangeValue
-                    {
-                        Id = guidGenerator.GetNew(),
-                        Min = heightArgs.Min,
-                        Max = heightArgs.Max,
-                    };
-
-                height =
-                    new()
-                    {
-                        Id = guidGenerator.GetNew(),
-                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
-
-                        FilterRangeValue = filterRangeValue,
-                        FilterRangeValueId = filterRangeValue.Id,
-                    };
+                // Update existing AppearanceTraits
+                existingAppearanceTraits.SexType = filterAppearanceTraitsArgs.SexType;
+                existingAppearanceTraits.FaceType = filterAppearanceTraitsArgs.FaceType;
+                existingAppearanceTraits.HairType = filterAppearanceTraitsArgs.HairType;
+                existingAppearanceTraits.HairColorType = filterAppearanceTraitsArgs.HairColorType;
+                existingAppearanceTraits.HairLengthType = filterAppearanceTraitsArgs.HairLengthType;
+                existingAppearanceTraits.EyeColorType = filterAppearanceTraitsArgs.EyeColorType;
+                existingAppearanceTraits.EyeShapeType = filterAppearanceTraitsArgs.EyeShapeType;
+                existingAppearanceTraits.BodyType = filterAppearanceTraitsArgs.BodyType;
+                existingAppearanceTraits.SkinToneType = filterAppearanceTraitsArgs.SkinToneType;
+                existingAppearanceTraits.NoseType = filterAppearanceTraitsArgs.NoseType;
+                existingAppearanceTraits.JawType = filterAppearanceTraitsArgs.JawType;
             }
-
-            var shoeSizeArgs =
-                filterAppearanceTraitsArgs.ShoeSize;
-
-            FilterCriteriaShoeSize? shoeSize = null;
-
-            if (shoeSizeArgs is not null)
+            else
             {
-                var filterRangeValue =
-                    new FilterRangeValue
-                    {
-                        Id = guidGenerator.GetNew(),
-                        Min = shoeSizeArgs.Min,
-                        Max = shoeSizeArgs.Max,
-                    };
+                // Create new AppearanceTraits
+                var appearanceTraitsId =
+                    Guid.NewGuid();
 
-                shoeSize =
-                    new()
-                    {
-                        Id = guidGenerator.GetNew(),
-                        FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
+                var filterMaleTraits =
+                    filterAppearanceTraitsArgs.FilterMaleTraits is null
+                        ? null
+                        : new FilterCriteriaMaleTraits
+                        {
+                            Id = Guid.NewGuid(),
+                            FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
+                            FacialHairLengthType = filterAppearanceTraitsArgs.FilterMaleTraits.FacialHairLengthType,
+                        };
 
-                        FilterRangeValue = filterRangeValue,
-                        FilterRangeValueId = filterRangeValue.Id,
-                    };
-            }
+                var filterFemaleTraits =
+                    filterAppearanceTraitsArgs.FilterFemaleTraits is null
+                        ? null
+                        : new FilterCriteriaFemaleTraits
+                        {
+                            Id = Guid.NewGuid(),
+                            FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
+                            BustSizeType = filterAppearanceTraitsArgs.FilterFemaleTraits.BustSizeType,
+                        };
 
-            filterFilterCriteria.AppearanceTraits =
-                new()
+                var heightArgs =
+                    filterAppearanceTraitsArgs.Height;
+
+                FilterCriteriaHeight? height = null;
+
+                if (heightArgs is not null)
                 {
-                    Id = appearanceTraitsId,
-                    FilterCriteriaId = filterId,
+                    var filterRangeValue =
+                        new FilterRangeValue
+                        {
+                            Id = Guid.NewGuid(),
+                            Min = heightArgs.Min,
+                            Max = heightArgs.Max,
+                        };
 
-                    SexType = filterAppearanceTraitsArgs.SexType,
-                    FaceType = filterAppearanceTraitsArgs.FaceType,
-                    HairType = filterAppearanceTraitsArgs.HairType,
-                    HairColorType = filterAppearanceTraitsArgs.HairColorType,
-                    HairLengthType = filterAppearanceTraitsArgs.HairLengthType,
-                    EyeColorType = filterAppearanceTraitsArgs.EyeColorType,
-                    EyeShapeType = filterAppearanceTraitsArgs.EyeShapeType,
-                    BodyType = filterAppearanceTraitsArgs.BodyType,
-                    SkinToneType = filterAppearanceTraitsArgs.SkinToneType,
-                    NoseType = filterAppearanceTraitsArgs.NoseType,
-                    JawType = filterAppearanceTraitsArgs.JawType,
+                    height =
+                        new()
+                        {
+                            Id = Guid.NewGuid(),
+                            FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
 
-                    Height = height,
-                    ShoeSize = shoeSize,
+                            FilterRangeValue = filterRangeValue,
+                            FilterRangeValueId = filterRangeValue.Id,
+                        };
+                }
 
-                    MaleTraits = filterMaleTraits,
-                    FemaleTraits = filterFemaleTraits,
-                };
+                var shoeSizeArgs =
+                    filterAppearanceTraitsArgs.ShoeSize;
+
+                FilterCriteriaShoeSize? shoeSize = null;
+
+                if (shoeSizeArgs is not null)
+                {
+                    var filterRangeValue =
+                        new FilterRangeValue
+                        {
+                            Id = Guid.NewGuid(),
+                            Min = shoeSizeArgs.Min,
+                            Max = shoeSizeArgs.Max,
+                        };
+
+                    shoeSize =
+                        new()
+                        {
+                            Id = Guid.NewGuid(),
+                            FilterCriteriaAppearanceTraitsId = appearanceTraitsId,
+
+                            FilterRangeValue = filterRangeValue,
+                            FilterRangeValueId = filterRangeValue.Id,
+                        };
+                }
+
+                filterFilterCriteria.AppearanceTraits =
+                    new()
+                    {
+                        Id = appearanceTraitsId,
+                        FilterCriteriaId = filterFilterCriteria.Id,
+
+                        SexType = filterAppearanceTraitsArgs.SexType,
+                        FaceType = filterAppearanceTraitsArgs.FaceType,
+                        HairType = filterAppearanceTraitsArgs.HairType,
+                        HairColorType = filterAppearanceTraitsArgs.HairColorType,
+                        HairLengthType = filterAppearanceTraitsArgs.HairLengthType,
+                        EyeColorType = filterAppearanceTraitsArgs.EyeColorType,
+                        EyeShapeType = filterAppearanceTraitsArgs.EyeShapeType,
+                        BodyType = filterAppearanceTraitsArgs.BodyType,
+                        SkinToneType = filterAppearanceTraitsArgs.SkinToneType,
+                        NoseType = filterAppearanceTraitsArgs.NoseType,
+                        JawType = filterAppearanceTraitsArgs.JawType,
+
+                        Height = height,
+                        ShoeSize = shoeSize,
+
+                        MaleTraits = filterMaleTraits,
+                        FemaleTraits = filterFemaleTraits,
+                    };
+            }
+        }
+
+        // Add detached entities to DbSet (like in original code)
+        if (filterFilterCriteria.AppearanceTraits is not null
+            && dbContext.Entry(filterFilterCriteria.AppearanceTraits).State == EntityState.Detached)
+        {
+            dbContext.Set<FilterCriteriaAppearanceTraits>().Add(filterFilterCriteria.AppearanceTraits);
+        }
+
+        if (filterFilterCriteria.Location is not null
+            && dbContext.Entry(filterFilterCriteria.Location).State == EntityState.Detached)
+        {
+            dbContext.Set<FilterCriteriaLocation>().Add(filterFilterCriteria.Location);
         }
 
         filter.Version += IntegerVersionConstants.VersionShift;
 
         await
-            updateRepository
-                .UpdateAsync(
-                    filter
-                );
+            dbContext
+                .SaveChangesAsync();
     }
 }

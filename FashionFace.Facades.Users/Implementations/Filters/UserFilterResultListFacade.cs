@@ -15,6 +15,7 @@ using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.MediaEntities;
+using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Context.Models.Talents;
 using FashionFace.Repositories.Read.Interfaces;
 
@@ -53,7 +54,14 @@ public sealed class UserFilterResultListFacade(
             genericReadRepository.GetCollection<Talent>();
 
         var queryable =
-            talentCollection.AsQueryable();
+            talentCollection
+                .Include(t => t.ProfileTalent)
+                    .ThenInclude(pt => pt!.Profile)
+                        .ThenInclude(p => p!.MediaFileCollection)
+                .Include(t => t.ProfileTalent)
+                    .ThenInclude(pt => pt!.Profile)
+                        .ThenInclude(p => p!.AppearanceTraits)
+                .AsQueryable();
 
         var criteria =
             filter.FilterCriteria;
@@ -157,7 +165,8 @@ public sealed class UserFilterResultListFacade(
                     );
         }
 
-        if (criteria.TalentType == TalentType.Model)
+        // Apply dimension filter only if TalentType is Model AND DimensionCollection is not empty
+        if (criteria.TalentType == TalentType.Model && criteria.DimensionCollection.IsNotEmpty())
         {
             var filterCriteriaDimensionList =
                 criteria
@@ -167,11 +176,6 @@ public sealed class UserFilterResultListFacade(
                     )
                     .Distinct()
                     .ToList();
-
-            if (filterCriteriaDimensionList.IsEmpty())
-            {
-                throw exceptionDescriptor.NotFound<FilterCriteriaDimension>();
-            }
 
             var profileFilterDimensionCollection =
                 genericReadRepository.GetCollection<AppearanceTraitsDimensionValue>();
@@ -212,6 +216,7 @@ public sealed class UserFilterResultListFacade(
 
         queryable =
             queryable
+                .Distinct()
                 .OrderBy(
                     entity => entity.Id
                 );
@@ -222,17 +227,27 @@ public sealed class UserFilterResultListFacade(
                 filter.Version
             );
 
-        var cursor =
-            await
-                filterCursorCache
-                    .ReadAsync(
-                        filterCursorCacheArgs
-                    );
+        // Try to read cursor from Redis, but don't fail if Redis is unavailable
+        Guid? cursorPoint = null;
+        try
+        {
+            var cursor =
+                await
+                    filterCursorCache
+                        .ReadAsync(
+                            filterCursorCacheArgs
+                        );
 
-        Guid? cursorPoint =
-            cursor.IsSuccess
-                ? cursor.Value.TalentId
-                : null;
+            cursorPoint =
+                cursor.IsSuccess
+                    ? cursor.Value.TalentId
+                    : null;
+        }
+        catch (Exception)
+        {
+            // Redis unavailable, proceed without cursor (start from beginning)
+            cursorPoint = null;
+        }
 
         if (cursorPoint is not null)
         {
@@ -240,99 +255,84 @@ public sealed class UserFilterResultListFacade(
                 queryable
                     .Where(
                         entity =>
-                            entity.Id > cursorPoint
+                            entity.ProfileTalent != null && entity.ProfileTalent.ProfileId > cursorPoint
                     );
         }
 
-        var talentIdMediaAggregateIdList =
-            queryable
-                .Take(
-                    TalentFilterPageConstants.PageSize
-                )
+        // Step 1: Get raw talent/profile data from DB (without media)
+        var rawTalentData =
+            await queryable
+                .Take(TalentFilterPageConstants.PageSize * 5) // Get extra to ensure enough after grouping
                 .Select(
                     entity => new
                     {
-                        TalentId =
-                            entity.Id,
-                        TalantMediaAggregate =
-                            entity.TalentMediaAggregate,
-                        ProfileMediaAggregate =
-                            entity
-                                .ProfileTalent!
-                                .Profile!
-                                .ProfileMediaAggregate,
+                        ProfileId = entity.ProfileTalent != null ? entity.ProfileTalent.ProfileId : Guid.Empty,
+                        TalentId = entity.Id,
+                        ProfileName = entity.ProfileTalent != null && entity.ProfileTalent.Profile != null ? entity.ProfileTalent.Profile.Name : string.Empty,
+                        SexType = entity.ProfileTalent != null && entity.ProfileTalent.Profile != null && entity.ProfileTalent.Profile.AppearanceTraits != null ? entity.ProfileTalent.Profile.AppearanceTraits.SexType : SexType.Undefined,
+                        Height = entity.ProfileTalent != null && entity.ProfileTalent.Profile != null && entity.ProfileTalent.Profile.AppearanceTraits != null ? entity.ProfileTalent.Profile.AppearanceTraits.Height : 0,
+                        HairColorType = entity.ProfileTalent != null && entity.ProfileTalent.Profile != null && entity.ProfileTalent.Profile.AppearanceTraits != null ? entity.ProfileTalent.Profile.AppearanceTraits.HairColorType : HairColorType.Undefined,
+                        EyeColorType = entity.ProfileTalent != null && entity.ProfileTalent.Profile != null && entity.ProfileTalent.Profile.AppearanceTraits != null ? entity.ProfileTalent.Profile.AppearanceTraits.EyeColorType : EyeColorType.Undefined,
                     }
                 )
-                .Select(
-                    entity =>
-                        new
-                        {
-                            TalentId = entity.TalentId,
-                            MediaAggregateId =
-                                entity.TalantMediaAggregate != null
-                                    ? entity.TalantMediaAggregate.MediaAggregateId
-                                    : entity.ProfileMediaAggregate != null
-                                        ? entity.ProfileMediaAggregate.MediaAggregateId
-                                        : Guid.Empty,
-                        }
-                );
+                .ToListAsync();
 
-        var mediaAggregateCollection =
-            genericReadRepository.GetCollection<MediaAggregate>();
+        // Group by ProfileId in memory and take first of each group, then limit to page size
+        var talentListGrouped = rawTalentData
+            .GroupBy(entity => entity.ProfileId)
+            .Select(group => group.First())
+            .Take(TalentFilterPageConstants.PageSize)
+            .ToList();
 
-        var mediaAggregateList =
-            await
-                mediaAggregateCollection
-                    .Include(
-                        entity => entity.PreviewMedia
-                    )
-                    .ThenInclude(
-                        entity => entity.OptimizedFile
-                    )
-                    .Where(
-                        entity =>
-                            talentIdMediaAggregateIdList
-                                .Any(
-                                    model =>
-                                        entity.Id == model.MediaAggregateId
-                                )
-                    )
-                    .ToListAsync();
+        // Step 2: Get first MediaFile for each profile in a separate query
+        var profileIds = talentListGrouped
+            .Where(t => t.ProfileId != Guid.Empty)
+            .Select(t => t.ProfileId)
+            .Distinct()
+            .ToList();
+
+        var mediaFileCollection = genericReadRepository.GetCollection<MediaFile>();
+
+        // Get all media files for these profiles, then group in memory
+        var allMediaFiles = await mediaFileCollection
+            .Where(mf => profileIds.Contains(mf.ProfileId))
+            .OrderBy(mf => mf.Id)
+            .ToListAsync();
+
+        var profileMediaMap = allMediaFiles
+            .GroupBy(mf => mf.ProfileId)
+            .ToDictionary(g => g.Key, g => g.First().RelativePath);
+
+        // Step 3: Combine talent data with media paths
+        var talentListWithMedia = talentListGrouped
+            .Select(t => new
+            {
+                t.ProfileId,
+                t.TalentId,
+                t.ProfileName,
+                t.SexType,
+                t.Height,
+                t.HairColorType,
+                t.EyeColorType,
+                FirstMediaFilePath = t.ProfileId != Guid.Empty && profileMediaMap.TryGetValue(t.ProfileId, out var path) ? path : null
+            })
+            .ToList();
 
         var talentFilterDimensionList =
             new List<UserFilterResultListItemResult>();
 
-        foreach (var model in talentIdMediaAggregateIdList)
+        foreach (var model in talentListWithMedia)
         {
-            var relativePath = string.Empty;
-            var description = string.Empty;
-
-            if (model.MediaAggregateId != Guid.Empty)
-            {
-                var mediaAggregate =
-                    mediaAggregateList
-                        .FirstOrDefault(
-                            entity =>
-                                entity.Id == model.MediaAggregateId
-                        );
-
-                relativePath =
-                    mediaAggregate?
-                        .PreviewMedia?
-                        .OptimizedFile?
-                        .RelativePath
-                    ?? string.Empty;
-
-                description =
-                    mediaAggregate?.Description
-                    ?? string.Empty;
-            }
-
-
             var listItem =
                 new UserFilterResultListItemResult(
+                    model.ProfileId,
                     model.TalentId,
-                    relativePath
+                    model.ProfileName,
+                    model.FirstMediaFilePath ?? string.Empty,
+                    model.SexType.ToString(),
+                    model.Height > 0 ? model.Height : null,
+                    model.HairColorType.ToString(),
+                    model.EyeColorType.ToString()
                 );
 
             talentFilterDimensionList
@@ -341,18 +341,25 @@ public sealed class UserFilterResultListFacade(
                 );
         }
 
-        var cursorLastTalentId =
+        var cursorLastProfileId =
             talentFilterDimensionList
                 .LastOrDefault()?
-                .TalentId;
+                .ProfileId;
 
-        if (cursorLastTalentId is null)
+        if (cursorLastProfileId is null || cursorLastProfileId == Guid.Empty)
         {
-            await
-                filterCursorCache
-                    .DeleteAsync(
-                        filterCursorCacheArgs
-                    );
+            try
+            {
+                await
+                    filterCursorCache
+                        .DeleteAsync(
+                            filterCursorCacheArgs
+                        );
+            }
+            catch (Exception)
+            {
+                // Redis unavailable, ignore
+            }
 
             var emptyListResult =
                 new UserFilterResultListResult(
@@ -365,17 +372,24 @@ public sealed class UserFilterResultListFacade(
 
         var filterCursorCacheModel =
             new FilterCursorCacheModel(
-                cursorLastTalentId.Value,
+                cursorLastProfileId.Value,
                 filterId,
                 filter.Version
             );
 
-        await
-            filterCursorCache
-                .SetAsync(
-                    filterCursorCacheArgs,
-                    filterCursorCacheModel
-                );
+        try
+        {
+            await
+                filterCursorCache
+                    .SetAsync(
+                        filterCursorCacheArgs,
+                        filterCursorCacheModel
+                    );
+        }
+        catch (Exception)
+        {
+            // Redis unavailable, ignore
+        }
 
         var result =
             new UserFilterResultListResult(

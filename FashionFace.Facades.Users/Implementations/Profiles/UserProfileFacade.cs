@@ -21,20 +21,34 @@ public sealed class UserProfileFacade(
     )
     {
         var (
-            _,
+            userId,
             profileId
             ) = args;
 
         var profileCollection =
             genericReadRepository.GetCollection<Profile>();
 
-        var profile =
-            await
-                profileCollection
-                    .FirstOrDefaultAsync(
-                        entity =>
-                            entity.Id == profileId
-                    );
+        Profile? profile;
+        if (profileId != System.Guid.Empty)
+        {
+            profile =
+                await
+                    profileCollection
+                        .FirstOrDefaultAsync(
+                            entity =>
+                                entity.Id == profileId
+                        );
+        }
+        else
+        {
+            profile =
+                await
+                    profileCollection
+                        .FirstOrDefaultAsync(
+                            entity =>
+                                entity.ApplicationUserId == userId
+                        );
+        }
 
         if (profile is null)
         {
@@ -43,6 +57,7 @@ public sealed class UserProfileFacade(
 
         var result =
             new UserProfileResult(
+                profile.Id,
                 profile.Name,
                 profile.Description,
                 profile.AgeCategoryType,

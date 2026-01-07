@@ -13,7 +13,6 @@ using FashionFace.Repositories.Context.Models.AppearanceTraitsEntities;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
-using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +22,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
     IGenericReadRepository genericReadRepository,
     IExceptionDescriptor exceptionDescriptor,
     IDeleteRepository deleteRepository,
-    ICreateRepository createRepository,
-    IGuidGenerator guidGenerator
+    ICreateRepository createRepository
 ) : IAppearanceTraitsDimensionsSynchronizationFacade
 {
 
@@ -213,7 +211,7 @@ public sealed class AppearanceTraitsDimensionsSynchronizationFacade(
             var newTalentDimensionValue =
                 new AppearanceTraitsDimensionValue
                 {
-                    Id = guidGenerator.GetNew(),
+                    Id = Guid.NewGuid(),
                     DimensionValueId = dimensionValue.Id,
                     ProfileId = profileId,
                 };

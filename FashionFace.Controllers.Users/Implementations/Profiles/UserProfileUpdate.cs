@@ -31,6 +31,7 @@ public sealed class UserProfileUpdateController(
         var facadeArgs =
             new UserProfileUpdateArgs(
                 userId,
+                request.Name,
                 request.Description,
                 request.AgeCategoryType
             );

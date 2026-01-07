@@ -33,11 +33,26 @@ public sealed class ImageResizeService : IImageResizeService
                 SeekOrigin.Begin
             );
 
+        // Copy stream first to avoid SKBitmap corrupting the original
+        using var streamCopy = new MemoryStream();
+        inputStream.CopyTo(streamCopy);
+        streamCopy.Seek(0, SeekOrigin.Begin);
+
         using var original =
             SKBitmap
                 .Decode(
-                    inputStream
+                    streamCopy
                 );
+
+        // If decode fails, return a copy of original stream
+        if (original == null)
+        {
+            inputStream.Seek(0, SeekOrigin.Begin);
+            var fallbackStream = new MemoryStream();
+            inputStream.CopyTo(fallbackStream);
+            fallbackStream.Seek(0, SeekOrigin.Begin);
+            return fallbackStream;
+        }
 
         var divider = 1;
         if (original.Width > Image8KWidth || original.Height > Image8KHeight)

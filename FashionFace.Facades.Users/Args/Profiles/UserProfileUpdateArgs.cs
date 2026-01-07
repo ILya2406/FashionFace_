@@ -6,6 +6,7 @@ namespace FashionFace.Facades.Users.Args.Profiles;
 
 public sealed record UserProfileUpdateArgs(
     Guid UserId,
+    string? Name,
     string? Description,
     AgeCategoryType? AgeCategoryType
 );

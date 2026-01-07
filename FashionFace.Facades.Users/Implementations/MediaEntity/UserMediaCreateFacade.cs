@@ -1,8 +1,8 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
-using FashionFace.Dependencies.SkiaSharp.Interfaces;
 using FashionFace.Facades.Users.Args.MediaEntity;
 using FashionFace.Facades.Users.Interfaces.MediaEntity;
 using FashionFace.Facades.Users.Models.MediaEntity;
@@ -11,7 +11,6 @@ using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 using FashionFace.Services.ConfigurationSettings.Interfaces;
-using FashionFace.Services.Singleton.Args;
 using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +21,9 @@ public sealed class UserMediaCreateFacade(
     IGenericReadRepository genericReadRepository,
     ICreateRepository createRepository,
     IExceptionDescriptor exceptionDescriptor,
-    IFilePathService filePathService,
-    IFileCreateService fileCreateService,
-    IImageResizeService imageResizeService,
-    IApplicationSettingsFactory applicationSettingsFactory,
-    IGuidGenerator guidGenerator
-) : IUserMediaCreateFacade
+    IImageKitService imageKitService,
+    IImageKitSettingsFactory imageKitSettingsFactory
+): IUserMediaCreateFacade
 {
     public async Task<UserMediaCreateResult> Execute(
         UserMediaCreateArgs args
@@ -54,129 +50,63 @@ public sealed class UserMediaCreateFacade(
             throw exceptionDescriptor.NotFound<Profile>();
         }
 
-        var mediaId =
-            guidGenerator.GetNew();
+        // Copy stream to memory for ImageKit upload
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        var fileBytes = memoryStream.ToArray();
 
-        var originalFileId =
-            guidGenerator.GetNew();
-
-        var optimizedFileId =
-            guidGenerator.GetNew();
-
-        var originalFileRelativePath =
-            filePathService
-                .GetRelativePath(
-                    originalFileId
-                );
-
-        var originalFile =
-            new MediaFile
-            {
-                Id = originalFileId,
-                ProfileId = profile.Id,
-                RelativePath = originalFileRelativePath,
-            };
-
-        var optimizedFileRelativePath =
-            filePathService
-                .GetRelativePath(
-                    optimizedFileId
-                );
-
-        var optimizedFile =
-            new MediaFile
-            {
-                Id = optimizedFileId,
-                ProfileId = profile.Id,
-                RelativePath = optimizedFileRelativePath,
-            };
-
-        var media =
-            new Media
-            {
-                Id = mediaId,
-                IsDeleted = false,
-                OriginalFileId = originalFileId,
-                OptimizedFileId = optimizedFileId,
-                OriginalFile = originalFile,
-                OptimizedFile = optimizedFile,
-            };
-
-        await CreateFiles(
-            originalFileRelativePath,
-            optimizedFileRelativePath,
-            stream
+        // Upload to ImageKit
+        var settings = imageKitSettingsFactory.GetSettings();
+        var imageUrl = await imageKitService.UploadPhotoBytes(
+            fileBytes,
+            $"{Guid.NewGuid()}.jpg",
+            settings.Folder,
+            settings.PrivateKey
         );
 
-        await
-            createRepository
-                .CreateAsync(
-                    media
-                );
+        if (string.IsNullOrEmpty(imageUrl))
+        {
+            throw exceptionDescriptor.Exception("Failed to upload image to ImageKit");
+        }
 
-        var result =
-            new UserMediaCreateResult(
-                mediaId
-            );
+        // Create Media entity with ImageKit URL
+        var mediaId = Guid.NewGuid();
+        var originalFileId = Guid.NewGuid();
+        var optimizedFileId = Guid.NewGuid();
 
-        return
-            result;
-    }
+        var originalFile = new MediaFile
+        {
+            Id = originalFileId,
+            ProfileId = profile.Id,
+            RelativePath = imageUrl
+        };
 
-    private async Task CreateFiles(
-        string originalFileRelativePath,
-        string optimizedFileRelativePath,
-        Stream originalFileStream
-    )
-    {
-        await using var optimizedFileStream =
-            imageResizeService
-                .Optimize(
-                    originalFileStream
-                );
+        var optimizedFile = new MediaFile
+        {
+            Id = optimizedFileId,
+            ProfileId = profile.Id,
+            RelativePath = imageUrl
+        };
 
-        var applicationSettings =
-            applicationSettingsFactory.GetSettings();
+        var media = new Media
+        {
+            Id = mediaId,
+            IsDeleted = false,
+            OriginalFileId = originalFileId,
+            OptimizedFileId = optimizedFileId,
+            OriginalFile = originalFile,
+            OptimizedFile = optimizedFile
+        };
 
-        var fileBasePath =
-            applicationSettings.FileBasePath;
+        await createRepository.CreateAsync(media);
 
-        var originalFullFilePath =
-            Path
-                .Combine(
-                    fileBasePath,
-                    originalFileRelativePath
-                );
+        // Return Media ID (NOT MediaAggregate ID)
+        // MediaAggregate should be created separately via /api/v1/user/media-aggregate
+        var result = new UserMediaCreateResult(
+            mediaId,
+            imageUrl
+        );
 
-        var originalFileCreateServiceArgs =
-            new FileCreateServiceArgs(
-                originalFileStream,
-                originalFullFilePath
-            );
-
-        await
-            fileCreateService
-                .Create(
-                    originalFileCreateServiceArgs
-                );
-
-        var optimizedFullFilePath =
-            Path
-                .Combine(
-                    fileBasePath,
-                    optimizedFileRelativePath
-                );
-
-        var optimizedFileCreateServiceArgs =
-            new FileCreateServiceArgs(
-                optimizedFileStream,
-                optimizedFullFilePath
-            );
-
-        await
-            fileCreateService
-                .Create(
-                    optimizedFileCreateServiceArgs
-                );
+        return result;
     }
 }

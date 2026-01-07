@@ -14,6 +14,7 @@ using FashionFace.Services.ConfigurationSettings.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +89,13 @@ var rabbitMqSection = builderConfiguration.GetSection(
 );
 serviceCollection.Configure<RabbitMqSettings>(
     rabbitMqSection
+);
+
+var imageKitSection = builderConfiguration.GetSection(
+    "ImageKit"
+);
+serviceCollection.Configure<ImageKitSettings>(
+    imageKitSection
 );
 
 serviceCollection.AddLogging(
@@ -339,6 +347,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Serve static files from /app/files/media at URL /files
+var filesPath = "/app/files/media";
+if (!Directory.Exists(filesPath))
+{
+    Directory.CreateDirectory(filesPath);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(filesPath),
+    RequestPath = "/files",
+    ServeUnknownFileTypes = true
+});
 
 app.UseRouting();
 

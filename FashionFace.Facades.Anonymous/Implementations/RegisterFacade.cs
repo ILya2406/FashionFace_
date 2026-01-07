@@ -23,8 +23,7 @@ public sealed class RegisterFacade(
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
     ITransactionManager transactionManager,
-    IDateTimePicker dateTimePicker,
-    IGuidGenerator guidGenerator
+    IDateTimePicker dateTimePicker
 ) : IRegisterFacade
 {
     public async Task Execute(

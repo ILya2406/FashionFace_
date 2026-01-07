@@ -49,7 +49,8 @@ public sealed class UserMediaCreateController(
 
         var response =
             new UserMediaCreateResponse(
-                result.MediaId
+                result.MediaId,
+                result.ImageUrl
             );
 
         return

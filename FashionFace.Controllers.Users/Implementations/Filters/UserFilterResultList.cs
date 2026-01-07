@@ -48,8 +48,14 @@ public sealed class UserFilterResultListController(
                 .Select(
                     entity =>
                         new UserFilterResultListItemResponse(
+                            entity.ProfileId,
                             entity.TalentId,
-                            entity.AvatarRelativePath
+                            entity.Name,
+                            entity.AvatarRelativePath,
+                            entity.SexType,
+                            entity.Height,
+                            entity.HairColorType,
+                            entity.EyeColorType
                         )
                 )
                 .ToList();
