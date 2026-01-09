@@ -15,6 +15,7 @@ using FashionFace.Facades.Users.Models.Filters;
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.Filters;
 using FashionFace.Repositories.Context.Models.MediaEntities;
+using FashionFace.Repositories.Context.Models.Portfolios;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Context.Models.Talents;
 using FashionFace.Repositories.Read.Interfaces;
@@ -139,6 +140,32 @@ public sealed class UserFilterResultListFacade(
                                 && entity.ProfileTalent.Profile.AppearanceTraits.ShoeSize <= shoeSize.Max
                         );
             }
+
+            var hairColorType =
+                criteriaAppearanceTraits.HairColorType;
+
+            if (hairColorType is not null)
+            {
+                queryable =
+                    queryable
+                        .Where(
+                            entity =>
+                                entity.ProfileTalent!.Profile!.AppearanceTraits!.HairColorType == hairColorType
+                        );
+            }
+
+            var sexType =
+                criteriaAppearanceTraits.SexType;
+
+            if (sexType is not null)
+            {
+                queryable =
+                    queryable
+                        .Where(
+                            entity =>
+                                entity.ProfileTalent!.Profile!.AppearanceTraits!.SexType == sexType
+                        );
+            }
         }
 
         var criteriaTagList =
@@ -165,9 +192,18 @@ public sealed class UserFilterResultListFacade(
                     );
         }
 
-        // Apply dimension filter only if TalentType is Model AND DimensionCollection is not empty
-        if (criteria.TalentType == TalentType.Model && criteria.DimensionCollection.IsNotEmpty())
+        // Apply dimension filter if DimensionCollection is not empty
+        // If dimensions are selected, automatically filter for Models (not Photographers)
+        if (criteria.DimensionCollection.IsNotEmpty())
         {
+            // Automatically filter for Models when appearance dimensions are selected
+            queryable =
+                queryable
+                    .Where(
+                        entity =>
+                            entity.TalentType == TalentType.Model
+                    );
+
             var filterCriteriaDimensionList =
                 criteria
                     .DimensionCollection
@@ -216,6 +252,10 @@ public sealed class UserFilterResultListFacade(
 
         queryable =
             queryable
+                .Where(
+                    entity =>
+                        entity.ProfileTalent != null
+                )
                 .Distinct()
                 .OrderBy(
                     entity => entity.Id
@@ -259,10 +299,9 @@ public sealed class UserFilterResultListFacade(
                     );
         }
 
-        // Step 1: Get raw talent/profile data from DB (without media)
-        var rawTalentData =
+        // Step 1: Get talent/profile data from DB (without media) - no grouping, return all talents
+        var talentListGrouped =
             await queryable
-                .Take(TalentFilterPageConstants.PageSize * 5) // Get extra to ensure enough after grouping
                 .Select(
                     entity => new
                     {
@@ -277,31 +316,71 @@ public sealed class UserFilterResultListFacade(
                 )
                 .ToListAsync();
 
-        // Group by ProfileId in memory and take first of each group, then limit to page size
-        var talentListGrouped = rawTalentData
-            .GroupBy(entity => entity.ProfileId)
-            .Select(group => group.First())
-            .Take(TalentFilterPageConstants.PageSize)
+        // Step 2: Get first portfolio photo for each talent using PortfolioMediaAggregate with PositionIndex
+        // With fallback to MediaFile if portfolio is empty
+        var talentIds = talentListGrouped
+            .Select(t => t.TalentId)
             .ToList();
 
-        // Step 2: Get first MediaFile for each profile in a separate query
         var profileIds = talentListGrouped
-            .Where(t => t.ProfileId != Guid.Empty)
             .Select(t => t.ProfileId)
             .Distinct()
             .ToList();
 
-        var mediaFileCollection = genericReadRepository.GetCollection<MediaFile>();
+        var portfolioMediaCollection = genericReadRepository.GetCollection<PortfolioMediaAggregate>();
 
-        // Get all media files for these profiles, then group in memory
-        var allMediaFiles = await mediaFileCollection
-            .Where(mf => profileIds.Contains(mf.ProfileId))
-            .OrderBy(mf => mf.Id)
+        // Get portfolio media with lowest PositionIndex for each talent (newest photo first)
+        var portfolioMedia = await portfolioMediaCollection
+            .Include(pm => pm.MediaAggregate)
+                .ThenInclude(ma => ma!.PreviewMedia)
+                    .ThenInclude(m => m!.OriginalFile)
+            .Include(pm => pm.Portfolio)
+            .Where(pm =>
+                pm.Portfolio != null &&
+                talentIds.Contains(pm.Portfolio.TalentId))
             .ToListAsync();
 
-        var profileMediaMap = allMediaFiles
-            .GroupBy(mf => mf.ProfileId)
-            .ToDictionary(g => g.Key, g => g.First().RelativePath);
+        var talentPhotoMap = portfolioMedia
+            .GroupBy(pm => pm.Portfolio!.TalentId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.OrderBy(pm => pm.PositionIndex)
+                      .FirstOrDefault()?
+                      .MediaAggregate?
+                      .PreviewMedia?
+                      .OriginalFile?
+                      .RelativePath ?? string.Empty
+            );
+
+        // Fallback: Get MediaFile for talents without portfolio photos
+        var talentsWithoutPhotos = talentIds.Where(tid => !talentPhotoMap.ContainsKey(tid) || string.IsNullOrEmpty(talentPhotoMap[tid])).ToList();
+
+        if (talentsWithoutPhotos.Any())
+        {
+            var mediaFileCollection = genericReadRepository.GetCollection<MediaFile>();
+            var fallbackMedia = await mediaFileCollection
+                .Where(mf => profileIds.Contains(mf.ProfileId))
+                .OrderByDescending(mf => mf.Id)
+                .ToListAsync();
+
+            var profileMediaMap = fallbackMedia
+                .GroupBy(mf => mf.ProfileId)
+                .ToDictionary(g => g.Key, g => g.First().RelativePath);
+
+            // Map ProfileId to TalentId for fallback
+            var profileToTalentMap = talentListGrouped
+                .Where(t => talentsWithoutPhotos.Contains(t.TalentId))
+                .GroupBy(t => t.ProfileId)
+                .ToDictionary(g => g.Key, g => g.First().TalentId);
+
+            foreach (var kvp in profileToTalentMap)
+            {
+                if (profileMediaMap.TryGetValue(kvp.Key, out var path))
+                {
+                    talentPhotoMap[kvp.Value] = path;
+                }
+            }
+        }
 
         // Step 3: Combine talent data with media paths
         var talentListWithMedia = talentListGrouped
@@ -314,7 +393,7 @@ public sealed class UserFilterResultListFacade(
                 t.Height,
                 t.HairColorType,
                 t.EyeColorType,
-                FirstMediaFilePath = t.ProfileId != Guid.Empty && profileMediaMap.TryGetValue(t.ProfileId, out var path) ? path : null
+                FirstMediaFilePath = talentPhotoMap.TryGetValue(t.TalentId, out var path) ? path : null
             })
             .ToList();
 

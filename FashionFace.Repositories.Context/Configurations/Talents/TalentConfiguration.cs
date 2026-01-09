@@ -19,10 +19,10 @@ public sealed class TalentConfiguration : EntityConfigurationBase<Talent>
                 entity => entity.Description
             )
             .HasColumnName(
-                "Description"
+                "LocationType"
             )
             .HasColumnType(
-                "varchar(1024)"
+                "varchar(32)"
             )
             .IsRequired();
 
@@ -31,11 +31,11 @@ public sealed class TalentConfiguration : EntityConfigurationBase<Talent>
                 entity => entity.TalentType
             )
             .HasColumnName(
-                "LocationType"
+                "Description"
             )
             .HasConversion<string>()
             .HasColumnType(
-                "varchar(32)"
+                "varchar(1024)"
             )
             .IsRequired();
     }

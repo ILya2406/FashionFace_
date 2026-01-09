@@ -191,7 +191,7 @@
     expose:
       - 5432
     volumes:
-      - postgres_volume:/var/lib/postgresql
+      - postgres_volume:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U $Postgres_User -d $Postgres_Db" ]
       interval: 10s
