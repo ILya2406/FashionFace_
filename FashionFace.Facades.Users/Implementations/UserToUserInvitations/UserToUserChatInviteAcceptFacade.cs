@@ -53,6 +53,14 @@ public sealed class UserToUserChatInvitationAcceptFacade(
         var chatId =
             Guid.NewGuid();
 
+        // Создаём Chat без Settings чтобы избежать circular dependency
+        var userToUserChat =
+            new UserToUserChat
+            {
+                Id = chatId,
+                CreatedAt = dateTimePicker.GetUtcNow(),
+            };
+
         var userToUserChatSettings =
             new UserToUserChatSettings
             {
@@ -86,15 +94,6 @@ public sealed class UserToUserChatInvitationAcceptFacade(
                 },
             };
 
-        var userToUserChat =
-            new UserToUserChat
-            {
-                Id = chatId,
-                CreatedAt = dateTimePicker.GetUtcNow(),
-                Settings = userToUserChatSettings,
-                UserCollection = userToUserChatProfiles,
-            };
-
         using var transaction =
             await
                 transactionManager.BeginTransaction();
@@ -105,11 +104,29 @@ public sealed class UserToUserChatInvitationAcceptFacade(
                     userToUserChatInvitation
                 );
 
+        // Создаём Chat первым
         await
             createRepository
                 .CreateAsync(
                     userToUserChat
                 );
+
+        // Затем создаём Settings с ссылкой на Chat
+        await
+            createRepository
+                .CreateAsync(
+                    userToUserChatSettings
+                );
+
+        // Затем создаём профили участников
+        foreach (var profile in userToUserChatProfiles)
+        {
+            await
+                createRepository
+                    .CreateAsync(
+                        profile
+                    );
+        }
 
         await
             transaction.CommitAsync();

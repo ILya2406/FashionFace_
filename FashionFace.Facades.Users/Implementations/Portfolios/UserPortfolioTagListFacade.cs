@@ -24,7 +24,7 @@ public sealed class UserPortfolioTagListFacade(
     {
         var (
             _,
-            portfolioId
+            talentId
             ) = args;
 
         var portfolioCollection =
@@ -40,7 +40,7 @@ public sealed class UserPortfolioTagListFacade(
                         entity => entity.Tag
                     )
                     .FirstOrDefaultAsync(
-                        entity => entity.Id == portfolioId
+                        entity => entity.TalentId == talentId
                     );
 
         if (portfolio is null)
