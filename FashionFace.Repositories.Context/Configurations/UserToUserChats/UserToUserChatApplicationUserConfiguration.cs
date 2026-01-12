@@ -92,7 +92,9 @@ public sealed class UserToUserChatApplicationUserConfiguration : EntityConfigura
             .HasOne(
                 entity => entity.Chat
             )
-            .WithMany()
+            .WithMany(
+                chat => chat.UserCollection
+            )
             .HasForeignKey(
                 entity => entity.ChatId
             )

@@ -59,6 +59,9 @@ public sealed class UserToUserChatMessageSendFacade(
         var messageId =
             Guid.NewGuid();
 
+        var chatMessageId =
+            Guid.NewGuid();
+
         var createdAt =
             dateTimePicker.GetUtcNow();
 
@@ -74,7 +77,7 @@ public sealed class UserToUserChatMessageSendFacade(
         var userToUserChatMessage =
             new UserToUserChatMessage
             {
-                Id = Guid.NewGuid(),
+                Id = chatMessageId,
                 ChatId = chatId,
                 MessageId = messageId,
                 Message = userToUserMessage,
@@ -86,7 +89,7 @@ public sealed class UserToUserChatMessageSendFacade(
             {
                 Id = Guid.NewGuid(),
                 ChatId = chatId,
-                MessageId = messageId,
+                MessageId = chatMessageId, // FK к UserToUserChatMessage, не к UserToUserMessage
                 InitiatorUserId = userId,
                 AttemptCount = 0,
                 OutboxStatus = OutboxStatus.Pending,
