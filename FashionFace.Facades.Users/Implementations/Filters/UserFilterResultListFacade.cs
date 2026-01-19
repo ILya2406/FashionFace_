@@ -36,7 +36,8 @@ public sealed class UserFilterResultListFacade(
     {
         var (
             userId,
-            filterId
+            filterId,
+            limit
             ) = args;
 
         var filter =
@@ -299,9 +300,10 @@ public sealed class UserFilterResultListFacade(
                     );
         }
 
-        // Step 1: Get talent/profile data from DB (without media) - no grouping, return all talents
+        // Step 1: Get talent/profile data from DB (without media) - limited by pagination
         var talentListGrouped =
             await queryable
+                .Take(limit) // Apply pagination limit
                 .Select(
                     entity => new
                     {

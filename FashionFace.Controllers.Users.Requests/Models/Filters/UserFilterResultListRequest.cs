@@ -3,5 +3,6 @@
 namespace FashionFace.Controllers.Users.Requests.Models.Filters;
 
 public sealed record UserFilterResultListRequest(
-    Guid FilterId
+    Guid FilterId,
+    int Limit = 15
 );

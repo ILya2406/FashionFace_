@@ -32,7 +32,8 @@ public sealed class UserFilterResultListController(
         var facadeArgs =
             new UserFilterResultListArgs(
                 userId,
-                request.FilterId
+                request.FilterId,
+                request.Limit
             );
 
         var result =

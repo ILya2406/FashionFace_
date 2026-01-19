@@ -26,7 +26,8 @@ public sealed class RegisterController(
         var facadeArgs =
             new RegisterArgs(
                 request.Email,
-                request.Password
+                request.Password,
+                request.SexType
             );
 
         await

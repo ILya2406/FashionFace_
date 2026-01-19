@@ -32,7 +32,8 @@ public sealed class RegisterFacade(
     {
         var (
             email,
-            password
+            password,
+            sexType
             ) = args;
 
         var identityFindByEmailResult =
@@ -94,30 +95,12 @@ public sealed class RegisterFacade(
         var appearanceTraitsId =
             Guid.NewGuid();
 
-        var maleTraits =
-            new MaleTraits
-            {
-                Id = Guid.NewGuid(),
-                AppearanceTraitsId = appearanceTraitsId,
-                FacialHairLengthType = HairLengthType.Undefined,
-            };
-
-        var femaleTraits =
-            new FemaleTraits
-            {
-                Id = Guid.NewGuid(),
-                AppearanceTraitsId = appearanceTraitsId,
-                BustSizeType = BustSizeType.Undefined,
-            };
-
         var appearanceTraits =
             new AppearanceTraits
             {
                 Id = appearanceTraitsId,
                 ProfileId = profileId,
-
-                MaleTraits = maleTraits,
-                FemaleTraits = femaleTraits,
+                SexType = sexType,
             };
 
         // todo : validate empty Name & Description
@@ -141,6 +124,40 @@ public sealed class RegisterFacade(
                 .CreateAsync(
                     profile
                 );
+
+        // Create gender-specific traits after AppearanceTraits exists
+        if (sexType == SexType.Male)
+        {
+            var maleTraits =
+                new MaleTraits
+                {
+                    Id = Guid.NewGuid(),
+                    AppearanceTraitsId = appearanceTraitsId,
+                    FacialHairLengthType = HairLengthType.Undefined,
+                };
+
+            await
+                createRepository
+                    .CreateAsync(
+                        maleTraits
+                    );
+        }
+        else if (sexType == SexType.Female)
+        {
+            var femaleTraits =
+                new FemaleTraits
+                {
+                    Id = Guid.NewGuid(),
+                    AppearanceTraitsId = appearanceTraitsId,
+                    BustSizeType = BustSizeType.Undefined,
+                };
+
+            await
+                createRepository
+                    .CreateAsync(
+                        femaleTraits
+                    );
+        }
 
         await
             transaction.CommitAsync();

@@ -1,6 +1,9 @@
-﻿namespace FashionFace.Facades.Anonymous.Args;
+﻿using FashionFace.Repositories.Context.Enums;
+
+namespace FashionFace.Facades.Anonymous.Args;
 
 public sealed record RegisterArgs(
     string Email,
-    string Password
+    string Password,
+    SexType SexType
 );
