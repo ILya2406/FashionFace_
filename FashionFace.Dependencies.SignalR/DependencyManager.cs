@@ -9,19 +9,5 @@ public sealed class DependencyManager :
     IDependencyManager
 {
     public IReadOnlyList<DependencyBase> GetDependencies() =>
-        typeof(Serialization.DependencyManager).GetSingletonDependencies();
-    /*[
-        new ScopeDependency(
-            typeof(IUserNotificationsHubService),
-            typeof(UserNotificationsHubService)
-        ),
-        new ScopeDependency(
-            typeof(IAdminNotificationsHubService),
-            typeof(AdminNotificationsHubService)
-        ),
-        new ScopeDependency(
-            typeof(IUserToUserChatNotificationsHubService),
-            typeof(UserToUserChatNotificationsHubService)
-        ),
-    ];*/
+        typeof(DependencyManager).GetScopedDependencies();
 }

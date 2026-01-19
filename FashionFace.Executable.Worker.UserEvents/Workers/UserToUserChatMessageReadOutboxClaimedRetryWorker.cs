@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FashionFace.Dependencies.SignalR.Interfaces;
 using FashionFace.Repositories.Context.Enums;
 using FashionFace.Repositories.Context.Models.OutboxEntity;
 using FashionFace.Repositories.Context.Models.UserToUserChats;
@@ -12,24 +13,22 @@ using FashionFace.Repositories.Strategy.Builders.Args;
 using FashionFace.Repositories.Strategy.Builders.Interfaces;
 using FashionFace.Repositories.Strategy.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
-    IOutboxBatchStrategy<UserToUserChatMessageReadOutbox> outboxBatchStrategy,
-    ISelectClaimedRetryStrategyBuilder selectClaimedRetryStrategyBuilder,
-    IGenericReadRepository genericReadRepository,
-    IUpdateRepository updateRepository,
-    ITransactionManager  transactionManager,
+    IServiceProvider serviceProvider,
     ILogger<UserToUserChatMessageReadOutboxClaimedRetryWorker> logger
 ) : BaseBackgroundWorker<UserToUserChatMessageReadOutboxClaimedRetryWorker>(
     logger
 )
 {
-    private const int CycleDelayInSeconds = 5;
+    private const int CycleDelayInMinutes = 5;
     private const int RetryDelayMinutes = 5;
     private const int BatchCount = 5;
 
@@ -37,14 +36,44 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
         CancellationToken cancellationToken
     )
     {
+        using var scope =
+            serviceProvider.CreateScope();
+
+        var scopedServiceProvider =
+            scope.ServiceProvider;
+
+        var userToUserChatInvitationNotificationsHubService =
+            scopedServiceProvider.GetRequiredService<IUserToUserChatInvitationNotificationsHubService>();
+
+        var outboxBatchStrategy =
+            scopedServiceProvider.GetRequiredService<IOutboxBatchStrategy>();
+
+        var genericReadRepository =
+            scopedServiceProvider.GetRequiredService<IGenericReadRepository>();
+
+        var updateRepository =
+            scopedServiceProvider.GetRequiredService<IUpdateRepository>();
+
+        var transactionManager =
+            scopedServiceProvider.GetRequiredService<ITransactionManager>();
+
+        var guidGenerator =
+            scopedServiceProvider.GetRequiredService<IGuidGenerator>();
+
+        var genericSelectClaimedRetryStrategyBuilder =
+            scopedServiceProvider.GetRequiredService<IGenericSelectClaimedRetryStrategyBuilder>();
+
+        var dateTimePicker =
+            serviceProvider.GetRequiredService<IDateTimePicker>();
+
         var selectClaimedRetryStrategyBuilderArgs =
-            new SelectClaimedRetryStrategyBuilderArgs(
+            new GenericSelectClaimedRetryStrategyBuilderArgs(
                 BatchCount,
                 RetryDelayMinutes
             );
 
         var outboxBatchStrategyArgs =
-            selectClaimedRetryStrategyBuilder
+            genericSelectClaimedRetryStrategyBuilder
                 .Build<UserToUserChatMessageReadOutbox>(
                     selectClaimedRetryStrategyBuilderArgs
                 );
@@ -52,7 +81,7 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
         var outboxList =
             await
                 outboxBatchStrategy
-                    .ClaimBatchAsync(
+                    .ClaimBatchAsync<UserToUserChatMessageReadOutbox>(
                         outboxBatchStrategyArgs
                     );
 
@@ -66,6 +95,7 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
             var chatId = outbox.ChatId;
             var messageId = outbox.MessageId;
             var initiatorUserId = outbox.InitiatorUserId;
+            var correlationId = outbox.CorrelationId;
 
             var userToUserChatCollection =
                 genericReadRepository.GetCollection<UserToUserChat>();
@@ -73,11 +103,9 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
             var userToUserChat =
                 await
                     userToUserChatCollection
-
                         .Include(
                             entity => entity.UserCollection
                         )
-
                         .FirstOrDefaultAsync(
                             entity =>
                                 entity.Id == chatId
@@ -119,14 +147,17 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
                         targetUserId =>
                             new UserToUserChatMessageReadNotificationOutbox
                             {
-                                Id = Guid.NewGuid(),
+                                Id = guidGenerator.GetNew(),
                                 ChatId = chatId,
                                 MessageId = messageId,
                                 InitiatorUserId = initiatorUserId,
                                 TargetUserId = targetUserId,
+
+                                CreatedAt = dateTimePicker.GetUtcNow(),
+                                CorrelationId = correlationId,
                                 AttemptCount = 0,
                                 OutboxStatus = OutboxStatus.Pending,
-                                ProcessingStartedAt = null,
+                                ClaimedAt = null,
                             }
                     )
                     .ToList();
@@ -160,7 +191,7 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
 
     protected override TimeSpan GetDelay() =>
         TimeSpan
-            .FromSeconds(
-                CycleDelayInSeconds
+            .FromMinutes(
+                CycleDelayInMinutes
             );
 }

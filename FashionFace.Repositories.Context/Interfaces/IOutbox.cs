@@ -3,4 +3,6 @@
 public interface IOutbox :
     IWithOutboxStatus,
     IWithAttemptCount,
-    IWithProcessingStartedAt;
+    IWithClaimedAt,
+    IWithCorrelationId,
+    IWithCreatedAt;

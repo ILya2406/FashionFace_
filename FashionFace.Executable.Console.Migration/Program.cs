@@ -69,6 +69,9 @@ serviceCollection
                         );
                 }
             )
+            .ConfigureWarnings(warnings =>
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning)
+            )
     );
 
 var serviceProvider =

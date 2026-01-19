@@ -15,9 +15,11 @@ public sealed class UserToUserChatMessageReadNotificationOutbox : EntityBase, IO
     public required Guid TargetUserId { get; set; }
     public required Guid MessageId { get; set; }
 
+    public required DateTime CreatedAt { get; set; }
+    public required Guid CorrelationId { get; set; }
     public required OutboxStatus OutboxStatus { get; set; }
     public required int AttemptCount { get; set; }
-    public required DateTime? ProcessingStartedAt { get; set; }
+    public required DateTime? ClaimedAt { get; set; }
 
     public UserToUserChat? Chat { get; set; }
     public ApplicationUser? InitiatorUser { get; set; }

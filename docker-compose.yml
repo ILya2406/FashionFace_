@@ -100,9 +100,9 @@
       - Redis__Configuration=$Redis_Configuration
       - Redis__InstanceName=$Redis_InstanceName
     ports:
-      - "8090:8090"
+      - "8090:8080"
     expose:
-      - 8090
+      - 8080
     volumes:
       - "${Hubs_Log_Dir}:/app/logs:rw"
     depends_on:
@@ -242,7 +242,7 @@
     volumes:
       - redis_volume:/data
       - "${Redis_Stack_Log_Dir}:/app/logs:rw"
-    command: redis-server --logfile /app/logs/redis.log
+    command: redis-server --logfile /app/logs/redis.log --protected-mode no
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s

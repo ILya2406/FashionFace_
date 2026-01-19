@@ -9,33 +9,47 @@ using FashionFace.Repositories.Strategy.Builders.Args;
 using FashionFace.Repositories.Strategy.Builders.Interfaces;
 using FashionFace.Repositories.Strategy.Interfaces;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
-    IUserToUserChatNotificationsHubService userToUserChatNotificationsHubService,
-    IOutboxBatchStrategy<UserToUserChatMessageSendNotificationOutbox> outboxBatchStrategy,
-    ISelectPendingStrategyBuilder selectPendingStrategyBuilder,
+    IServiceProvider serviceProvider,
     ILogger<UserToUserChatMessageSendNotificationOutboxPendingWorker> logger
 ) : BaseBackgroundWorker<UserToUserChatMessageSendNotificationOutboxPendingWorker>(
     logger
 )
 {
-    private const int CycleDelayInSeconds = 5;
+    private const int CycleDelayInMinutes = 5;
     private const int BatchCount = 5;
 
     protected override async Task DoWorkAsync(
         CancellationToken cancellationToken
     )
     {
+        using var scope =
+            serviceProvider.CreateScope();
+
+        var scopedServiceProvider =
+            scope.ServiceProvider;
+
+        var userToUserChatNotificationsHubService =
+            scopedServiceProvider.GetRequiredService<IUserToUserChatNotificationsHubService>();
+
+        var outboxBatchStrategy =
+            scopedServiceProvider.GetRequiredService<IOutboxBatchStrategy>();
+
+        var genericSelectPendingStrategyBuilder =
+            scopedServiceProvider.GetRequiredService<IGenericSelectPendingStrategyBuilder>();
+
         var selectPendingStrategyBuilderArgs =
-            new SelectPendingStrategyBuilderArgs(
+            new GenericSelectPendingStrategyBuilderArgs(
                 BatchCount
             );
 
         var outboxBatchStrategyArgs =
-            selectPendingStrategyBuilder
+            genericSelectPendingStrategyBuilder
                 .Build<UserToUserChatMessageSendNotificationOutbox>(
                     selectPendingStrategyBuilderArgs
                 );
@@ -43,7 +57,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
         var outboxList =
             await
                 outboxBatchStrategy
-                    .ClaimBatchAsync(
+                    .ClaimBatchAsync<UserToUserChatMessageSendNotificationOutbox>(
                         outboxBatchStrategyArgs
                     );
 
@@ -54,7 +68,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
 
         foreach (var outbox in outboxList)
         {
-            var messageReceivedMessage =
+            var message =
                 new MessageReceivedMessage(
                     outbox.ChatId,
                     outbox.InitiatorUserId,
@@ -72,7 +86,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
                 userToUserChatNotificationsHubService
                     .NotifyMessageReceived(
                         outbox.TargetUserId,
-                        messageReceivedMessage
+                        message
                     );
 
             await
@@ -85,7 +99,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxPendingWorker(
 
     protected override TimeSpan GetDelay() =>
         TimeSpan
-            .FromSeconds(
-                CycleDelayInSeconds
+            .FromMinutes(
+                CycleDelayInMinutes
             );
 }

@@ -93,7 +93,9 @@ public sealed class UserToUserChatMessageSendFacade(
                 InitiatorUserId = userId,
                 AttemptCount = 0,
                 OutboxStatus = OutboxStatus.Pending,
-                ProcessingStartedAt = null,
+                CreatedAt = DateTime.UtcNow,
+                CorrelationId = Guid.NewGuid(),
+                ClaimedAt = null,
             };
 
         using var transaction =

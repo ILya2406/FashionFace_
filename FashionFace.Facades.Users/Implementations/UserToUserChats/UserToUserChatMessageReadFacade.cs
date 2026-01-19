@@ -37,7 +37,7 @@ public sealed class UserToUserChatMessageReadFacade(
             await
                 userToUserChatMessageCollection
                     .FirstOrDefaultAsync(
-                        entity => entity.Id == messageId
+                        entity => entity.MessageId == messageId
                     );
 
         if (message is null)
@@ -95,17 +95,16 @@ public sealed class UserToUserChatMessageReadFacade(
         userToUserChatProfile.LastReadAt =
             message.CreatedAt;
 
-        var userToUserChatMessageOutbox =
-            new UserToUserChatMessageReadOutbox
-            {
-                Id = Guid.NewGuid(),
-                ChatId = chatId,
-                MessageId = messageId,
-                InitiatorUserId = userId,
-                AttemptCount = 0,
-                OutboxStatus = OutboxStatus.Pending,
-                ProcessingStartedAt = null,
-            };
+        // Проверяем, нет ли уже записи в Outbox для этого сообщения
+        var outboxCollection =
+            genericReadRepository.GetCollection<UserToUserChatMessageReadOutbox>();
+
+        var existingOutbox =
+            await
+                outboxCollection
+                    .FirstOrDefaultAsync(
+                        entity => entity.MessageId == message.Id
+                    );
 
         using var transaction =
             await
@@ -117,11 +116,29 @@ public sealed class UserToUserChatMessageReadFacade(
                     userToUserChatProfile
                 );
 
-        await
-            createRepository
-                .CreateAsync(
-                    userToUserChatMessageOutbox
-                );
+        // Создаем запись в Outbox только если ее еще нет
+        if (existingOutbox is null)
+        {
+            var userToUserChatMessageOutbox =
+                new UserToUserChatMessageReadOutbox
+                {
+                    Id = Guid.NewGuid(),
+                    ChatId = chatId,
+                    MessageId = message.Id,
+                    InitiatorUserId = userId,
+                    AttemptCount = 0,
+                    OutboxStatus = OutboxStatus.Pending,
+                    CreatedAt = DateTime.UtcNow,
+                    CorrelationId = Guid.NewGuid(),
+                    ClaimedAt = null,
+                };
+
+            await
+                createRepository
+                    .CreateAsync(
+                        userToUserChatMessageOutbox
+                    );
+        }
 
         await
             transaction.CommitAsync();

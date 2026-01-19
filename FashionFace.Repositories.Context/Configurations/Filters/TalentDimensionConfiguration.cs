@@ -10,9 +10,13 @@ public sealed class AppearanceTraitsDimensionValueConfiguration : EntityConfigur
 {
     public override void Configure(EntityTypeBuilder<AppearanceTraitsDimensionValue> builder)
     {
-        base.Configure(
-            builder
-        );
+        // НЕ вызываем base.Configure(), так как AppearanceTraitsDimensionValue использует составной ключ
+
+        // Устанавливаем составной первичный ключ - ProfileId + DimensionValueId
+        builder
+            .HasKey(
+                entity => new { entity.ProfileId, entity.DimensionValueId }
+            );
 
         builder
             .Property(

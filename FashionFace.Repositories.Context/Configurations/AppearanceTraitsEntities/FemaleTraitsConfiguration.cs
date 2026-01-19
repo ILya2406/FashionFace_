@@ -10,9 +10,13 @@ public sealed class FemaleTraitsConfiguration : EntityConfigurationBase<FemaleTr
 {
     public override void Configure(EntityTypeBuilder<FemaleTraits> builder)
     {
-        base.Configure(
-            builder
-        );
+        // НЕ вызываем base.Configure(), так как FemaleTraits использует AppearanceTraitsId как ключ, а не Id
+
+        // Устанавливаем первичный ключ - AppearanceTraitsId
+        builder
+            .HasKey(
+                entity => entity.AppearanceTraitsId
+            );
 
         builder
             .Property(

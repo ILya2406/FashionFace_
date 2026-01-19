@@ -80,7 +80,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxConfiguration :
                 entity => entity.MessageCreatedAt
             )
             .HasColumnName(
-                "CreatedAt"
+                "MessageCreatedAt"
             )
             .HasColumnType(
                 "timestamp with time zone"

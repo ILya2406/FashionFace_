@@ -13,17 +13,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FashionFace.Repositories.Strategy.Implementations;
 
-public sealed class OutboxBatchStrategy<TEntity>(
+public sealed class OutboxBatchStrategy(
     IExecuteRepository executeRepository,
     IUpdateRepository updateRepository,
     ITransactionManager transactionManager,
     IDateTimePicker dateTimePicker
-) : IOutboxBatchStrategy<TEntity>
-    where TEntity : class, IOutbox
+) : IOutboxBatchStrategy
 {
-    public async Task<IReadOnlyList<TEntity>> ClaimBatchAsync(
+    public async Task<IReadOnlyList<TEntity>> ClaimBatchAsync<TEntity>(
         OutboxBatchStrategyArgs args
-    )
+    ) where TEntity : class, IOutbox
     {
         var (sql, parameterList) = args;
 
@@ -44,7 +43,7 @@ public sealed class OutboxBatchStrategy<TEntity>(
         {
             entity.AttemptCount++;
             entity.OutboxStatus = OutboxStatus.Claimed;
-            entity.ProcessingStartedAt = dateTimePicker.GetUtcNow();
+            entity.ClaimedAt = dateTimePicker.GetUtcNow();
         }
 
         await
@@ -60,28 +59,28 @@ public sealed class OutboxBatchStrategy<TEntity>(
             entityList;
     }
 
-    public async Task MakeDoneAsync(
+    public async Task MakeDoneAsync<TEntity>(
         TEntity entity
-    ) =>
+    ) where TEntity : class, IOutbox =>
         await
             SetOutboxStatusAsync(
                 entity,
                 OutboxStatus.Done
             );
 
-    public async Task MakeFailedAsync(
+    public async Task MakeFailedAsync<TEntity>(
         TEntity entity
-    ) =>
+    ) where TEntity : class, IOutbox =>
         await
             SetOutboxStatusAsync(
                 entity,
                 OutboxStatus.Failed
             );
 
-    private async Task SetOutboxStatusAsync(
+    private async Task SetOutboxStatusAsync<TEntity>(
         TEntity entity,
         OutboxStatus outboxStatus
-    )
+    ) where TEntity : class, IOutbox
     {
         entity.OutboxStatus = outboxStatus;
 

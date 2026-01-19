@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using FashionFace.Repositories.Context;
@@ -6,6 +7,8 @@ using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Models;
 
 using Microsoft.EntityFrameworkCore;
+
+using Npgsql;
 
 namespace FashionFace.Repositories.Implementations;
 
@@ -22,6 +25,14 @@ public sealed class ExecuteRepository(
             .Set<TEntity>()
             .FromSqlRaw(
                 sql,
-                parameterList.ToArray()
+                parameterList
+                    .Select(
+                        parameter =>
+                            new NpgsqlParameter(
+                                parameter.ParameterName,
+                                parameter.Value ?? DBNull.Value
+                            )
+                    )
+                    .ToArray()
             );
 }

@@ -9,20 +9,19 @@ using FashionFace.Repositories.Strategy.Builders.Args;
 using FashionFace.Repositories.Strategy.Builders.Interfaces;
 using FashionFace.Repositories.Strategy.Interfaces;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker(
-    IUserToUserChatNotificationsHubService userToUserChatNotificationsHubService,
-    IOutboxBatchStrategy<UserToUserChatMessageSendNotificationOutbox> outboxBatchStrategy,
-    ISelectClaimedRetryStrategyBuilder selectClaimedRetryStrategyBuilder,
+    IServiceProvider serviceProvider,
     ILogger<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker> logger
 ) : BaseBackgroundWorker<UserToUserChatMessageSendNotificationOutboxClaimedRetryWorker>(
     logger
 )
 {
-    private const int CycleDelayInSeconds = 5;
+    private const int CycleDelayInMinutes = 5;
     private const int RetryDelayMinutes = 5;
     private const int BatchCount = 5;
 
@@ -30,14 +29,29 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
         CancellationToken cancellationToken
     )
     {
+        using var scope =
+            serviceProvider.CreateScope();
+
+        var scopedServiceProvider =
+            scope.ServiceProvider;
+
+        var userToUserChatNotificationsHubService =
+            scopedServiceProvider.GetRequiredService<IUserToUserChatNotificationsHubService>();
+
+        var outboxBatchStrategy =
+            scopedServiceProvider.GetRequiredService<IOutboxBatchStrategy>();
+
+        var genericSelectClaimedRetryStrategyBuilder =
+            scopedServiceProvider.GetRequiredService<IGenericSelectClaimedRetryStrategyBuilder>();
+
         var selectClaimedRetryStrategyBuilderArgs =
-            new SelectClaimedRetryStrategyBuilderArgs(
+            new GenericSelectClaimedRetryStrategyBuilderArgs(
                 BatchCount,
                 RetryDelayMinutes
             );
 
         var outboxBatchStrategyArgs =
-            selectClaimedRetryStrategyBuilder
+            genericSelectClaimedRetryStrategyBuilder
                 .Build<UserToUserChatMessageSendNotificationOutbox>(
                     selectClaimedRetryStrategyBuilderArgs
                 );
@@ -45,7 +59,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
         var outboxList =
             await
                 outboxBatchStrategy
-                    .ClaimBatchAsync(
+                    .ClaimBatchAsync<UserToUserChatMessageSendNotificationOutbox>(
                         outboxBatchStrategyArgs
                     );
 
@@ -56,7 +70,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
         foreach (var outbox in outboxList)
         {
-            var messageReceivedMessage =
+            var message =
                 new MessageReceivedMessage(
                     outbox.ChatId,
                     outbox.InitiatorUserId,
@@ -74,7 +88,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
                 userToUserChatNotificationsHubService
                     .NotifyMessageReceived(
                         outbox.TargetUserId,
-                        messageReceivedMessage
+                        message
                     );
 
             await
@@ -87,7 +101,7 @@ public sealed class UserToUserChatMessageSendNotificationOutboxClaimedRetryWorke
 
     protected override TimeSpan GetDelay() =>
         TimeSpan
-            .FromSeconds(
-                CycleDelayInSeconds
+            .FromMinutes(
+                CycleDelayInMinutes
             );
 }

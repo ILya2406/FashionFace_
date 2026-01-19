@@ -1,0 +1,3 @@
+﻿namespace FashionFace.Executable.Worker.UserEvents.Interfaces;
+
+public interface IUserToUserChatInvitationRejectedNotificationHandlerBuilder : IHandlerBuilderBase;

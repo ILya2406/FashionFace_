@@ -12,37 +12,62 @@ using FashionFace.Repositories.Strategy.Builders.Args;
 using FashionFace.Repositories.Strategy.Builders.Interfaces;
 using FashionFace.Repositories.Strategy.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
+using FashionFace.Services.Singleton.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FashionFace.Executable.Worker.UserEvents.Workers;
 
 public sealed class UserToUserChatMessageReadOutboxPendingWorker(
-    IOutboxBatchStrategy<UserToUserChatMessageReadOutbox> outboxBatchStrategy,
-    ISelectPendingStrategyBuilder selectPendingStrategyBuilder,
-    IGenericReadRepository genericReadRepository,
-    IUpdateRepository updateRepository,
-    ITransactionManager  transactionManager,
+    IServiceProvider serviceProvider,
     ILogger<UserToUserChatMessageReadOutboxPendingWorker> logger
 ) : BaseBackgroundWorker<UserToUserChatMessageReadOutboxPendingWorker>(
     logger
 )
 {
-    private const int CycleDelayInSeconds = 5;
+    private const int CycleDelayInMinutes = 5;
     private const int BatchCount = 5;
 
     protected override async Task DoWorkAsync(
         CancellationToken cancellationToken
     )
     {
+        using var scope =
+            serviceProvider.CreateScope();
+
+        var scopedServiceProvider =
+            scope.ServiceProvider;
+
+        var outboxBatchStrategy =
+            scopedServiceProvider.GetRequiredService<IOutboxBatchStrategy>();
+
+        var genericReadRepository =
+            scopedServiceProvider.GetRequiredService<IGenericReadRepository>();
+
+        var updateRepository =
+            scopedServiceProvider.GetRequiredService<IUpdateRepository>();
+
+        var transactionManager =
+            scopedServiceProvider.GetRequiredService<ITransactionManager>();
+
+        var guidGenerator =
+            scopedServiceProvider.GetRequiredService<IGuidGenerator>();
+
+        var genericSelectPendingStrategyBuilder =
+            scopedServiceProvider.GetRequiredService<IGenericSelectPendingStrategyBuilder>();
+
+        var dateTimePicker =
+            serviceProvider.GetRequiredService<IDateTimePicker>();
+
         var selectPendingStrategyBuilderArgs =
-            new SelectPendingStrategyBuilderArgs(
+            new GenericSelectPendingStrategyBuilderArgs(
                 BatchCount
             );
 
         var outboxBatchStrategyArgs =
-            selectPendingStrategyBuilder
+            genericSelectPendingStrategyBuilder
                 .Build<UserToUserChatMessageReadOutbox>(
                     selectPendingStrategyBuilderArgs
                 );
@@ -50,7 +75,7 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
         var outboxList =
             await
                 outboxBatchStrategy
-                    .ClaimBatchAsync(
+                    .ClaimBatchAsync<UserToUserChatMessageReadOutbox>(
                         outboxBatchStrategyArgs
                     );
 
@@ -64,30 +89,36 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
             var chatId = outbox.ChatId;
             var messageId = outbox.MessageId;
             var initiatorUserId = outbox.InitiatorUserId;
+            var correlationId = outbox.CorrelationId;
 
             var userToUserChatCollection =
                 genericReadRepository.GetCollection<UserToUserChat>();
 
-            var userToUserChat =
+            var userToUserChatUserIdList =
                 await
                     userToUserChatCollection
-
-                        .Include(
-                            entity => entity.UserCollection
+                        .Where(
+                            entity => entity.Id == chatId
                         )
-
-                        .FirstOrDefaultAsync(
+                        .Select(
                             entity =>
-                                entity.Id == chatId
-                                && entity
+                                entity
                                     .UserCollection
-                                    .Any(
-                                        profile =>
-                                            profile.ApplicationUserId == initiatorUserId
+                                    .Select(
+                                        user => user.ApplicationUserId
                                     )
-                        );
+                                    .ToList()
+                        )
+                        .FirstOrDefaultAsync();
 
-            if (userToUserChat is null)
+            var initiatorBelongToUserTiUserChat =
+                userToUserChatUserIdList?
+                    .Any(
+                        id => id == initiatorUserId
+                    )
+                ?? false;
+
+            if (!initiatorBelongToUserTiUserChat)
             {
                 await
                     outboxBatchStrategy
@@ -97,34 +128,39 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
 
                 logger
                     .LogError(
-                        $"Outbox [{outbox.Id}] failed. User to user chat [{chatId}] was not found"
+                        $"Outbox [{
+                            outbox.Id
+                        }] failed. User to user chat [{
+                            chatId
+                        }] was not found for user id [{
+                            initiatorUserId
+                        }]"
                     );
 
                 continue;
             }
 
             var userToUserChatMessageReadNotificationOutboxList =
-                userToUserChat
-                    .UserCollection
+                userToUserChatUserIdList!
                     .Where(
                         entity =>
-                            entity.ApplicationUserId != initiatorUserId
-                    )
-                    .Select(
-                        entity => entity.ApplicationUserId
+                            entity != initiatorUserId
                     )
                     .Select(
                         targetUserId =>
                             new UserToUserChatMessageReadNotificationOutbox
                             {
-                                Id = Guid.NewGuid(),
+                                Id = guidGenerator.GetNew(),
                                 ChatId = chatId,
                                 MessageId = messageId,
                                 InitiatorUserId = initiatorUserId,
                                 TargetUserId = targetUserId,
+
+                                CreatedAt = dateTimePicker.GetUtcNow(),
+                                CorrelationId = correlationId,
                                 AttemptCount = 0,
                                 OutboxStatus = OutboxStatus.Pending,
-                                ProcessingStartedAt = null,
+                                ClaimedAt = null,
                             }
                     )
                     .ToList();
@@ -158,7 +194,7 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
 
     protected override TimeSpan GetDelay() =>
         TimeSpan
-            .FromSeconds(
-                CycleDelayInSeconds
+            .FromMinutes(
+                CycleDelayInMinutes
             );
 }

@@ -10,9 +10,13 @@ public sealed class AppearanceTraitsConfiguration : EntityConfigurationBase<Appe
 {
     public override void Configure(EntityTypeBuilder<AppearanceTraits> builder)
     {
-        base.Configure(
-            builder
-        );
+        // НЕ вызываем base.Configure(), так как AppearanceTraits использует ProfileId как ключ, а не Id
+
+        // Устанавливаем первичный ключ - ProfileId
+        builder
+            .HasKey(
+                entity => entity.ProfileId
+            );
 
         builder
             .Property(
