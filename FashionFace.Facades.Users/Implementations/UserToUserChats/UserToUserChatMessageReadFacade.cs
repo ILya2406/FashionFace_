@@ -3,6 +3,8 @@ using System;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
+using FashionFace.Common.Models.Models.Commands;
+using FashionFace.Dependencies.MassTransit.Interfaces;
 using FashionFace.Facades.Users.Args.UserToUserChats;
 using FashionFace.Facades.Users.Interfaces.UserToUserChats;
 using FashionFace.Repositories.Context.Enums;
@@ -14,6 +16,8 @@ using FashionFace.Repositories.Transactions.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
+using Npgsql;
+
 namespace FashionFace.Facades.Users.Implementations.UserToUserChats;
 
 public sealed class UserToUserChatMessageReadFacade(
@@ -21,7 +25,8 @@ public sealed class UserToUserChatMessageReadFacade(
     IExceptionDescriptor exceptionDescriptor,
     IUpdateRepository updateRepository,
     ICreateRepository createRepository,
-    ITransactionManager  transactionManager
+    ITransactionManager transactionManager,
+    ICommandSendService commandSendService
 ): IUserToUserChatMessageReadFacade
 {
     public async Task Execute(
@@ -133,14 +138,38 @@ public sealed class UserToUserChatMessageReadFacade(
                     ClaimedAt = null,
                 };
 
-            await
-                createRepository
-                    .CreateAsync(
-                        userToUserChatMessageOutbox
-                    );
-        }
+            try
+            {
+                await
+                    createRepository
+                        .CreateAsync(
+                            userToUserChatMessageOutbox
+                        );
 
-        await
-            transaction.CommitAsync();
+                await
+                    transaction.CommitAsync();
+
+                // Publish event to RabbitMQ for immediate processing
+                var command =
+                    new HandleUserToUserMessageReadOutbox(
+                        userToUserChatMessageOutbox.CorrelationId
+                    );
+
+                await
+                    commandSendService
+                        .SendAsync(
+                            command
+                        );
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: "23505" })
+            {
+                // Duplicate key - outbox already exists (race condition), ignore
+            }
+        }
+        else
+        {
+            await
+                transaction.CommitAsync();
+        }
     }
 }
