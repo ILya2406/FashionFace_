@@ -206,7 +206,7 @@
 
 
   rabbitmq:
-    image: rabbitmq:4.2.1
+    image: rabbitmq:4.2.1-management
     container_name: rabbitmq
     hostname: rabbitmq
     environment:
@@ -220,8 +220,10 @@
       - 5672
       - 15672
     volumes:
-      - rabbitmq_volume:/etc/rabbitmq/
+      - rabbitmq_data:/var/lib/rabbitmq
       - "${Rabbitmq_Log_Dir}:/var/log/rabbitmq:rw"
+      - ./configs/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./configs/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     logging:
       options:
         max-size: $Docker_Log_Size
@@ -263,6 +265,6 @@ networks:
 
 volumes:
   postgres_volume:
-  rabbitmq_volume:
+  rabbitmq_data:
   redis_volume:
   files:

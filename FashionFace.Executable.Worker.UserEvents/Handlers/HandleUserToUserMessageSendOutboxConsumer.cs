@@ -152,7 +152,7 @@ public sealed class HandleUserToUserMessageSendOutboxConsumer(
                     )
                     .FirstOrDefaultAsync(
                         entity =>
-                            entity.MessageId == messageId
+                            entity.Id == messageId
                             && entity.ChatId == chatId
                     );
 

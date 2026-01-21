@@ -54,6 +54,9 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
         var updateRepository =
             scopedServiceProvider.GetRequiredService<IUpdateRepository>();
 
+        var createRepository =
+            scopedServiceProvider.GetRequiredService<ICreateRepository>();
+
         var transactionManager =
             scopedServiceProvider.GetRequiredService<ITransactionManager>();
 
@@ -172,8 +175,8 @@ public sealed class UserToUserChatMessageReadOutboxClaimedRetryWorker(
                     transactionManager.BeginTransaction();
 
             await
-                updateRepository
-                    .UpdateCollectionAsync(
+                createRepository
+                    .CreateCollectionAsync(
                         userToUserChatMessageReadNotificationOutboxList,
                         cancellationToken
                     );

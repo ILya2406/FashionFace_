@@ -49,6 +49,9 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
         var updateRepository =
             scopedServiceProvider.GetRequiredService<IUpdateRepository>();
 
+        var createRepository =
+            scopedServiceProvider.GetRequiredService<ICreateRepository>();
+
         var transactionManager =
             scopedServiceProvider.GetRequiredService<ITransactionManager>();
 
@@ -175,8 +178,8 @@ public sealed class UserToUserChatMessageReadOutboxPendingWorker(
                     transactionManager.BeginTransaction();
 
             await
-                updateRepository
-                    .UpdateCollectionAsync(
+                createRepository
+                    .CreateCollectionAsync(
                         userToUserChatMessageReadNotificationOutboxList,
                         cancellationToken
                     );

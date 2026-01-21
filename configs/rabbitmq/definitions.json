@@ -1,0 +1,26 @@
+{
+  "vhosts": [
+    {
+      "name": "/"
+    },
+    {
+      "name": "vhost"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "rabbitmq",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "rabbitmq",
+      "vhost": "vhost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ]
+}

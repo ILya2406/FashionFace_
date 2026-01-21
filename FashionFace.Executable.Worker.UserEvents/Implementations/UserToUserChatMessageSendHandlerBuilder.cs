@@ -62,6 +62,9 @@ public sealed class UserToUserChatMessageSendHandlerBuilder : IUserToUserChatMes
             var updateRepository =
                 serviceProvider.GetRequiredService<IUpdateRepository>();
 
+            var createRepository =
+                serviceProvider.GetRequiredService<ICreateRepository>();
+
             var transactionManager =
                 serviceProvider.GetRequiredService<ITransactionManager>();
 
@@ -257,8 +260,8 @@ public sealed class UserToUserChatMessageSendHandlerBuilder : IUserToUserChatMes
                     transactionManager.BeginTransaction();
 
             await
-                updateRepository
-                    .UpdateCollectionAsync(
+                createRepository
+                    .CreateCollectionAsync(
                         userToUserChatMessageSendNotificationOutboxList
                     );
 
