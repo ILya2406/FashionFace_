@@ -12,6 +12,8 @@ using FashionFace.Repositories.Context;
 using FashionFace.Repositories.Context.Models.IdentityEntities;
 using FashionFace.Services.ConfigurationSettings.Models;
 
+using MassTransit;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
@@ -107,6 +109,38 @@ serviceCollection.AddLogging(
 );
 
 serviceCollection.SetupDependencies();
+
+serviceCollection.AddMassTransit(
+    configurator =>
+    {
+        configurator.SetKebabCaseEndpointNameFormatter();
+
+        configurator.UsingRabbitMq(
+            (
+                context,
+                cfg
+            ) =>
+            {
+                cfg.Host(
+                    rabbitMqSection["Host"],
+                    ushort.Parse(rabbitMqSection["Port"]),
+                    rabbitMqSection["VHost"],
+                    hostConfigurator =>
+                    {
+                        hostConfigurator.Username(
+                            rabbitMqSection["Username"]
+                        );
+                        hostConfigurator.Password(
+                            rabbitMqSection["Password"]
+                        );
+                    }
+                );
+
+                cfg.ConfigureEndpoints(context);
+            }
+        );
+    }
+);
 
 serviceCollection.AddStackExchangeRedisCache(options =>
 {

@@ -13,6 +13,8 @@ using FashionFace.Repositories.Interfaces;
 using FashionFace.Repositories.Read.Interfaces;
 using FashionFace.Repositories.Transactions.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using FashionFace.Common.Models.Models.Commands;
+using FashionFace.Dependencies.MassTransit.Interfaces;
 namespace FashionFace.Facades.Users.Implementations.UserToUserChats;
 
 public sealed class UserToUserChatMessageSendFacade(
@@ -20,7 +22,8 @@ public sealed class UserToUserChatMessageSendFacade(
     IExceptionDescriptor exceptionDescriptor,
     ICreateRepository createRepository,
     ITransactionManager  transactionManager,
-    IDateTimePicker dateTimePicker
+    IDateTimePicker dateTimePicker,
+    ICommandSendService commandSendService
 ): IUserToUserChatMessageSendFacade
 {
     public async Task<UserToUserChatMessageSendResult> Execute(
@@ -105,6 +108,12 @@ public sealed class UserToUserChatMessageSendFacade(
         await
             createRepository
                 .CreateAsync(
+                    userToUserMessage
+                );
+
+        await
+            createRepository
+                .CreateAsync(
                     userToUserChatMessage
                 );
 
@@ -116,6 +125,18 @@ public sealed class UserToUserChatMessageSendFacade(
 
         await
             transaction.CommitAsync();
+
+        // Publish event to RabbitMQ for immediate processing
+        var command =
+            new HandleUserToUserMessageSendOutbox(
+                userToUserChatMessageOutbox.CorrelationId
+            );
+
+        await
+            commandSendService
+                .SendAsync(
+                    command
+                );
 
         var result =
             new UserToUserChatMessageSendResult(

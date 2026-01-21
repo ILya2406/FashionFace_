@@ -19,6 +19,7 @@
         <ProjectReference Include="..\FashionFace.Repositories.Read\FashionFace.Repositories.Read.csproj"/>
         <ProjectReference Include="..\FashionFace.Services.Singleton\FashionFace.Services.Singleton.csproj"/>
         <ProjectReference Include="..\FashionFace.Dependencies.RabbitMq.Facades\FashionFace.Dependencies.RabbitMq.Facades.csproj" />
+        <ProjectReference Include="..\FashionFace.Dependencies.MassTransit\FashionFace.Dependencies.MassTransit.csproj" />
     </ItemGroup>
 
 </Project>
