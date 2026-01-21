@@ -49,6 +49,9 @@ public sealed class UserToUserChatMessageSendOutboxPendingWorker(
         var updateRepository =
             scopedServiceProvider.GetRequiredService<IUpdateRepository>();
 
+        var createRepository =
+            scopedServiceProvider.GetRequiredService<ICreateRepository>();
+
         var transactionManager =
             scopedServiceProvider.GetRequiredService<ITransactionManager>();
 
@@ -105,7 +108,7 @@ public sealed class UserToUserChatMessageSendOutboxPendingWorker(
                         )
                         .FirstOrDefaultAsync(
                             entity =>
-                                entity.MessageId == messageId
+                                entity.Id == messageId
                                 && entity.ChatId == chatId
                         );
 
@@ -217,8 +220,8 @@ public sealed class UserToUserChatMessageSendOutboxPendingWorker(
                     transactionManager.BeginTransaction();
 
             await
-                updateRepository
-                    .UpdateCollectionAsync(
+                createRepository
+                    .CreateCollectionAsync(
                         userToUserChatMessageSendNotificationOutboxList,
                         cancellationToken
                     );

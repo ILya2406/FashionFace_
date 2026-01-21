@@ -26,6 +26,7 @@ public sealed class HandleUserToUserMessageSendOutboxConsumer(
     IGenericReadRepository genericReadRepository,
     IExceptionDescriptor exceptionDescriptor,
     IUpdateRepository updateRepository,
+    ICreateRepository createRepository,
     ITransactionManager transactionManager,
     ICommandSendService commandSendService,
     ILogger<HandleUserToUserMessageSendOutboxConsumer> logger
@@ -208,8 +209,8 @@ public sealed class HandleUserToUserMessageSendOutboxConsumer(
                 transactionManager.BeginTransaction();
 
         await
-            updateRepository
-                .UpdateCollectionAsync(
+            createRepository
+                .CreateCollectionAsync(
                     userToUserChatMessageSendNotificationOutboxList
                 );
 
