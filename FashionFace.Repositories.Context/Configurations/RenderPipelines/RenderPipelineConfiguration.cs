@@ -54,7 +54,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
             .HasOne(
                 entity => entity.ApplicationUser
             )
-            .WithOne()
+            .WithMany()
             .HasForeignKey<RenderPipeline>(
                 entity => entity.ApplicationUserId
             )
@@ -66,7 +66,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
             .HasOne(
                 entity => entity.Talent
             )
-            .WithOne()
+            .WithMany()
             .HasForeignKey<RenderPipeline>(
                 entity => entity.TalentId
             )
@@ -78,7 +78,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
             .HasOne(
                 entity => entity.PoseReference
             )
-            .WithOne()
+            .WithMany()
             .HasForeignKey<RenderPipeline>(
                 entity => entity.PoseReferenceId
             )
@@ -90,7 +90,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
             .HasOne(
                 entity => entity.ProductMediaAggregate
             )
-            .WithOne()
+            .WithMany()
             .HasForeignKey<RenderPipeline>(
                 entity => entity.ProductMediaAggregateId
             )

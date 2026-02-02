@@ -2296,25 +2296,27 @@ namespace FashionFace.Repositories.Context.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RenderPipeline_ApplicationUserId",
                 table: "RenderPipeline",
-                column: "ApplicationUserId",
-                unique: true);
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RenderPipeline_PoseReferenceId",
                 table: "RenderPipeline",
-                column: "PoseReferenceId",
-                unique: true);
+                column: "PoseReferenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RenderPipeline_ProductMediaAggregateId",
                 table: "RenderPipeline",
-                column: "ProductMediaAggregateId",
-                unique: true);
+                column: "ProductMediaAggregateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RenderPipeline_TalentId",
                 table: "RenderPipeline",
-                column: "TalentId",
+                column: "TalentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RenderPipeline_Composite_Unique",
+                table: "RenderPipeline",
+                columns: new[] { "ApplicationUserId", "TalentId", "PoseReferenceId", "ProductMediaAggregateId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
