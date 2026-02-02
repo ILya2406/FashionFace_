@@ -28,13 +28,13 @@ public sealed class MediaFileConfiguration : EntityConfigurationBase<MediaFile>
 
         builder
             .Property(
-                entity => entity.RelativePath
+                entity => entity.FileResourceId
             )
             .HasColumnName(
-                "RelativePath"
+                "FileResourceId"
             )
             .HasColumnType(
-                "text"
+                "uuid"
             )
             .IsRequired();
 
@@ -50,6 +50,18 @@ public sealed class MediaFileConfiguration : EntityConfigurationBase<MediaFile>
             )
             .OnDelete(
                 DeleteBehavior.Cascade
+            );
+
+        builder
+            .HasOne(
+                entity => entity.FileResource
+            )
+            .WithMany()
+            .HasForeignKey(
+                entity => entity.FileResourceId
+            )
+            .OnDelete(
+                DeleteBehavior.SetNull
             );
     }
 }

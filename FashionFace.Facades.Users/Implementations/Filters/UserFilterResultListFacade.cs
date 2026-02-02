@@ -336,6 +336,7 @@ public sealed class UserFilterResultListFacade(
             .Include(pm => pm.MediaAggregate)
                 .ThenInclude(ma => ma!.PreviewMedia)
                     .ThenInclude(m => m!.OriginalFile)
+                        .ThenInclude(f => f!.FileResource)
             .Include(pm => pm.Portfolio)
             .Where(pm =>
                 pm.Portfolio != null &&
@@ -351,6 +352,7 @@ public sealed class UserFilterResultListFacade(
                       .MediaAggregate?
                       .PreviewMedia?
                       .OriginalFile?
+                      .FileResource?
                       .RelativePath ?? string.Empty
             );
 
@@ -361,13 +363,14 @@ public sealed class UserFilterResultListFacade(
         {
             var mediaFileCollection = genericReadRepository.GetCollection<MediaFile>();
             var fallbackMedia = await mediaFileCollection
+                .Include(mf => mf.FileResource)
                 .Where(mf => profileIds.Contains(mf.ProfileId))
                 .OrderByDescending(mf => mf.Id)
                 .ToListAsync();
 
             var profileMediaMap = fallbackMedia
                 .GroupBy(mf => mf.ProfileId)
-                .ToDictionary(g => g.Key, g => g.First().RelativePath);
+                .ToDictionary(g => g.Key, g => g.First().FileResource?.RelativePath ?? string.Empty);
 
             // Map ProfileId to TalentId for fallback
             var profileToTalentMap = talentListGrouped

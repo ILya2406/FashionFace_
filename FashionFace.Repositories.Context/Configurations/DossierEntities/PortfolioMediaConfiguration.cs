@@ -10,13 +10,7 @@ public sealed class DossierMediaConfiguration : EntityConfigurationBase<DossierM
 {
     public override void Configure(EntityTypeBuilder<DossierMediaAggregate> builder)
     {
-        // НЕ вызываем base.Configure(), так как DossierMediaAggregate использует составной ключ
-
-        // Устанавливаем составной первичный ключ - DossierId + MediaAggregateId
-        builder
-            .HasKey(
-                entity => new { entity.DossierId, entity.MediaAggregateId }
-            );
+        base.Configure(builder);
 
         builder
             .Property(
@@ -39,19 +33,6 @@ public sealed class DossierMediaConfiguration : EntityConfigurationBase<DossierM
             )
             .HasColumnType(
                 "uuid"
-            )
-            .IsRequired();
-
-        // Настраиваем PositionIndex (из IWithPositionIndex)
-        builder
-            .Property(
-                entity => entity.PositionIndex
-            )
-            .HasColumnName(
-                "PositionIndex"
-            )
-            .HasColumnType(
-                "double precision"
             )
             .IsRequired();
 

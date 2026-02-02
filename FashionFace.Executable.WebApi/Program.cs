@@ -392,7 +392,18 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(filesPath),
     RequestPath = "/files",
-    ServeUnknownFileTypes = true
+    ServeUnknownFileTypes = true,
+    OnPrepareResponse = ctx =>
+    {
+        // Добавляем CORS заголовки для статических файлов
+        var origin = ctx.Context.Request.Headers["Origin"].ToString();
+
+        if (!string.IsNullOrEmpty(origin) && corsSettings.OriginList.Contains(origin))
+        {
+            ctx.Context.Response.Headers["Access-Control-Allow-Origin"] = origin;
+            ctx.Context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+        }
+    }
 });
 
 app.UseRouting();

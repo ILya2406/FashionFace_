@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 using FashionFace.Common.Exceptions.Interfaces;
 using FashionFace.Facades.Users.Args.MediaEntity;
 using FashionFace.Facades.Users.Interfaces.MediaEntity;
 using FashionFace.Facades.Users.Models.MediaEntity;
+using FashionFace.Repositories.Context.Models.Files;
 using FashionFace.Repositories.Context.Models.MediaEntities;
 using FashionFace.Repositories.Context.Models.Profiles;
 using FashionFace.Repositories.Interfaces;
@@ -73,19 +75,55 @@ public sealed class UserMediaCreateFacade(
         var mediaId = Guid.NewGuid();
         var originalFileId = Guid.NewGuid();
         var optimizedFileId = Guid.NewGuid();
+        var originalFileResourceId = Guid.NewGuid();
+        var optimizedFileResourceId = Guid.NewGuid();
+
+        // Compute SHA256 hash for file
+        var hashBytes = SHA256.HashData(fileBytes);
+        var hashString = Convert.ToHexString(hashBytes).ToLowerInvariant();
+
+        var fileName = $"{Guid.NewGuid()}.jpg";
+
+        // Create FileResource for original file
+        var originalFileResource = new FileResource
+        {
+            Id = originalFileResourceId,
+            RelativePath = imageUrl,
+            FileName = fileName,
+            SizeBytes = fileBytes.Length,
+            ContentType = "image/jpeg",
+            CreatedAt = DateTime.UtcNow,
+            IsDeleted = false,
+            HashSha256 = hashString
+        };
+
+        // Create FileResource for optimized file
+        var optimizedFileResource = new FileResource
+        {
+            Id = optimizedFileResourceId,
+            RelativePath = imageUrl,
+            FileName = fileName,
+            SizeBytes = fileBytes.Length,
+            ContentType = "image/jpeg",
+            CreatedAt = DateTime.UtcNow,
+            IsDeleted = false,
+            HashSha256 = hashString
+        };
 
         var originalFile = new MediaFile
         {
             Id = originalFileId,
             ProfileId = profile.Id,
-            RelativePath = imageUrl
+            FileResourceId = originalFileResourceId,
+            FileResource = originalFileResource
         };
 
         var optimizedFile = new MediaFile
         {
             Id = optimizedFileId,
             ProfileId = profile.Id,
-            RelativePath = imageUrl
+            FileResourceId = optimizedFileResourceId,
+            FileResource = optimizedFileResource
         };
 
         var media = new Media

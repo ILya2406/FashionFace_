@@ -54,7 +54,9 @@ public sealed class FilterCriteriaHeightConfiguration : EntityConfigurationBase<
             .HasOne(
                 entity => entity.FilterCriteriaAppearanceTraits
             )
-            .WithOne()
+            .WithOne(
+                entity => entity.Height
+            )
             .HasForeignKey<FilterCriteriaHeight>(
                 entity => entity.FilterCriteriaAppearanceTraitsId
             )

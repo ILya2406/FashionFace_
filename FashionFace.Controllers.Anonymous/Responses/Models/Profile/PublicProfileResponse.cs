@@ -19,5 +19,6 @@ public sealed record PublicProfileResponse(
     List<string>? Tags,
     DateTime CreatedAt,
     AppearanceTraitsResponse? AppearanceTraits,
-    List<string>? MediaUrls
+    List<string>? MediaUrls,
+    Guid? TalentId
 );

@@ -1,4 +1,11 @@
 {
+  "users": [
+    {
+      "name": "rabbitmq",
+      "password": "rabbitmq",
+      "tags": ["administrator"]
+    }
+  ],
   "vhosts": [
     {
       "name": "/"

@@ -32,6 +32,12 @@ public sealed class UserDossierMediaDeleteFacade(
         var dossierMediaAggregate =
             await
                 dossierMediaAggregateCollection
+                    .Include(
+                        entity => entity.Dossier
+                    )
+                    .ThenInclude(
+                        entity => entity!.Profile
+                    )
                     .FirstOrDefaultAsync(
                         entity =>
                             entity.MediaAggregateId == mediaId

@@ -1,4 +1,4 @@
-﻿namespace FashionFace.Repositories.Context.Interfaces;
+namespace FashionFace.Repositories.Context.Interfaces;
 
 public interface IOutbox :
     IWithOutboxStatus,

@@ -145,6 +145,26 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
                 .IsRequired();
         }
 
+        var isWithTaskStatus =
+            typeof(IWithTaskStatus)
+                .IsAssignableFrom(
+                    type
+                );
+
+        if (isWithTaskStatus)
+        {
+            builder
+                .Property(nameof(IWithTaskStatus.TaskStatus))
+                .HasColumnName(
+                    nameof(IWithTaskStatus.TaskStatus)
+                )
+                .HasConversion<string>()
+                .HasColumnType(
+                    "varchar(16)"
+                )
+                .IsRequired();
+        }
+
         var isWithAttemptCount =
             typeof(IWithAttemptCount)
                 .IsAssignableFrom(

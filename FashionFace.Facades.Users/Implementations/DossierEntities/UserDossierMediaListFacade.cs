@@ -29,6 +29,9 @@ public sealed class UserDossierMediaListFacade(
             await
                 dossierCollection
                     .Include(
+                        entity => entity.Profile
+                    )
+                    .Include(
                         entity => entity.DossierMediaCollection
                     )
                     .ThenInclude(
@@ -39,6 +42,9 @@ public sealed class UserDossierMediaListFacade(
                     )
                     .ThenInclude(
                         entity => entity!.OptimizedFile
+                    )
+                    .ThenInclude(
+                        entity => entity!.FileResource
                     )
                     .FirstOrDefaultAsync(
                         entity =>
@@ -66,6 +72,7 @@ public sealed class UserDossierMediaListFacade(
                     .MediaAggregate!
                     .PreviewMedia!
                     .OptimizedFile!
+                    .FileResource!
                     .RelativePath;
 
             var description =

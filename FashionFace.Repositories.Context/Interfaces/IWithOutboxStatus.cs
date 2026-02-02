@@ -1,4 +1,4 @@
-﻿using FashionFace.Repositories.Context.Enums;
+using FashionFace.Repositories.Context.Enums;
 
 namespace FashionFace.Repositories.Context.Interfaces;
 

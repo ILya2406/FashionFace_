@@ -41,6 +41,7 @@ public sealed class PublicProfileController(
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.AppearanceTraits)
                 .Include(p => p.MediaFileCollection)
+                    .ThenInclude(mf => mf.FileResource)
                 .Include(p => p.ProfileTalentCollection)
                     .ThenInclude(pt => pt.Talent)
                     .ThenInclude(t => t.Portfolio)
@@ -48,6 +49,7 @@ public sealed class PublicProfileController(
                     .ThenInclude(pm => pm.MediaAggregate)
                     .ThenInclude(ma => ma.PreviewMedia)
                     .ThenInclude(m => m.OptimizedFile)
+                        .ThenInclude(of => of.FileResource)
                 .Include(p => p.ProfileTalentCollection)
                     .ThenInclude(pt => pt.Talent)
                     .ThenInclude(t => t.Portfolio)
@@ -77,6 +79,7 @@ public sealed class PublicProfileController(
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.AppearanceTraits)
                 .Include(p => p.MediaFileCollection)
+                    .ThenInclude(mf => mf.FileResource)
                 .Include(p => p.ProfileTalentCollection)
                     .ThenInclude(pt => pt.Talent)
                     .ThenInclude(t => t.Portfolio)
@@ -84,6 +87,7 @@ public sealed class PublicProfileController(
                     .ThenInclude(pm => pm.MediaAggregate)
                     .ThenInclude(ma => ma.PreviewMedia)
                     .ThenInclude(m => m.OptimizedFile)
+                        .ThenInclude(of => of.FileResource)
                 .Include(p => p.ProfileTalentCollection)
                     .ThenInclude(pt => pt.Talent)
                     .ThenInclude(t => t.Portfolio)
@@ -112,10 +116,10 @@ public sealed class PublicProfileController(
             .OrderBy(pm => pm.PositionIndex)
             .ToList() ?? new List<PortfolioMediaAggregate>();
 
-        var coverUrl = portfolioMedia.FirstOrDefault()?.MediaAggregate?.PreviewMedia?.OptimizedFile?.RelativePath;
+        var coverUrl = portfolioMedia.FirstOrDefault()?.MediaAggregate?.PreviewMedia?.OptimizedFile?.FileResource?.RelativePath;
 
         var mediaUrls = portfolioMedia
-            .Select(pm => pm.MediaAggregate?.PreviewMedia?.OptimizedFile?.RelativePath)
+            .Select(pm => pm.MediaAggregate?.PreviewMedia?.OptimizedFile?.FileResource?.RelativePath)
             .Where(url => url != null)
             .Cast<string>()
             .ToList();
@@ -123,7 +127,7 @@ public sealed class PublicProfileController(
         if (!mediaUrls.Any() && profile.MediaFileCollection?.Any() == true)
         {
             mediaUrls = profile.MediaFileCollection
-                .Select(m => m.RelativePath)
+                .Select(m => m.FileResource?.RelativePath)
                 .Where(url => url != null)
                 .Cast<string>()
                 .ToList();
@@ -172,7 +176,8 @@ public sealed class PublicProfileController(
             tags.Any() ? tags : null,
             profile.CreatedAt,
             appearanceTraits,
-            mediaUrls.Any() ? mediaUrls.Select(FormatMediaUrl).ToList() : null
+            mediaUrls.Any() ? mediaUrls.Select(FormatMediaUrl).ToList() : null,
+            talent?.Id
         );
 
         return Ok(response);

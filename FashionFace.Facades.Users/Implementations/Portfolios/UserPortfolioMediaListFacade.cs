@@ -72,6 +72,9 @@ public sealed class UserPortfolioMediaListFacade(
                     .ThenInclude(
                         entity => entity!.OptimizedFile
                     )
+                    .ThenInclude(
+                        entity => entity!.FileResource
+                    )
                     .FirstOrDefaultAsync(
                         entity => entity.TalentId == talentId
                     );
@@ -97,6 +100,7 @@ public sealed class UserPortfolioMediaListFacade(
                     .MediaAggregate!
                     .PreviewMedia!
                     .OptimizedFile!
+                    .FileResource!
                     .RelativePath;
 
             var description =

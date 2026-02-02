@@ -10,13 +10,7 @@ public sealed class DossierConfiguration : EntityConfigurationBase<Dossier>
 {
     public override void Configure(EntityTypeBuilder<Dossier> builder)
     {
-        // НЕ вызываем base.Configure(), так как Dossier использует ProfileId как ключ, а не Id
-
-        // Устанавливаем первичный ключ - ProfileId
-        builder
-            .HasKey(
-                entity => entity.ProfileId
-            );
+        base.Configure(builder);
 
         builder
             .Property(
@@ -27,19 +21,6 @@ public sealed class DossierConfiguration : EntityConfigurationBase<Dossier>
             )
             .HasColumnType(
                 "uuid"
-            )
-            .IsRequired();
-
-        // Настраиваем IsDeleted (из IWithIsDeleted)
-        builder
-            .Property(
-                entity => entity.IsDeleted
-            )
-            .HasColumnName(
-                "IsDeleted"
-            )
-            .HasColumnType(
-                "boolean"
             )
             .IsRequired();
 
