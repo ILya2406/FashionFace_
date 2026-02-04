@@ -46,6 +46,7 @@ public sealed class UserProfileController(
             new UserProfileResponse(
                 result.Id,
                 result.Name,
+                result.City,
                 result.Description,
                 result.AgeCategoryType,
                 result.CreatedAt

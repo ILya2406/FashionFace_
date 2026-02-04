@@ -32,6 +32,7 @@ public sealed class UserProfileUpdateController(
             new UserProfileUpdateArgs(
                 userId,
                 request.Name,
+                request.City,
                 request.Description,
                 request.AgeCategoryType
             );

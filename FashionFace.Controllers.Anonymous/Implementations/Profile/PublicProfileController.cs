@@ -165,7 +165,7 @@ public sealed class PublicProfileController(
             profile.Name,
             profile.Description,
             type,
-            null, // city
+            profile.City, // city
             applicationUser.UserName,
             null, // instagramUsername
             applicationUser.Email,

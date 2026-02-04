@@ -59,6 +59,7 @@ public sealed class UserProfileFacade(
             new UserProfileResult(
                 profile.Id,
                 profile.Name,
+                profile.City,
                 profile.Description,
                 profile.AgeCategoryType,
                 profile.CreatedAt

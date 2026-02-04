@@ -1202,6 +1202,10 @@ namespace FashionFace.Repositories.Context.Migrations
                         .HasColumnType("varchar(256)")
                         .HasColumnName("Name");
 
+                    b.Property<string>("City")
+                        .HasColumnType("text")
+                        .HasColumnName("City");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")

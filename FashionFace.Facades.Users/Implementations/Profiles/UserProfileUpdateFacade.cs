@@ -24,6 +24,7 @@ public sealed class UserProfileUpdateFacade(
         var (
             userId,
             name,
+            city,
             description,
             ageCategoryType
             ) = args;
@@ -48,6 +49,12 @@ public sealed class UserProfileUpdateFacade(
         {
             profile.Name =
                 name;
+        }
+
+        if (city is not null)
+        {
+            profile.City =
+                city;
         }
 
         if (description is not null)

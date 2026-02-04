@@ -40,6 +40,17 @@ public sealed class ProfileConfiguration : EntityConfigurationBase<Profile>
 
         builder
             .Property(
+                entity => entity.City
+            )
+            .HasColumnName(
+                "City"
+            )
+            .HasColumnType(
+                "text"
+            );
+
+        builder
+            .Property(
                 entity => entity.Description
             )
             .HasColumnName(

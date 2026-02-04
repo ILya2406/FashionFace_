@@ -308,6 +308,7 @@ namespace FashionFace.Repositories.Context.Migrations
                     ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Name = table.Column<string>(type: "varchar(256)", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "varchar(1024)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AgeCategoryType = table.Column<string>(type: "varchar(32)", nullable: false)

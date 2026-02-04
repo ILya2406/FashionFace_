@@ -55,7 +55,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
                 entity => entity.ApplicationUser
             )
             .WithMany()
-            .HasForeignKey<RenderPipeline>(
+            .HasForeignKey(
                 entity => entity.ApplicationUserId
             )
             .OnDelete(
@@ -67,7 +67,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
                 entity => entity.Talent
             )
             .WithMany()
-            .HasForeignKey<RenderPipeline>(
+            .HasForeignKey(
                 entity => entity.TalentId
             )
             .OnDelete(
@@ -79,7 +79,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
                 entity => entity.PoseReference
             )
             .WithMany()
-            .HasForeignKey<RenderPipeline>(
+            .HasForeignKey(
                 entity => entity.PoseReferenceId
             )
             .OnDelete(
@@ -91,7 +91,7 @@ public sealed class RenderPipelineConfiguration : EntityConfigurationBase<Render
                 entity => entity.ProductMediaAggregate
             )
             .WithMany()
-            .HasForeignKey<RenderPipeline>(
+            .HasForeignKey(
                 entity => entity.ProductMediaAggregateId
             )
             .OnDelete(
